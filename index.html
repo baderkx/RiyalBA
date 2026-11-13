@@ -26,28 +26,9 @@
         body.lang-en { font-family: 'Inter', sans-serif; direction: ltr; text-align: left; }
         .hidden { display: none !important; }
         
-        /* أنيميشن دخول عصري وحديث */
-        #splash-screen {
-            position: fixed; inset: 0; background: var(--bg-white); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999;
-            animation: fadeOutSplash 0.6s 2.2s forwards ease-in-out;
-        }
-        .splash-logo-box {
-            display: flex; align-items: center; gap: 12px;
-            animation: modernPulse 1.2s infinite alternate ease-in-out;
-        }
-        @keyframes modernPulse {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            100% { transform: scale(1.05); opacity: 1; }
-        }
-        @keyframes fadeOutSplash {
-            0% { opacity: 1; visibility: visible; }
-            100% { opacity: 0; visibility: hidden; }
-        }
-
         .auth-container { background: url('pexels-brett-sayles-6937714.jpg') center/cover fixed; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 15px;}
         .auth-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 25px 30px; border-radius: 20px; width: 100%; max-width: 450px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center; max-height: 95vh; overflow-y: auto;}
         
-        /* الشعار المطابق للصورة (الأيقونة يسار والاسم يمين) */
         .brand-logo-auth { display: inline-flex; align-items: center; gap: 12px; direction: ltr !important; unicode-bidi: isolate; justify-content: center; }
         .brand-text-wrap { display: flex; flex-direction: column; align-items: flex-end; line-height: 1; }
         .brand-subtitle { font-size: 9px; font-weight: 600; color: var(--text-main); margin-bottom: 3px; letter-spacing: 0.2px; }
@@ -106,26 +87,25 @@
         .lang-toggle-btn { background: var(--bg-light); border: 1px solid var(--brand-gray); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 12px; color: var(--text-main); transition: 0.2s; }
         .lang-toggle-btn:hover { background: var(--brand-blue); color: white; border-color: var(--brand-blue); }
 
+        /* التحكم في ظهور العناصر حسب الشاشة */
+        .desktop-lang-btn { display: inline-block; }
+        .mobile-header-user { display: none; }
+        .mobile-lang-setting { display: none; }
+
         @media(max-width: 768px) {
             .kpi-grid { grid-template-columns: 1fr 1fr; }
             .analytics-grid { grid-template-columns: 1fr; }
             header { padding: 10px 15px; height: auto; }
+            .auth-container { padding: 0; align-items: stretch; justify-content: stretch; }
+            .auth-card { max-width: 100%; min-height: 100vh; border-radius: 0; display: flex; flex-direction: column; justify-content: center; box-shadow: none; }
+            .desktop-lang-btn { display: none !important; }
+            .mobile-header-user { display: flex !important; align-items: center; gap: 8px; }
+            .mobile-lang-setting { display: block !important; }
+            .nav-links .lang-toggle-btn { display: none; }
         }
     </style>
 </head>
 <body class="lang-en" id="body">
-
-    <!-- Splash Screen with Modern Animation -->
-    <div id="splash-screen">
-        <div class="splash-logo-box">
-            <div class="brand-text-wrap">
-                <span class="brand-subtitle">Money Management</span>
-                <span class="brand-title">RiyalBA<span class="brand-dot">.</span></span>
-            </div>
-            <div class="brand-icon-box"><div class="brand-gray-card"></div><div class="brand-blue-circle"></div></div>
-        </div>
-        <div style="font-size:13px; color:var(--text-muted); margin-top: 15px;" data-i18n="splashSub">Smart Money Management</div>
-    </div>
 
     <!-- Auth Container -->
     <div id="auth-wrapper" class="auth-container hidden">
@@ -142,10 +122,13 @@
             </div>
             <p style="color: var(--text-muted); margin-bottom: 20px;" data-i18n="loginDesc">Login to your account</p>
             <div class="input-group"><input type="text" id="login-user" data-i18n-placeholder="usernamePlaceholder"></div>
-            <div class="input-group"><input type="password" id="login-pass" data-i18n-placeholder="passwordPlaceholder"></div>
+            <div class="input-group">
+                <input type="password" id="login-pass" data-i18n-placeholder="passwordPlaceholder">
+                <div id="login-error-msg" style="color: var(--danger); font-size: 12px; margin-top: 5px; text-align: left; display: none;" data-i18n="loginError">Invalid username or password</div>
+            </div>
             <button onclick="login()" class="btn btn-primary" data-i18n="loginBtn">Login</button>
             <button onclick="toggleAuth('signup-form')" class="btn btn-text" data-i18n="createAccBtn">Create a new account</button>
-            <div style="margin-top: 15px;"><button onclick="switchLanguage()" class="lang-toggle-btn" id="auth-lang-btn">عربي / English</button></div>
+            <div style="margin-top: 15px;" class="desktop-lang-btn"><button onclick="switchLanguage()" class="lang-toggle-btn" id="auth-lang-btn">عربي / English</button></div>
         </div>
 
         <!-- Signup Form -->
@@ -175,7 +158,10 @@
             </div>
             <div class="input-group"><input type="email" id="reg-email" data-i18n-placeholder="emailPlaceholder"></div>
             <div class="input-group"><input type="text" id="reg-user" data-i18n-placeholder="usernamePlaceholder"></div>
-            <div class="input-group"><input type="password" id="reg-pass" data-i18n-placeholder="passPlaceholder"></div>
+            <div class="input-group">
+                <input type="password" id="reg-pass" data-i18n-placeholder="passPlaceholder">
+                <div id="signup-error-msg" style="color: var(--danger); font-size: 12px; margin-top: 5px; text-align: left; display: none;" data-i18n="signupError">Please fill all fields correctly</div>
+            </div>
             <button onclick="register()" class="btn btn-primary" style="background: var(--brand-dark);" data-i18n="signUpBtn">Sign Up</button>
             <button onclick="toggleAuth('login-form')" class="btn btn-text" data-i18n="haveAccBtn">I already have an account</button>
         </div>
@@ -184,15 +170,22 @@
     <!-- Main Application -->
     <div id="app-wrapper" class="hidden" style="display: flex; flex-direction: column; min-height: 100vh;">
         <header>
-            <div style="font-weight:900; font-size:22px;">RiyalBA<span style="color:var(--brand-blue);">.</span></div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="font-weight:900; font-size:22px;">RiyalBA<span style="color:var(--brand-blue);">.</span></div>
+                <!-- صورة الحساب والاسم بجانب اسم الموقع للجوال فقط -->
+                <div class="mobile-header-user">
+                    <div id="mobile-profile-pic-container"><div class="profile-pic" id="mobile-profile-initial" style="width: 30px; height: 30px; font-size: 12px;">U</div></div>
+                    <span id="mobile-user-display" style="font-weight: 600; font-size: 13px;">User</span>
+                </div>
+            </div>
             <div class="nav-links">
                 <a onclick="navigate('dashboard')" id="nav-dashboard" class="nav-link active" data-i18n="navDash">Dashboard</a>
                 <a onclick="navigate('history')" id="nav-history" class="nav-link" data-i18n="navHistory">History</a>
                 <a onclick="navigate('profile')" id="nav-profile" class="nav-link" data-i18n="navProfile">My Profile</a>
-                <a onclick="navigate('about')" id="nav-about" class="nav-link" data-i18n="navAbout">About</a>
-                <button onclick="switchLanguage()" class="lang-toggle-btn" id="nav-lang-btn">AR / EN</button>
+                <a onclick="navigate('about')" id="nav-about" class="nav-link" data-i18n="navAbout">About us</a>
+                <button onclick="switchLanguage()" class="lang-toggle-btn desktop-lang-btn" id="nav-lang-btn">AR / EN</button>
             </div>
-            <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 12px;" class="desktop-lang-btn">
                 <span id="user-display" style="font-weight: 600; font-size: 14px;">User</span>
                 <div id="profile-pic-container"><div class="profile-pic" id="profile-initial">U</div></div>
             </div>
@@ -269,6 +262,10 @@
             <div id="page-profile" class="page">
                 <h2 style="margin-bottom: 25px;" data-i18n="profileTitle">My Profile & Account Info</h2>
                 <div class="card" style="max-width: 650px; margin: 0 auto; padding: 25px;">
+                    <!-- خانه تغير اللغه للجوال فقط في ماي بروفايل -->
+                    <div class="mobile-lang-setting" style="margin-bottom: 20px; text-align: center;">
+                        <button onclick="switchLanguage()" class="lang-toggle-btn" style="width: 100%; padding: 12px;" id="profile-lang-btn">عربي / English</button>
+                    </div>
                     <div style="text-align: center; margin-bottom: 25px;">
                         <div style="display:inline-block; position:relative; cursor:pointer;" onclick="triggerPhotoUpload()"><div id="profile-page-initial" class="profile-pic" style="width: 90px; height: 90px; font-size: 35px; margin: 0 auto;">U</div></div>
                         <input type="file" id="profile-photo-input" accept="image/*" class="hidden" onchange="updateProfilePhoto(event)">
@@ -325,7 +322,7 @@
         <footer>
             <div class="footer-content">
                 <div><div style="font-size: 20px; font-weight: 800;">RiyalBA<span style="color:var(--brand-blue);">.</span></div><p style="color: #9ca3af; font-size: 13px; margin-top: 6px;" data-i18n="footerSub">Smart Money Management</p></div>
-                <div class="footer-links"><a onclick="navigate('dashboard')" data-i18n="navDash">Dashboard</a><a onclick="navigate('history')" data-i18n="navHistory">History</a><a onclick="navigate('profile')" data-i18n="navProfile">Profile</a><a onclick="navigate('about')" data-i18n="navAbout">About</a></div>
+                <div class="footer-links"><a onclick="navigate('dashboard')" data-i18n="navDash">Dashboard</a><a onclick="navigate('history')" data-i18n="navHistory">History</a><a onclick="navigate('profile')" data-i18n="navProfile">Profile</a><a onclick="navigate('about')" data-i18n="navAbout">About us</a></div>
             </div>
             <div style="text-align: center; color: #6b7280; font-size: 12px;">&copy; 2026 RiyalBA. All Rights Reserved.</div>
         </footer>
@@ -354,7 +351,7 @@
             navDash: "Dashboard",
             navHistory: "History",
             navProfile: "My Profile",
-            navAbout: "About",
+            navAbout: "About us",
             kpiIncome: "Total Income",
             incomePlaceholder: "Enter income",
             saveBtn: "Save",
@@ -404,7 +401,9 @@
             overviewDesc: "RiyalBA is designed to empower individuals to take complete control of their financial life through smart tracking and advanced analytics.",
             devTitle: "Created & Developed By",
             linkedinBtn: "🔗 LinkedIn Profile",
-            footerSub: "Smart Money Management"
+            footerSub: "Smart Money Management",
+            loginError: "Invalid username or password",
+            signupError: "Please fill all fields correctly"
         },
         ar: {
             splashSub: "إدارة الأموال بذكاء",
@@ -477,7 +476,9 @@
             overviewDesc: "صُممت منصة RiyalBA لمساعدة الأفراد على التحكم الكامل بحياتهم المالية عبر تحليل المصروفات، متابعة أهداف الادخار، وتقديم تقارير دقيقة.",
             devTitle: "تم التطوير بواسطة",
             linkedinBtn: "🔗 حساب لينكد إن",
-            footerSub: "إدارة الأموال الذكية"
+            footerSub: "إدارة الأموال الذكية",
+            loginError: "خطأ في اسم المستخدم أو كلمة المرور",
+            signupError: "يرجى تعبئة جميع الحقول بشكل صحيح"
         }
     };
 
@@ -492,13 +493,7 @@
         applyLanguage(currentLang);
         populateAgeDropdowns();
         updateDashboardDate();
-        if (!sessionStorage.getItem('splashShown')) {
-            sessionStorage.setItem('splashShown', 'true');
-            setTimeout(initApp, 2500);
-        } else {
-            document.getElementById('splash-screen').style.display = 'none';
-            initApp();
-        }
+        initApp();
     };
 
     function switchLanguage() {
@@ -557,6 +552,8 @@
     function toggleAuth(showId) {
         document.getElementById('login-form').classList.add('hidden');
         document.getElementById('signup-form').classList.add('hidden');
+        document.getElementById('login-error-msg').style.display = 'none';
+        document.getElementById('signup-error-msg').style.display = 'none';
         document.getElementById(showId).classList.remove('hidden');
     }
 
@@ -568,8 +565,14 @@
         let email = document.getElementById('reg-email').value.trim();
         let u = document.getElementById('reg-user').value.trim();
         let p = document.getElementById('reg-pass').value;
-        if (!fname || !lname || !age || !gender || !email || !u || !p) return;
-        if (users[u]) return;
+        if (!fname || !lname || !age || !gender || !email || !u || !p) {
+            document.getElementById('signup-error-msg').style.display = 'block';
+            return;
+        }
+        if (users[u]) {
+            document.getElementById('signup-error-msg').style.display = 'block';
+            return;
+        }
         users[u] = { password: p, fname, lname, age, gender, email, phone: '', customIncome: 0, customGoal: 1000, photo: null };
         localStorage.setItem('RiyalBA_users', JSON.stringify(users));
         currentUser = u;
@@ -585,7 +588,12 @@
         else {
             for (let uname in users) { if (users[uname].email === inputKey && users[uname].password === p) { foundUser = uname; break; } }
         }
-        if (foundUser) { localStorage.setItem('RiyalBA_currentUser', foundUser); location.reload(); }
+        if (foundUser) {
+            localStorage.setItem('RiyalBA_currentUser', foundUser);
+            location.reload();
+        } else {
+            document.getElementById('login-error-msg').style.display = 'block';
+        }
     }
 
     function logout() { localStorage.removeItem('RiyalBA_currentUser'); location.reload(); }
@@ -594,11 +602,17 @@
         let uData = users[currentUser] || { fname: currentUser, lname: '', gender: 'male', age: '25', email: '', phone: '', customIncome: 0, customGoal: 1000, photo: null };
         let fullName = uData.fname + ' ' + uData.lname;
         document.getElementById('user-display').innerText = fullName;
-        let picContainers = [document.getElementById('profile-initial'), document.getElementById('profile-page-initial')];
-        picContainers.forEach(container => {
+        document.getElementById('mobile-user-display').innerText = fullName;
+        
+        let picContainers = [document.getElementById('profile-initial'), document.getElementById('mobile-profile-initial'), document.getElementById('profile-page-initial')];
+        picContainers.forEach((container, idx) => {
             if(!container) return;
-            if(uData.photo) container.outerHTML = `<img src="${uData.photo}" class="profile-pic" id="${container.id}">`;
-            else { container.innerText = fullName.charAt(0).toUpperCase(); container.style.backgroundColor = uData.gender === 'female' ? 'var(--brand-pink)' : 'var(--brand-blue)'; }
+            if(uData.photo) {
+                container.outerHTML = `<img src="${uData.photo}" class="profile-pic" id="${container.id}" style="${idx === 1 ? 'width: 30px; height: 30px;' : (idx === 2 ? 'width: 90px; height: 90px;' : '')}">`;
+            } else { 
+                container.innerText = fullName.charAt(0).toUpperCase(); 
+                container.style.backgroundColor = uData.gender === 'female' ? 'var(--brand-pink)' : 'var(--brand-blue)'; 
+            }
         });
         document.getElementById('prof-name').innerText = fullName;
         document.getElementById('prof-user').innerText = "@" + currentUser;
