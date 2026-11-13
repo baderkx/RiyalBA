@@ -87,7 +87,6 @@
         .lang-toggle-btn { background: var(--bg-light); border: 1px solid var(--brand-gray); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 12px; color: var(--text-main); transition: 0.2s; }
         .lang-toggle-btn:hover { background: var(--brand-blue); color: white; border-color: var(--brand-blue); }
 
-        /* التحكم في ظهور العناصر حسب الشاشة */
         .desktop-lang-btn { display: inline-block; }
         .mobile-header-user { display: none; }
         .mobile-lang-setting { display: none; }
@@ -172,7 +171,6 @@
         <header>
             <div style="display: flex; align-items: center; gap: 12px;">
                 <div style="font-weight:900; font-size:22px;">RiyalBA<span style="color:var(--brand-blue);">.</span></div>
-                <!-- صورة الحساب والاسم بجانب اسم الموقع للجوال فقط -->
                 <div class="mobile-header-user">
                     <div id="mobile-profile-pic-container"><div class="profile-pic" id="mobile-profile-initial" style="width: 30px; height: 30px; font-size: 12px;">U</div></div>
                     <span id="mobile-user-display" style="font-weight: 600; font-size: 13px;">User</span>
@@ -192,12 +190,16 @@
         </header>
 
         <div class="main-content">
-            <!-- Dashboard -->
+            <!-- Dashboard (الترتيب المنظم لسطح المكتب والجوال) -->
             <div id="page-dashboard" class="page active">
+                
+                <!-- 1. العنوان وتاريخ الشهر -->
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
                     <h2 id="dash-month-title" style="font-size: 22px; margin: 0;">Overview: Current Month</h2>
                     <div id="dashboard-date-badge" class="date-badge">Loading date...</div>
                 </div>
+
+                <!-- 2. بطاقات الـ KPI الرئيسية -->
                 <div class="kpi-grid">
                     <div class="kpi-card">
                         <div style="display: flex; justify-content: space-between; align-items: center;"><p style="margin:0;" data-i18n="kpiIncome">Total Income</p><span onclick="toggleIncomeEdit()" style="cursor: pointer;">✏️</span></div>
@@ -212,10 +214,20 @@
                     <div class="kpi-card"><p data-i18n="kpiSavings">Savings Rate</p><h3 id="kpi-savings-rate">0%</h3></div>
                     <div class="kpi-card"><p data-i18n="kpiCum">Cumulative</p><h3 id="bento-cumulative">0 SAR</h3></div>
                 </div>
+
+                <!-- 3. الميزانية المخططة والمصروف الفعلي -->
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; margin-bottom: 25px;">
                     <div class="kpi-card" style="flex-direction: row; align-items: center; justify-content: space-between;"><p style="margin:0;" data-i18n="plannedBudget">Planned Budget</p><h3 id="bento-planned" style="margin:0; font-size:18px;">0</h3></div>
                     <div class="kpi-card" style="flex-direction: row; align-items: center; justify-content: space-between;"><p style="margin:0;" data-i18n="actualSpending">Actual Spending</p><h3 id="bento-actual" style="margin:0; font-size:18px;">0</h3></div>
                 </div>
+
+                <!-- 4. جدول المعاملات -->
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;"><h3 style="margin:0;" data-i18n="transactionsTitle">Transactions</h3><button onclick="navigate('edit-month')" class="btn btn-primary" style="width: auto; padding: 10px 20px; margin:0; border-radius:6px;" data-i18n="editDataBtn">Edit Data</button></div>
+                    <table><thead><tr><th data-i18n="thCat">Category</th><th data-i18n="thPlanned">Planned</th><th data-i18n="thActual">Actual</th><th data-i18n="thDiff">Difference</th></tr></thead><tbody id="readonly-table-body"></tbody></table>
+                </div>
+
+                <!-- 5. قسم الرسوم البيانية والتحليلات -->
                 <div class="analytics-grid">
                     <div class="analytics-card"><h3 data-i18n="chartDist">Category Distribution</h3><div style="position: relative; height: 220px;"><canvas id="donutChart"></canvas></div></div>
                     <div class="analytics-card"><h3 data-i18n="chartBar">Planned vs Actual</h3><div style="position: relative; height: 220px;"><canvas id="barChart"></canvas></div></div>
@@ -224,6 +236,8 @@
                     <div class="analytics-card"><h3 data-i18n="chartProgress">Budget Consumption</h3><div id="progress-bars-container" style="max-height: 220px; overflow-y: auto;"></div></div>
                     <div class="analytics-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center;"><h3 data-i18n="chartGauge">Budget Gauge</h3><div style="position: relative; height: 180px; width: 100%;"><canvas id="gaugeChart"></canvas></div></div>
                 </div>
+
+                <!-- 6. التنبيهات والأهداف المالية -->
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 25px;">
                     <div class="card" style="margin:0;"><h3 data-i18n="smartAlerts">Smart Alerts</h3><ul id="alerts-list" style="padding-left: 20px; margin: 0; color: var(--text-muted); font-size: 14px; line-height: 1.8;"><li data-i18n="defaultAlert">All spending is within normal limits.</li></ul></div>
                     <div class="card" style="margin:0;">
@@ -240,10 +254,7 @@
                         <p style="font-size: 13px; color: var(--text-muted); margin:0;"><span data-i18n="remDebts">Remaining Debts</span>: <strong style="color:var(--danger)">0 SAR</strong></p>
                     </div>
                 </div>
-                <div class="card">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;"><h3 style="margin:0;" data-i18n="transactionsTitle">Transactions</h3><button onclick="navigate('edit-month')" class="btn btn-primary" style="width: auto; padding: 10px 20px; margin:0; border-radius:6px;" data-i18n="editDataBtn">Edit Data</button></div>
-                    <table><thead><tr><th data-i18n="thCat">Category</th><th data-i18n="thPlanned">Planned</th><th data-i18n="thActual">Actual</th><th data-i18n="thDiff">Difference</th></tr></thead><tbody id="readonly-table-body"></tbody></table>
-                </div>
+
             </div>
 
             <!-- Edit Month -->
@@ -262,7 +273,6 @@
             <div id="page-profile" class="page">
                 <h2 style="margin-bottom: 25px;" data-i18n="profileTitle">My Profile & Account Info</h2>
                 <div class="card" style="max-width: 650px; margin: 0 auto; padding: 25px;">
-                    <!-- خانه تغير اللغه للجوال فقط في ماي بروفايل -->
                     <div class="mobile-lang-setting" style="margin-bottom: 20px; text-align: center;">
                         <button onclick="switchLanguage()" class="lang-toggle-btn" style="width: 100%; padding: 12px;" id="profile-lang-btn">عربي / English</button>
                     </div>
