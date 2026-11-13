@@ -190,7 +190,7 @@
         </header>
 
         <div class="main-content">
-            <!-- Dashboard (الترتيب المنظم لسطح المكتب والجوال) -->
+            <!-- Dashboard -->
             <div id="page-dashboard" class="page active">
                 
                 <!-- 1. العنوان وتاريخ الشهر -->
@@ -227,7 +227,7 @@
                     <table><thead><tr><th data-i18n="thCat">Category</th><th data-i18n="thPlanned">Planned</th><th data-i18n="thActual">Actual</th><th data-i18n="thDiff">Difference</th></tr></thead><tbody id="readonly-table-body"></tbody></table>
                 </div>
 
-                <!-- 5. قسم الرسوم البيانية والتحليلات -->
+                <!-- 5. قسم الرسوم البيانية والتحليلات الأساسية -->
                 <div class="analytics-grid">
                     <div class="analytics-card"><h3 data-i18n="chartDist">Category Distribution</h3><div style="position: relative; height: 220px;"><canvas id="donutChart"></canvas></div></div>
                     <div class="analytics-card"><h3 data-i18n="chartBar">Planned vs Actual</h3><div style="position: relative; height: 220px;"><canvas id="barChart"></canvas></div></div>
@@ -253,6 +253,15 @@
                         <div style="background:var(--bg-light); height:10px; border-radius:5px; overflow:hidden; margin-bottom: 12px;"><div id="goal-progress-bar" style="background:var(--success); width:0%; height:100%;"></div></div>
                         <p style="font-size: 13px; color: var(--text-muted); margin:0;"><span data-i18n="remDebts">Remaining Debts</span>: <strong style="color:var(--danger)">0 SAR</strong></p>
                     </div>
+                </div>
+
+                <!-- 7. الرسم البياني الإحصائي الجديد (مؤشر كفاءة الإنفاق العام) -->
+                <div class="analytics-card" style="margin-bottom: 25px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 data-i18n="chartEfficiency">Spending Efficiency Index</h3>
+                        <span style="font-size: 12px; color: var(--text-muted);" data-i18n="efficiencySub">Analysis of Planned vs Actual Impact</span>
+                    </div>
+                    <div style="position: relative; height: 220px;"><canvas id="efficiencyChart"></canvas></div>
                 </div>
 
             </div>
@@ -377,6 +386,8 @@
             chartHistory: "Monthly Comparison",
             chartProgress: "Budget Consumption",
             chartGauge: "Budget Gauge",
+            chartEfficiency: "Spending Efficiency Index",
+            efficiencySub: "Analysis of Planned vs Actual Impact",
             smartAlerts: "Smart Alerts",
             defaultAlert: "All spending is within normal limits.",
             finGoals: "Financial Goals",
@@ -452,6 +463,8 @@
             chartHistory: "مقارنة الأشهر",
             chartProgress: "استهلاك الميزانية",
             chartGauge: "مؤشر الميزانية",
+            chartEfficiency: "مؤشر كفاءة الإنفاق العام",
+            efficiencySub: "تحليل تأثير المخطط مقابل الفعلي",
             smartAlerts: "التنبيهات الذكية",
             defaultAlert: "جميع المصروفات ضمن الحدود الطبيعية.",
             finGoals: "أهداف الادخار",
@@ -497,7 +510,7 @@
     let monthsDB = JSON.parse(localStorage.getItem('RiyalBA_months')) || {};
     let currentUser = localStorage.getItem('RiyalBA_currentUser');
     let currentMonthId = null;
-    let donutChart = null, barChart = null, lineDaily = null, lineHistory = null, gaugeChart = null;
+    let donutChart = null, barChart = null, lineDaily = null, lineHistory = null, gaugeChart = null, efficiencyChart = null;
 
     window.onload = function() {
         applyLanguage(currentLang);
@@ -839,6 +852,36 @@
         lineHistory = new Chart(document.getElementById('lineChartHistory').getContext('2d'), { type: 'line', data: { labels: ['Aug', 'Sep', 'Oct', 'Nov'], datasets: [{ data: [1200, 800, 1500, tp-ta], borderColor: '#008CFF', fill: true }] } });
         if(gaugeChart) gaugeChart.destroy();
         gaugeChart = new Chart(document.getElementById('gaugeChart').getContext('2d'), { type: 'doughnut', data: { datasets: [{ data: [ta, Math.max(0, tp-ta)], backgroundColor: ['#EF4444', '#E5E7EB'] }] }, options: { rotation: -90, circumference: 180, cutout: '80%' } });
+        
+        // الرسم البياني الجديد للإحصاء (مؤشر كفاءة الإنفاق)
+        if(efficiencyChart) efficiencyChart.destroy();
+        let effData = pData.map((p, idx) => p > 0 ? Math.min(100, Math.max(0, Math.round((aData[idx] / p) * 100))) : 0);
+        efficiencyChart = new Chart(document.getElementById('efficiencyChart').getContext('2d'), {
+            type: 'radar',
+            data: {
+                labels: cats,
+                datasets: [{
+                    label: currentLang === 'ar' ? 'نسبة استهلاك الفئة (%)' : 'Category Consumption Rate (%)',
+                    data: effData,
+                    backgroundColor: 'rgba(0, 140, 255, 0.2)',
+                    borderColor: '#008CFF',
+                    pointBackgroundColor: '#EC4899',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#008CFF'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
     }
 </script>
 </body>
