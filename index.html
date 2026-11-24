@@ -91,42 +91,46 @@
             color: #FFFFFF;
             white-space: nowrap;
         }
-        .card-chip {
-            display: inline-flex;
+        .card-manage-row {
+            display: flex;
+            flex-wrap: wrap;
             align-items: center;
             gap: 8px;
-            padding: 6px 12px;
+            padding: 8px 12px;
             border-radius: 10px;
-            font-size: 12px;
-            font-weight: 700;
-            color: #FFFFFF;
+            background: var(--bg-white);
+            border: 1px solid var(--brand-gray);
         }
-        .card-chip-del {
-            background: rgba(0,0,0,0.22);
-            color: #FFFFFF;
-            border-radius: 50%;
-            width: 18px;
-            height: 18px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-weight: 900;
+        .card-manage-row input[type="text"] {
+            width: 140px;
+            padding: 6px 10px;
             font-size: 13px;
-            line-height: 1;
+        }
+        .card-manage-row input[type="number"] {
+            width: 110px;
+            padding: 6px 10px;
+            font-size: 13px;
+        }
+        .card-manage-row input[type="color"] {
+            width: 34px;
+            height: 32px;
+            padding: 2px;
+            border: 1px solid var(--brand-gray);
+            border-radius: 6px;
+            cursor: pointer;
+            background: white;
         }
         .table-card-select {
             padding: 6px 10px;
             font-size: 13px;
-            border-radius: 6px;
+            border-radius: 8px;
             border: 1px solid var(--brand-gray);
             background: var(--bg-light);
-            font-weight: 600;
-            min-width: 130px;
+            font-weight: 700;
+            min-width: 135px;
             cursor: pointer;
         }
 
-        /* أشرطة استهلاك الميزانية والإحصائيات الإضافية */
         .progress-item { margin-bottom: 12px; }
         .progress-meta { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; margin-bottom: 4px; }
         .progress-track { width: 100%; height: 8px; background: var(--bg-light); border-radius: 999px; overflow: hidden; border: 1px solid #E5E7EB; }
@@ -304,7 +308,7 @@
                 <!-- ويدجات المتبقي لكل بطاقة بنفس شكل كروت الداش بورد -->
                 <div id="cards-widgets-grid" class="kpi-grid" style="margin-bottom: 25px;"></div>
 
-                <!-- 4. قسم الرسوم البيانية والتحليلات الأساسية + تعبئة المساحة الفارغة بإحصائيات مفيدة -->
+                <!-- 4. قسم الرسوم البيانية والتحليلات -->
                 <div class="analytics-grid">
                     <div class="analytics-card"><h3 data-i18n="chartDist">Category Distribution</h3><div style="position: relative; height: 220px;"><canvas id="donutChart"></canvas></div></div>
                     <div class="analytics-card"><h3 data-i18n="chartBar">Planned vs Actual</h3><div style="position: relative; height: 220px;"><canvas id="barChart"></canvas></div></div>
@@ -343,7 +347,7 @@
                     <div style="position: relative; height: 220px;"><canvas id="efficiencyChart"></canvas></div>
                 </div>
 
-                <!-- 7. جدول المعاملات والبطاقات في آخر الداش بورد -->
+                <!-- 7. جدول المعاملات وإضافة/تعديل البطاقات من داخله -->
                 <div class="card">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
                         <h3 style="margin:0;" data-i18n="transactionsTitle">Transactions</h3>
@@ -353,14 +357,14 @@
                         </div>
                     </div>
 
-                    <!-- صندوق إضافة البطاقات وإدارتها من داخل Transactions -->
-                    <div id="add-card-box" class="hidden" style="background: var(--bg-light); padding: 15px; border-radius: 12px; border: 1px solid var(--brand-gray); margin-bottom: 15px;">
+                    <!-- صندوق إضافة وتعديل وحذف البطاقات مباشرة من داخل Transactions -->
+                    <div id="add-card-box" style="background: var(--bg-light); padding: 15px; border-radius: 12px; border: 1px solid var(--brand-gray); margin-bottom: 15px;">
                         <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
                             <input type="text" id="new-card-name" data-i18n-placeholder="cardNamePlaceholder" style="flex: 2; min-width: 160px; padding: 10px;">
                             <input type="number" id="new-card-limit" data-i18n-placeholder="cardLimitPlaceholder" min="0" style="flex: 1; min-width: 140px; padding: 10px;">
                             <button onclick="addNewCard()" class="btn btn-primary" style="width: auto; padding: 10px 20px; margin: 0;" data-i18n="saveCardBtn">Add</button>
                         </div>
-                        <div id="cards-manage-list" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;"></div>
+                        <div id="cards-manage-list" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px;"></div>
                     </div>
 
                     <table>
@@ -521,6 +525,7 @@
             cardNamePlaceholder: "Card Name (e.g. Card 1, Card 2)",
             cardLimitPlaceholder: "Card Balance / Limit",
             saveCardBtn: "Add",
+            updateCardBtn: "Save",
             thCard: "Card",
             selectCardDefault: "Select Card",
             noCardSelected: "-",
@@ -616,6 +621,7 @@
             cardNamePlaceholder: "اسم البطاقة (مثال: بطاقة 1، بطاقة 2)",
             cardLimitPlaceholder: "رصيد / حد البطاقة",
             saveCardBtn: "إضافة",
+            updateCardBtn: "حفظ",
             thCard: "البطاقة",
             selectCardDefault: "اختر البطاقة",
             noCardSelected: "-",
@@ -882,6 +888,7 @@
         calc();
     }
 
+    // --- إضافة وتعديل وحذف البطاقات مباشرة من داخل Transactions ---
     function getRandomCardColor(usedColors = []) {
         let available = CARD_COLOR_PALETTE.filter(c => !usedColors.includes(c));
         if (available.length > 0) {
@@ -940,6 +947,27 @@
         calc();
     }
 
+    function editCardInline(cardId, index) {
+        let m = monthsDB[currentMonthId];
+        let nameVal = document.getElementById(`card_edit_name_${index}`).value.trim();
+        let limitVal = parseFloat(document.getElementById(`card_edit_limit_${index}`).value);
+        let colorVal = document.getElementById(`card_edit_color_${index}`).value;
+
+        if (!nameVal || isNaN(limitVal) || limitVal < 0) return;
+
+        let cardObj = (m.cards || []).find(c => c.id === cardId);
+        if (cardObj) {
+            cardObj.name = nameVal;
+            cardObj.limit = limitVal;
+            cardObj.color = colorVal;
+            localStorage.setItem('RiyalBA_months', JSON.stringify(monthsDB));
+            renderCardsManageList();
+            renderTableReadonly();
+            renderTableEdit();
+            calc();
+        }
+    }
+
     function deleteCard(cardId) {
         let m = monthsDB[currentMonthId];
         m.cards = (m.cards || []).filter(c => c.id !== cardId);
@@ -958,15 +986,28 @@
         if (!container) return;
         let cards = getMonthCards();
         container.innerHTML = '';
-        cards.forEach(c => {
+        cards.forEach((c, idx) => {
             container.innerHTML += `
-                <div class="card-chip" style="background: ${c.color};">
-                    <span>${c.name} (${c.limit.toLocaleString()} SAR)</span>
-                    <span class="card-chip-del" onclick="deleteCard('${c.id}')" title="Delete">×</span>
+                <div class="card-manage-row" style="border-inline-start: 4px solid ${c.color};">
+                    <input type="color" id="card_edit_color_${idx}" value="${c.color}" title="Color">
+                    <input type="text" id="card_edit_name_${idx}" value="${c.name}">
+                    <input type="number" id="card_edit_limit_${idx}" value="${c.limit}" min="0">
+                    <button onclick="editCardInline('${c.id}', ${idx})" class="btn btn-primary" style="width:auto; padding:6px 12px; margin:0; font-size:12px;">${translations[currentLang].updateCardBtn}</button>
+                    <button onclick="deleteCard('${c.id}')" class="action-btn" title="Delete">🗑️</button>
                 </div>
             `;
         });
     }
+
+    function updateExpenseCardInDashboard(expIndex, cardId) {
+        let m = monthsDB[currentMonthId];
+        if (m.expenses[expIndex]) {
+            m.expenses[expIndex].cardId = cardId;
+            localStorage.setItem('RiyalBA_months', JSON.stringify(monthsDB));
+            calc();
+        }
+    }
+    // ------------------------------------------------------------------
 
     function navigate(pageId) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1022,25 +1063,34 @@
         navigate('dashboard');
     }
 
+    function buildCardSelectHTML(selectedCardId, onchangeHandler) {
+        let cards = getMonthCards();
+        let selectedCard = cards.find(c => c.id === selectedCardId);
+        let styleAttr = selectedCard
+            ? `background:${selectedCard.color}; color:#FFFFFF; border-color:${selectedCard.color};`
+            : '';
+        let options = `<option value="" style="background:#FFFFFF; color:#111827;">${translations[currentLang].selectCardDefault}</option>`;
+        cards.forEach(c => {
+            let sel = (selectedCardId === c.id) ? 'selected' : '';
+            options += `<option value="${c.id}" ${sel} style="background:#FFFFFF; color:#111827;">${c.name}</option>`;
+        });
+        return `<select class="table-card-select" style="${styleAttr}" onchange="${onchangeHandler}">${options}</select>`;
+    }
+
     function renderTableReadonly() {
         let m = monthsDB[currentMonthId];
-        let cards = getMonthCards();
         let tbody = document.getElementById('readonly-table-body');
         tbody.innerHTML = '';
-        m.expenses.forEach(ex => {
+        m.expenses.forEach((ex, i) => {
             if(!ex.cat && ex.p === '' && ex.a === '') return;
             let rem = (parseFloat(ex.p)||0) - (parseFloat(ex.a)||0);
-            let cardObj = cards.find(c => c.id === ex.cardId);
-            let cardCellHTML = cardObj
-                ? `<span class="card-colored-badge" style="background: ${cardObj.color};">${cardObj.name}</span>`
-                : `<span style="color: var(--text-muted);">${translations[currentLang].noCardSelected}</span>`;
-
+            let cardSelect = buildCardSelectHTML(ex.cardId || '', `updateExpenseCardInDashboard(${i}, this.value); renderTableReadonly();`);
             tbody.innerHTML += `
                 <tr>
                     <td>${ex.cat || '-'}</td>
                     <td>${ex.p || 0} SAR</td>
                     <td>${ex.a || 0} SAR</td>
-                    <td>${cardCellHTML}</td>
+                    <td>${cardSelect}</td>
                     <td class="${rem < 0 ? 'text-red' : 'text-green'}">${Math.abs(rem)} SAR</td>
                 </tr>`;
         });
@@ -1195,13 +1245,11 @@
         document.getElementById('bento-planned').innerText = tp.toLocaleString() + " SAR";
         document.getElementById('bento-actual').innerText = ta.toLocaleString() + " SAR";
 
-        // المتبقي من المخطط له
         let remPlanned = tp - ta;
         let remPlannedEl = document.getElementById('bento-remaining-planned');
         remPlannedEl.innerText = remPlanned.toLocaleString() + " SAR";
         remPlannedEl.className = remPlanned < 0 ? 'text-red' : 'text-green';
 
-        // حساب المتبقي للكل وويدجات البطاقات + بيانات الصرف لكل بطاقة
         let cards = getMonthCards();
         let cardsGrid = document.getElementById('cards-widgets-grid');
         let totalRemainingEl = document.getElementById('bento-total-remaining');
