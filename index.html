@@ -51,8 +51,12 @@
         .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.3s; }
         .btn-primary { background: var(--brand-blue); color: white; margin-top: 10px; }
         .btn-primary:hover { background: #0070cc; }
+        .btn-google { background: #FFFFFF; color: #111827; border: 1px solid var(--brand-gray); display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+        .btn-google:hover { background: #F8FAFC; border-color: var(--brand-blue); }
         .btn-text { background: transparent; color: var(--brand-blue); margin-top: 10px; }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .auth-divider { display: flex; align-items: center; gap: 10px; margin: 16px 0; color: var(--text-muted); font-size: 12px; font-weight: 700; }
+        .auth-divider::before, .auth-divider::after { content: ""; flex: 1; height: 1px; background: var(--brand-gray); }
 
         header { background: var(--bg-white); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 0 20px; display: flex; justify-content: space-between; align-items: center; height: 75px; flex-wrap: wrap; }
         .nav-links { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
@@ -205,7 +209,6 @@
         .btn-delete-month { background: #FEE2E2; color: var(--danger); border: 1px solid #FCA5A5; width: auto; padding: 8px 14px; margin: 0; font-size: 13px; }
         .btn-delete-month:hover { background: var(--danger); color: #FFFFFF; }
 
-        /* صندوق إعدادات الواتساب في الملف الشخصي */
         .whatsapp-setting-box {
             background: #F0FDF4;
             border: 1px solid #86EFAC;
@@ -229,7 +232,6 @@
             cursor: pointer;
         }
 
-        /* حاوية توليد ملف PDF صفحة واحدة بالعرض (A4 Landscape: 1122x793px) */
         .pdf-export-stage {
             position: fixed;
             left: 0;
@@ -362,7 +364,22 @@
                     <div class="brand-icon-box"><div class="brand-gray-card"></div><div class="brand-blue-circle"></div></div>
                 </div>
             </div>
-            <p style="color: var(--text-muted); margin-bottom: 20px;" data-i18n="loginDesc">Login to your account</p>
+            <p style="color: var(--text-muted); margin-bottom: 16px;" data-i18n="loginDesc">Login to your account</p>
+
+            <!-- زر الدخول بحساب Gmail للمزامنة السحابية بين الجوال واللابتوب -->
+            <button onclick="loginWithGoogleCloud()" id="google-signin-btn" class="btn btn-google">
+                <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                </svg>
+                <span data-i18n="googleSignInBtn">Continue with Google (Gmail)</span>
+            </button>
+            <div id="google-auth-error" style="color: var(--danger); font-size: 12px; margin-top: 6px; display: none;"></div>
+
+            <div class="auth-divider"><span data-i18n="orLocalDivider">OR LOCAL ACCOUNT</span></div>
+
             <div class="input-group"><input type="text" id="login-user" data-i18n-placeholder="usernamePlaceholder"></div>
             <div class="input-group">
                 <input type="password" id="login-pass" data-i18n-placeholder="passwordPlaceholder">
@@ -638,7 +655,6 @@
                             <input type="tel" id="edit-prof-phone" placeholder="9665XXXXXXXX" dir="ltr">
                         </div>
 
-                        <!-- إعدادات إرسال التقرير الشهري على الواتساب -->
                         <div class="whatsapp-setting-box">
                             <label class="whatsapp-toggle-row" for="edit-prof-wa-auto">
                                 <div>
@@ -703,13 +719,14 @@
     </div>
 
 <script>
-    // ضع رابط سيرفر الواتساب الخاص بك هنا عند رفعه (مثال: https://api.riyalba.com/api/whatsapp/send-report)
     const WHATSAPP_API_ENDPOINT = "";
 
     const translations = {
         en: {
             splashSub: "Smart Money Management",
-            loginDesc: "Login to your account",
+            loginDesc: "Login to sync your account across devices",
+            googleSignInBtn: "Continue with Google (Gmail)",
+            orLocalDivider: "OR LOCAL ACCOUNT",
             usernamePlaceholder: "Username or Email",
             passwordPlaceholder: "Password",
             loginBtn: "Login",
@@ -797,7 +814,7 @@
             phoneLabel: "Phone Number (WhatsApp)",
             waAutoTitle: "Automatic Monthly WhatsApp PDF Report",
             waAutoDesc: "Receive your monthly PDF financial report on WhatsApp at the end of every month.",
-            waSavedMsg: "Saved! Monthly WhatsApp PDF report settings updated.",
+            waSavedMsg: "Saved! Settings synced to your Google account.",
             waPhoneRequired: "Please enter a valid WhatsApp number with country code (e.g. 9665XXXXXXXX).",
             saveChangesBtn: "Save Changes",
             logoutBtn: "Logout",
@@ -822,7 +839,9 @@
         },
         ar: {
             splashSub: "إدارة الأموال بذكاء",
-            loginDesc: "تسجيل الدخول إلى حسابك",
+            loginDesc: "سجّل الدخول لمزامنة حسابك بين الجوال واللابتوب",
+            googleSignInBtn: "المتابعة عبر حساب Google (Gmail)",
+            orLocalDivider: "أو حساب محلي",
             usernamePlaceholder: "اسم المستخدم أو البريد الإلكتروني",
             passwordPlaceholder: "كلمة المرور",
             loginBtn: "دخول",
@@ -910,7 +929,7 @@
             phoneLabel: "رقم الجوال (واتساب)",
             waAutoTitle: "إرسال تقرير PDF الشهري تلقائياً على الواتساب",
             waAutoDesc: "استلام التقرير المالي بصيغة PDF على واتسابك في نهاية كل شهر.",
-            waSavedMsg: "تم الحفظ! تم تحديث إعدادات إرسال تقرير الواتساب الشهري.",
+            waSavedMsg: "تم الحفظ ومزامنة البيانات مع حسابك في Google!",
             waPhoneRequired: "يرجى إدخال رقم واتساب صحيح مع رمز الدولة (مثال: 9665XXXXXXXX).",
             saveChangesBtn: "حفظ التعديلات",
             logoutBtn: "تسجيل الخروج",
@@ -945,10 +964,92 @@
     let users = JSON.parse(localStorage.getItem('RiyalBA_users')) || {};
     let monthsDB = JSON.parse(localStorage.getItem('RiyalBA_months')) || {};
     let currentUser = localStorage.getItem('RiyalBA_currentUser');
+    let firebaseUid = null;
     let currentMonthId = null;
     let cardsLocked = true;
     let donutChart = null, barChart = null, lineDaily = null, lineHistory = null, gaugeChart = null, cardSpendingChart = null, efficiencyChart = null;
     let pdfChartsInstances = [];
+
+    function pushStateToCloud() {
+        if (!firebaseUid || !window.riyalbaAuth || !currentUser || !users[currentUser]) return;
+        let userMonths = {};
+        for (let id in monthsDB) {
+            if (monthsDB[id] && monthsDB[id].userId === currentUser) {
+                userMonths[id] = monthsDB[id];
+            }
+        }
+        window.riyalbaAuth.saveRiyalBAData(firebaseUid, {
+            profile: users[currentUser],
+            months: userMonths,
+            email: users[currentUser].email || currentUser
+        }).catch(err => console.error('Cloud sync save error:', err));
+    }
+
+    async function loginWithGoogleCloud() {
+        let errEl = document.getElementById('google-auth-error');
+        let btn = document.getElementById('google-signin-btn');
+        if (errEl) errEl.style.display = 'none';
+        if (!window.riyalbaAuth) return;
+        try {
+            if (btn) btn.disabled = true;
+            await window.riyalbaAuth.loginWithGmail();
+        } catch (err) {
+            console.error('Google Sign-In Error:', err);
+            if (errEl) {
+                errEl.innerText = currentLang === 'ar'
+                    ? 'تعذّر تسجيل الدخول عبر Google: ' + (err.message || '')
+                    : 'Google Sign-In failed: ' + (err.message || '');
+                errEl.style.display = 'block';
+            }
+        } finally {
+            if (btn) btn.disabled = false;
+        }
+    }
+
+    window.addEventListener('riyalba:ready', function(e) {
+        const { user, cloudData } = e.detail || {};
+        if (!user) return;
+        firebaseUid = user.uid;
+        currentUser = user.email || user.uid;
+        localStorage.setItem('RiyalBA_currentUser', currentUser);
+
+        let nameParts = (user.displayName || '').trim().split(/\s+/);
+        let defaultFname = nameParts[0] || (user.email ? user.email.split('@')[0] : 'User');
+        let defaultLname = nameParts.slice(1).join(' ');
+
+        if (cloudData && cloudData.profile) {
+            users[currentUser] = {
+                ...cloudData.profile,
+                email: user.email || cloudData.profile.email || '',
+                photo: cloudData.profile.photo || user.photoURL || null
+            };
+        } else if (!users[currentUser]) {
+            users[currentUser] = {
+                password: '',
+                fname: defaultFname,
+                lname: defaultLname,
+                age: '25',
+                gender: 'male',
+                email: user.email || '',
+                phone: '',
+                waAutoReport: false,
+                customIncome: 0,
+                customGoal: 1000,
+                photo: user.photoURL || null
+            };
+        }
+
+        if (cloudData && cloudData.months) {
+            for (let id in cloudData.months) {
+                monthsDB[id] = { ...cloudData.months[id], userId: currentUser };
+            }
+        }
+
+        localStorage.setItem('RiyalBA_users', JSON.stringify(users));
+        localStorage.setItem('RiyalBA_months', JSON.stringify(monthsDB));
+        initApp();
+        pushStateToCloud();
+    });
 
     function normalizeWhatsAppPhone(raw) {
         let digits = (raw || '').replace(/\D/g, '');
@@ -1019,6 +1120,7 @@
 
     function syncMonthsDB() {
         localStorage.setItem('RiyalBA_months', JSON.stringify(monthsDB));
+        pushStateToCloud();
         if (document.getElementById('page-history')?.classList.contains('active')) {
             loadHistory();
         }
@@ -1119,11 +1221,19 @@
         }
     }
 
-    function logout() { localStorage.removeItem('RiyalBA_currentUser'); location.reload(); }
+    async function logout() {
+        try {
+            if (window.riyalbaAuth) await window.riyalbaAuth.logoutGmail();
+        } catch (err) {
+            console.error(err);
+        }
+        localStorage.removeItem('RiyalBA_currentUser');
+        location.reload();
+    }
 
     function loadUserProfile() {
         let uData = users[currentUser] || { fname: currentUser, lname: '', gender: 'male', age: '25', email: '', phone: '', waAutoReport: false, customIncome: 0, customGoal: 1000, photo: null };
-        let fullName = uData.fname + ' ' + uData.lname;
+        let fullName = (uData.fname + ' ' + uData.lname).trim() || currentUser;
         document.getElementById('user-display').innerText = fullName;
         document.getElementById('mobile-user-display').innerText = fullName;
         
@@ -1138,7 +1248,7 @@
             }
         });
         document.getElementById('prof-name').innerText = fullName;
-        document.getElementById('prof-user').innerText = "@" + currentUser;
+        document.getElementById('prof-user').innerText = currentUser.includes('@') ? currentUser : ("@" + currentUser);
         document.getElementById('edit-prof-fname').value = uData.fname;
         document.getElementById('edit-prof-lname').value = uData.lname;
         document.getElementById('edit-prof-age').value = uData.age;
@@ -1153,7 +1263,12 @@
         let file = event.target.files[0];
         if (file) {
             let reader = new FileReader();
-            reader.onload = function(e) { users[currentUser].photo = e.target.result; localStorage.setItem('RiyalBA_users', JSON.stringify(users)); loadUserProfile(); };
+            reader.onload = function(e) {
+                users[currentUser].photo = e.target.result;
+                localStorage.setItem('RiyalBA_users', JSON.stringify(users));
+                pushStateToCloud();
+                loadUserProfile();
+            };
             reader.readAsDataURL(file);
         }
     }
@@ -1179,6 +1294,7 @@
         uData.phone = phoneNormalized;
         uData.waAutoReport = waAuto;
         localStorage.setItem('RiyalBA_users', JSON.stringify(users));
+        pushStateToCloud();
         loadUserProfile();
 
         statusEl.style.display = 'block';
@@ -1728,7 +1844,6 @@
         }
     }
 
-    // إرسال التقرير الشهري عبر API السيرفر إلى واتساب المستخدم (أو فتح واتساب كخيار احتياطي)
     async function sendMonthPdfToWhatsApp(monthId) {
         let uData = users[currentUser] || {};
         let phone = normalizeWhatsAppPhone(uData.phone || '');
@@ -2178,7 +2293,6 @@
     return snap.exists() ? snap.data() : null;
   }
 
-  // إتاحة الدوال لسكربت موقعك الأساسي
   window.riyalbaAuth = {
     loginWithGmail,
     logoutGmail,
@@ -2203,4 +2317,3 @@
 </script>
 </body>
 </html>
-
