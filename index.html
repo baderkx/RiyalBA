@@ -310,53 +310,60 @@
             color: #FFFFFF;
         }
 
-        /* حاوية توليد ملف PDF صفحة واحدة بالعرض ومنسقة بدقة حسب التصميم المرفق */
+        /* حاوية توليد ملف PDF صفحة واحدة بالعرض (نسبة A4 Landscape: 1122x793px) */
         .pdf-export-stage {
             position: fixed;
-            left: -14000px;
+            left: -15000px;
             top: 0;
-            width: 1280px;
+            width: 1122px;
             background: #FFFFFF;
             z-index: -1;
             pointer-events: none;
         }
         .pdf-landscape-sheet {
             background: #FFFFFF;
-            width: 1280px;
-            height: 880px;
-            padding: 20px 26px;
+            width: 1122px;
+            height: 786px;
+            padding: 12px 18px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 14px;
+            gap: 8px;
+            overflow: hidden;
             font-family: 'Inter', 'Cairo', sans-serif;
         }
         .pdf-top-header {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
             align-items: center;
-            border-bottom: 2px solid #E2E8F0;
-            padding-bottom: 12px;
-            gap: 16px;
+            border-bottom: 1.5px solid #E2E8F0;
+            padding-bottom: 7px;
+            gap: 10px;
+            flex-shrink: 0;
         }
+        .pdf-top-header .brand-title { font-size: 19px; }
+        .pdf-top-header .brand-subtitle { font-size: 8px; }
+        .pdf-top-header .brand-icon-box { width: 42px; height: 27px; }
+        .pdf-top-header .brand-blue-circle { left: 4px; top: 3px; width: 21px; height: 21px; }
+
         .pdf-user-chip {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             justify-self: end;
             background: #F8FAFC;
             border: 1px solid #CBD5E1;
             border-radius: 999px;
-            padding: 6px 14px;
+            padding: 4px 11px;
         }
         .pdf-user-avatar {
-            width: 30px;
-            height: 30px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             background: #008CFF;
             color: #FFFFFF;
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 800;
             display: flex;
             align-items: center;
@@ -368,104 +375,111 @@
         }
         .pdf-center-title h2 {
             margin: 0;
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 900;
             color: #111827;
+            line-height: 1.2;
         }
         .pdf-center-title p {
-            margin: 3px 0 0;
-            font-size: 11px;
+            margin: 2px 0 0;
+            font-size: 10px;
             font-weight: 700;
             color: #6B7280;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
+            line-height: 1.2;
         }
 
         /* الصف العلوي: 4 بطاقات KPI على اليسار + Financial Goals على اليمين */
         .pdf-row-1 {
             display: grid;
-            grid-template-columns: 1.55fr 1fr;
-            gap: 14px;
+            grid-template-columns: 1.45fr 1fr;
+            gap: 10px;
+            flex-shrink: 0;
         }
         .pdf-kpi-2x2 {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            gap: 8px;
         }
         .pdf-kpi-card {
             border: 1px solid #CBD5E1;
             background: #F8FAFC;
-            border-radius: 12px;
-            padding: 11px 14px;
+            border-radius: 10px;
+            padding: 8px 12px;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
         .pdf-kpi-card small {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 700;
             color: #6B7280;
             text-transform: uppercase;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         .pdf-kpi-card strong {
-            font-size: 18px;
+            font-size: 15px;
             font-weight: 800;
             color: #111827;
+            line-height: 1.2;
         }
         .pdf-goals-card {
             border: 1px solid #CBD5E1;
             background: #F8FAFC;
-            border-radius: 12px;
-            padding: 13px 16px;
+            border-radius: 10px;
+            padding: 9px 13px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 8px;
+            gap: 4px;
+            min-width: 0;
         }
         .pdf-goals-card h4 {
             margin: 0;
-            font-size: 14px;
+            font-size: 12.5px;
             font-weight: 800;
             color: #111827;
+            line-height: 1.25;
         }
 
         /* الصف الأوسط: Category Distribution + Category Consumption Rate (%) + Planned vs Actual */
         .pdf-row-2 {
             display: grid;
-            grid-template-columns: 1fr 1fr 1.2fr;
-            gap: 14px;
+            grid-template-columns: 1fr 1fr 1.25fr;
+            gap: 10px;
+            flex-shrink: 0;
         }
         /* الصف السفلي: Daily Expenses Trend + Monthly Comparison */
         .pdf-row-3 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 14px;
+            gap: 10px;
+            flex-shrink: 0;
         }
         .pdf-panel {
             border: 1px solid #CBD5E1;
-            border-radius: 12px;
-            padding: 12px 14px;
+            border-radius: 10px;
+            padding: 8px 12px;
             background: #FFFFFF;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 4px;
             min-width: 0;
         }
         .pdf-panel h5 {
             margin: 0;
-            font-size: 13px;
+            font-size: 11.5px;
             font-weight: 800;
             color: #111827;
+            line-height: 1.25;
         }
         .pdf-canvas-mid {
             position: relative;
-            height: 205px;
+            height: 182px;
             width: 100%;
         }
         .pdf-canvas-bot {
             position: relative;
-            height: 185px;
+            height: 162px;
             width: 100%;
         }
         .pdf-footer-bar {
@@ -473,10 +487,11 @@
             justify-content: space-between;
             align-items: center;
             border-top: 1px solid #E2E8F0;
-            padding-top: 8px;
-            font-size: 11px;
+            padding-top: 5px;
+            font-size: 10px;
             font-weight: 600;
             color: #6B7280;
+            flex-shrink: 0;
         }
 
         footer { background: var(--brand-dark); color: white; padding: 25px 20px 15px; margin-top: auto; width: 100%; box-sizing: border-box; }
@@ -1723,8 +1738,8 @@
             ? translations[currentLang].kpiNet
             : translations[currentLang].remainingFromPlanned;
         let goalStatusLine = currentLang === 'ar'
-            ? `المعتمد (أقلهما - ${minSourceName}): ${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)`
-            : `Counted (Min - ${minSourceName}): ${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)`;
+            ? `المعتمد (${minSourceName}): ${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)`
+            : `Counted (${minSourceName}): ${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)`;
 
         sheet.innerHTML = `
             <div class="pdf-top-header">
@@ -1735,9 +1750,9 @@
                 </div>
                 <div class="pdf-user-chip">
                     ${avatarHtml}
-                    <div style="line-height:1.2;">
-                        <div style="font-size:12px; font-weight:800; color:#111827;">${fullName}</div>
-                        <div style="font-size:10px; font-weight:600; color:#6B7280;">@${currentUser || ''}</div>
+                    <div style="line-height:1.15;">
+                        <div style="font-size:11px; font-weight:800; color:#111827;">${fullName}</div>
+                        <div style="font-size:9.5px; font-weight:600; color:#6B7280;">@${currentUser || ''}</div>
                     </div>
                 </div>
             </div>
@@ -1765,15 +1780,15 @@
 
                 <div class="pdf-goals-card">
                     <h4>${translations[currentLang].finGoals}</h4>
-                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:13px; font-weight:700;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; font-weight:700;">
                         <span>${translations[currentLang].monthlyTarget}</span>
                         <span>${data.targetSavings.toLocaleString()} SAR</span>
                     </div>
-                    <div style="background:#E2E8F0; height:11px; border-radius:999px; overflow:hidden;">
+                    <div style="background:#E2E8F0; height:8px; border-radius:999px; overflow:hidden;">
                         <div style="background:${data.goalPct >= 100 ? '#10B981' : '#008CFF'}; width:${data.goalPct}%; height:100%;"></div>
                     </div>
-                    <div style="font-size:12px; font-weight:700; color:${data.goalPct >= 100 ? '#10B981' : '#4B5563'};">${goalStatusLine}</div>
-                    <div style="font-size:12px; font-weight:700; color:#6B7280;">${translations[currentLang].remDebts}: <strong class="text-red">0 SAR</strong></div>
+                    <div style="font-size:10.5px; font-weight:700; color:${data.goalPct >= 100 ? '#10B981' : '#4B5563'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${goalStatusLine}</div>
+                    <div style="font-size:10.5px; font-weight:700; color:#6B7280;">${translations[currentLang].remDebts}: <strong class="text-red">0 SAR</strong></div>
                 </div>
             </div>
 
@@ -1821,7 +1836,7 @@
                 legend: {
                     display: true,
                     position: 'top',
-                    labels: { boxWidth: 10, font: { size: 10, weight: 'bold' } }
+                    labels: { boxWidth: 9, padding: 6, font: { size: 9, weight: 'bold' } }
                 }
             }
         };
@@ -1843,7 +1858,7 @@
                     legend: {
                         display: true,
                         position: 'right',
-                        labels: { boxWidth: 9, font: { size: 9, weight: 'bold' } }
+                        labels: { boxWidth: 8, padding: 5, font: { size: 8.5, weight: 'bold' } }
                     }
                 }
             }
@@ -1859,7 +1874,8 @@
                     backgroundColor: 'rgba(0, 140, 255, 0.2)',
                     borderColor: '#008CFF',
                     pointBackgroundColor: '#EC4899',
-                    pointBorderColor: '#fff'
+                    pointBorderColor: '#fff',
+                    pointRadius: 2.5
                 }]
             },
             options: {
@@ -1871,8 +1887,8 @@
                     r: {
                         beginAtZero: true,
                         max: 100,
-                        ticks: { stepSize: 20, font: { size: 8 } },
-                        pointLabels: { font: { size: 9, weight: 'bold' } }
+                        ticks: { stepSize: 25, font: { size: 7.5 }, backdropPadding: 1 },
+                        pointLabels: { font: { size: 8, weight: 'bold' } }
                     }
                 }
             }
@@ -1883,15 +1899,15 @@
             data: {
                 labels: data.cats,
                 datasets: [
-                    { label: translations[currentLang].thPlanned, data: data.pData, backgroundColor: '#008CFF', borderRadius: 4 },
-                    { label: translations[currentLang].thActual, data: data.aData, backgroundColor: '#EC4899', borderRadius: 4 }
+                    { label: translations[currentLang].thPlanned, data: data.pData, backgroundColor: '#008CFF', borderRadius: 3 },
+                    { label: translations[currentLang].thActual, data: data.aData, backgroundColor: '#EC4899', borderRadius: 3 }
                 ]
             },
             options: {
                 ...baseLegendOpts,
                 scales: {
-                    x: { ticks: { font: { size: 9 } } },
-                    y: { beginAtZero: true, ticks: { font: { size: 9 } } }
+                    x: { ticks: { font: { size: 8 }, maxRotation: 35, minRotation: 0 } },
+                    y: { beginAtZero: true, ticks: { font: { size: 8.5 } } }
                 }
             }
         }));
@@ -1907,15 +1923,15 @@
                     backgroundColor: 'rgba(16, 185, 129, 0.14)',
                     fill: true,
                     tension: 0.3,
-                    pointRadius: 4,
+                    pointRadius: 3,
                     pointBackgroundColor: '#10B981'
                 }]
             },
             options: {
                 ...baseLegendOpts,
                 scales: {
-                    x: { ticks: { font: { size: 10 } } },
-                    y: { beginAtZero: true, ticks: { font: { size: 10 } } }
+                    x: { ticks: { font: { size: 9 } } },
+                    y: { beginAtZero: true, ticks: { font: { size: 9 } } }
                 }
             }
         }));
@@ -1931,26 +1947,26 @@
                     backgroundColor: 'rgba(0, 140, 255, 0.16)',
                     fill: true,
                     tension: 0.3,
-                    pointRadius: 4,
+                    pointRadius: 3,
                     pointBackgroundColor: '#008CFF'
                 }]
             },
             options: {
                 ...baseLegendOpts,
                 scales: {
-                    x: { ticks: { font: { size: 10 } } },
-                    y: { beginAtZero: true, ticks: { font: { size: 10 } } }
+                    x: { ticks: { font: { size: 9 } } },
+                    y: { beginAtZero: true, ticks: { font: { size: 9 } } }
                 }
             }
         }));
 
         let safeFileName = `RiyalBA-${monthTitle.replace(/[^\w\u0600-\u06FF-]+/g, '_')}.pdf`;
         let opt = {
-            margin: 4,
+            margin: 0,
             filename: safeFileName,
             image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true, logging: false },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
+            html2canvas: { scale: 2, width: 1122, height: 786, useCORS: true, logging: false },
+            jsPDF: { unit: 'px', format: [1122, 786], orientation: 'landscape', hotfixes: ['px_scaling'] },
             pagebreak: { mode: ['avoid-all'] }
         };
 
