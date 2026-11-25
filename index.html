@@ -6,6 +6,7 @@
     <title>RiyalBA - Money Management</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 50'%3E%3Crect width='80' height='50' rx='8' fill='%23D1D5DB'/%3E%3Ccircle cx='30' cy='25' r='20' fill='%23008CFF'/%3E%3C/svg%3E">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -264,43 +265,19 @@
             color: #FFFFFF;
         }
 
-        /* نافذة معاينة وتصدير تقرير PDF صفحة واحدة بالعرض */
-        .pdf-modal-backdrop {
+        /* حاوية توليد ملف PDF صفحة واحدة بالعرض بدون فتح طباعة */
+        .pdf-export-stage {
             position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.72);
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-            overflow-y: auto;
-        }
-        .pdf-modal-shell {
+            left: -10000px;
+            top: 0;
+            width: 1120px;
             background: #FFFFFF;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 1160px;
-            max-height: 94vh;
-            overflow-y: auto;
-            padding: 20px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
-            box-sizing: border-box;
-        }
-        .pdf-toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            padding-bottom: 14px;
-            margin-bottom: 16px;
-            border-bottom: 1px solid var(--brand-gray);
+            z-index: -1;
+            pointer-events: none;
         }
         .pdf-landscape-sheet {
             background: #FFFFFF;
-            border: 1px solid #CBD5E1;
-            border-radius: 12px;
+            width: 1120px;
             padding: 16px 20px;
             box-sizing: border-box;
         }
@@ -309,22 +286,21 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 2px solid var(--brand-blue);
-            padding-bottom: 10px;
-            margin-bottom: 14px;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
             gap: 10px;
-            flex-wrap: wrap;
         }
         .pdf-kpi-row {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 8px;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
         .pdf-kpi-box {
             border: 1px solid #E2E8F0;
             background: #F8FAFC;
             border-radius: 8px;
-            padding: 8px 10px;
+            padding: 6px 8px;
         }
         .pdf-kpi-box small {
             display: block;
@@ -335,85 +311,60 @@
         }
         .pdf-kpi-box strong {
             display: block;
-            font-size: 14px;
-            font-weight: 800;
-            margin-top: 3px;
-            color: var(--text-main);
-        }
-        .pdf-two-col {
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 14px;
-            align-items: start;
-        }
-        .pdf-subcard {
-            border: 1px solid #E2E8F0;
-            border-radius: 8px;
-            padding: 10px 12px;
-            background: #FFFFFF;
-        }
-        .pdf-subcard h4 {
-            margin: 0 0 8px;
             font-size: 13px;
             font-weight: 800;
+            margin-top: 2px;
+            color: var(--text-main);
         }
-        .pdf-table {
-            width: 100%;
-            min-width: 0;
-            border-collapse: collapse;
-            font-size: 12px;
+        .pdf-charts-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+            margin-bottom: 10px;
         }
-        .pdf-table th, .pdf-table td {
+        .pdf-chart-box {
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
             padding: 6px 8px;
-            font-size: 12px;
-            border-bottom: 1px solid #E2E8F0;
+            background: #FFFFFF;
+            min-width: 0;
         }
-
-        @page {
-            size: A4 landscape;
-            margin: 8mm;
+        .pdf-chart-box h5 {
+            margin: 0 0 4px;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        @media print {
-            body * {
-                visibility: hidden !important;
-            }
-            #pdf-report-modal,
-            #pdf-report-modal * {
-                visibility: visible !important;
-            }
-            #pdf-report-modal {
-                position: static !important;
-                background: none !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                display: block !important;
-            }
-            .pdf-modal-shell {
-                max-width: 100% !important;
-                max-height: none !important;
-                overflow: visible !important;
-                box-shadow: none !important;
-                padding: 0 !important;
-                border-radius: 0 !important;
-            }
-            .pdf-toolbar {
-                display: none !important;
-            }
-            .pdf-landscape-sheet {
-                border: none !important;
-                padding: 0 !important;
-                page-break-inside: avoid;
-                break-inside: avoid;
-            }
-            .pdf-kpi-row {
-                grid-template-columns: repeat(6, 1fr) !important;
-                gap: 6px !important;
-                margin-bottom: 10px !important;
-            }
-            .pdf-two-col {
-                grid-template-columns: 1fr 1.5fr !important;
-                gap: 10px !important;
-            }
+        .pdf-chart-canvas-wrap {
+            position: relative;
+            height: 92px;
+            width: 100%;
+        }
+        .pdf-mini-scroll {
+            height: 92px;
+            overflow: hidden;
+            font-size: 10px;
+            line-height: 1.35;
+        }
+        .pdf-bottom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+        }
+        .pdf-info-box {
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            padding: 7px 9px;
+            background: #F8FAFC;
+            font-size: 11px;
+        }
+        .pdf-info-box h5 {
+            margin: 0 0 4px;
+            font-size: 11px;
+            font-weight: 800;
         }
 
         footer { background: var(--brand-dark); color: white; padding: 25px 20px 15px; margin-top: auto; width: 100%; box-sizing: border-box; }
@@ -431,8 +382,6 @@
         @media(max-width: 768px) {
             .kpi-grid { grid-template-columns: 1fr 1fr; }
             .analytics-grid { grid-template-columns: 1fr; }
-            .pdf-kpi-row { grid-template-columns: repeat(2, 1fr); }
-            .pdf-two-col { grid-template-columns: 1fr; }
             header { padding: 10px 15px; height: auto; }
             .auth-container { padding: 0; align-items: stretch; justify-content: stretch; }
             .auth-card { max-width: 100%; min-height: 100vh; border-radius: 0; display: flex; flex-direction: column; justify-content: center; box-shadow: none; }
@@ -770,18 +719,9 @@
         </footer>
     </div>
 
-    <!-- نافذة معاينة وتصدير تقرير PDF صفحة واحدة بالعرض -->
-    <div id="pdf-report-modal" class="pdf-modal-backdrop hidden" onclick="handlePdfBackdropClick(event)">
-        <div class="pdf-modal-shell">
-            <div class="pdf-toolbar">
-                <strong id="pdf-modal-title" style="font-size:16px;">PDF Report</strong>
-                <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                    <button onclick="window.print()" class="btn btn-primary" style="width:auto; padding:8px 16px; margin:0; font-size:13px;" data-i18n="printSavePdfBtn">Save / Print PDF</button>
-                    <button onclick="closeMonthPdfReport()" class="btn" style="width:auto; padding:8px 16px; margin:0; font-size:13px; background:var(--bg-light); border:1px solid var(--brand-gray); color:var(--text-main);" data-i18n="closeBtn">Close</button>
-                </div>
-            </div>
-            <div id="pdf-report-sheet" class="pdf-landscape-sheet"></div>
-        </div>
+    <!-- حاوية مخفية لتوليد وحفظ ملف PDF صفحة واحدة بالعرض مباشرة -->
+    <div id="pdf-export-stage" class="pdf-export-stage">
+        <div id="pdf-report-sheet" class="pdf-landscape-sheet"></div>
     </div>
 
 <script>
@@ -879,13 +819,10 @@
             autoHistoryHint: "Months added or updated in Dashboard are saved here automatically.",
             noMonthsInHistory: "No saved months yet. Open Dashboard to start a month automatically.",
             pdfBtn: "PDF Report",
+            downloadingPdf: "Downloading...",
             deleteBtn: "Delete",
             confirmDeleteMonth: "Are you sure you want to delete this month?",
-            printSavePdfBtn: "Save / Print PDF",
-            closeBtn: "Close",
-            pdfLandscapeBadge: "Landscape Single-Page Summary",
-            pdfCardsSummaryTitle: "Cards Summary",
-            pdfTransactionsTitle: "Month Transactions",
+            pdfLandscapeBadge: "Landscape Single-Page Report",
             openBtn: "Open",
             aboutSub: "Your ultimate intelligent partner for personal budgeting and analytics.",
             overviewTitle: "Platform Overview",
@@ -989,13 +926,10 @@
             autoHistoryHint: "أي شهر يضاف أو يُحدّث في الداش بورد يُحفظ هنا تلقائياً.",
             noMonthsInHistory: "لا توجد أشهر محفوظة حالياً. افتح الداش بورد ليتم إنشاء الشهر تلقائياً.",
             pdfBtn: "تقرير PDF",
+            downloadingPdf: "جاري التحميل...",
             deleteBtn: "حذف",
             confirmDeleteMonth: "هل أنت متأكد من حذف هذا الشهر؟",
-            printSavePdfBtn: "حفظ / طباعة PDF",
-            closeBtn: "إغلاق",
             pdfLandscapeBadge: "تقرير أفقي صفحة واحدة",
-            pdfCardsSummaryTitle: "ملخص البطاقات",
-            pdfTransactionsTitle: "معاملات الشهر",
             openBtn: "فتح",
             aboutSub: "شريكك الذكي لإدارة ومراقبة ميزانيتك الشخصية بكل سهولة واحترافية.",
             overviewTitle: "فكرة المنصة والهدف",
@@ -1021,6 +955,7 @@
     let currentMonthId = null;
     let cardsLocked = false;
     let donutChart = null, barChart = null, lineDaily = null, lineHistory = null, gaugeChart = null, cardSpendingChart = null, efficiencyChart = null;
+    let pdfChartsInstances = [];
 
     window.onload = function() {
         applyLanguage(currentLang);
@@ -1484,7 +1419,7 @@
                         </div>
                         <div class="history-actions">
                             <button onclick="openMonth('${id}')" class="btn btn-primary" style="width:auto; padding:8px 16px; margin:0; font-size:13px;">${translations[currentLang].openBtn}</button>
-                            <button onclick="openMonthPdfReport('${id}')" class="btn btn-pdf">${translations[currentLang].pdfBtn}</button>
+                            <button id="pdf-btn-${id}" onclick="downloadMonthPdfDirectly('${id}')" class="btn btn-pdf">${translations[currentLang].pdfBtn}</button>
                             <button onclick="deleteMonthFromHistory('${id}')" class="btn btn-delete-month">${translations[currentLang].deleteBtn}</button>
                         </div>
                     </div>
@@ -1514,10 +1449,15 @@
 
     function getMonthSummaryData(monthId) {
         let m = monthsDB[monthId] || { expenses: [], cards: [] };
-        let tp = 0, ta = 0;
-        (m.expenses || []).forEach(ex => {
-            tp += (parseFloat(ex.p) || 0);
-            ta += (parseFloat(ex.a) || 0);
+        let tp = 0, ta = 0, cats = [], pData = [], aData = [];
+        (m.expenses || []).forEach((ex, idx) => {
+            let p = parseFloat(ex.p) || 0;
+            let a = parseFloat(ex.a) || 0;
+            tp += p;
+            ta += a;
+            cats.push(ex.cat || `Item ${idx + 1}`);
+            pData.push(p);
+            aData.push(a);
         });
         let uData = users[currentUser] || {};
         let totalInc = uData.customIncome > 0 ? uData.customIncome : (tp > 0 ? tp * 1.2 : 5000);
@@ -1528,125 +1468,261 @@
         let cardsTotal = cards.reduce((s, c) => s + (parseFloat(c.limit) || 0), 0);
         let targetSavings = (uData.customGoal !== undefined) ? uData.customGoal : 1000;
 
-        return { m, tp, ta, totalInc, net, remPlanned, savingsRate, cards, cardsTotal, targetSavings };
+        let cardSpendLabels = [];
+        let cardSpendValues = [];
+        let cardSpendColors = [];
+        cards.forEach(c => {
+            let spent = 0;
+            (m.expenses || []).forEach(ex => {
+                if (ex.cardId === c.id) spent += (parseFloat(ex.a) || 0);
+            });
+            cardSpendLabels.push(c.name);
+            cardSpendValues.push(spent);
+            cardSpendColors.push(c.color);
+        });
+
+        let cumulativeVal = 0;
+        for (let id in monthsDB) {
+            let itemM = monthsDB[id];
+            if (itemM.userId === currentUser && !itemM.isDeleted) {
+                (itemM.expenses || []).forEach(ex => {
+                    cumulativeVal += ((parseFloat(ex.p) || 0) - (parseFloat(ex.a) || 0));
+                });
+            }
+        }
+
+        let alerts = [];
+        (m.expenses || []).forEach(ex => {
+            let p = parseFloat(ex.p) || 0;
+            let a = parseFloat(ex.a) || 0;
+            if (a > p && p > 0) {
+                alerts.push(currentLang === 'ar'
+                    ? `تجاوزت فئة "${ex.cat || '-'}" الميزانية المخططة.`
+                    : `Category "${ex.cat || '-'}" exceeded planned budget.`);
+            } else if (a >= p * 0.85 && p > 0) {
+                alerts.push(currentLang === 'ar'
+                    ? `فئة "${ex.cat || '-'}" تقترب من الحد المخطط.`
+                    : `Category "${ex.cat || '-'}" is approaching budget limit.`);
+            }
+        });
+        if (alerts.length === 0) alerts.push(translations[currentLang].defaultAlert);
+
+        let minForGoal = Math.min(net, remPlanned);
+        let goalPct = targetSavings === 0
+            ? (minForGoal >= 0 ? 100 : 0)
+            : (minForGoal >= targetSavings ? 100 : Math.min(100, Math.max(0, Math.round((minForGoal / targetSavings) * 100))));
+
+        return {
+            m, tp, ta, totalInc, net, remPlanned, savingsRate, cumulativeVal,
+            cats, pData, aData, cards, cardsTotal,
+            cardSpendLabels, cardSpendValues, cardSpendColors,
+            targetSavings, minForGoal, goalPct, alerts
+        };
     }
 
-    function openMonthPdfReport(monthId) {
-        let data = getMonthSummaryData(monthId);
-        let modal = document.getElementById('pdf-report-modal');
-        let sheet = document.getElementById('pdf-report-sheet');
-        let modalTitle = document.getElementById('pdf-modal-title');
-        if (!modal || !sheet) return;
+    function getMonthlyComparisonSeries(activeMonthId, fallbackRemPlanned) {
+        let userMonths = Object.entries(monthsDB)
+            .filter(([_, m]) => m && m.userId === currentUser && !m.isDeleted)
+            .sort((a, b) => Number(a[0]) - Number(b[0]));
 
-        let monthTitle = data.m.name || '';
-        modalTitle.innerText = `${translations[currentLang].pdfBtn} — ${monthTitle}`;
-
-        let cardsRowsHtml = data.cards.length > 0
-            ? data.cards.map(c => {
-                let fullAmt = parseFloat(c.limit) || 0;
-                let spent = 0;
-                (data.m.expenses || []).forEach(ex => {
-                    if (ex.cardId === c.id) spent += (parseFloat(ex.a) || 0);
+        if (userMonths.length >= 2) {
+            let labels = userMonths.map(([_, m]) => m.name || '-');
+            let values = userMonths.map(([id, m]) => {
+                let mTp = 0, mTa = 0;
+                (m.expenses || []).forEach(ex => {
+                    mTp += (parseFloat(ex.p) || 0);
+                    mTa += (parseFloat(ex.a) || 0);
                 });
-                let left = fullAmt - spent;
-                return `
-                    <tr>
-                        <td><span class="card-colored-badge" style="background:${c.color}; padding:2px 8px; font-size:11px;">${c.name}</span></td>
-                        <td>${fullAmt.toLocaleString()} SAR</td>
-                        <td class="text-red">${spent.toLocaleString()} SAR</td>
-                        <td class="${left < 0 ? 'text-red' : 'text-green'}">${left.toLocaleString()} SAR</td>
-                    </tr>
-                `;
-            }).join('')
-            : `<tr><td colspan="4" style="color:var(--text-muted); text-align:center;">${translations[currentLang].noCardSelected}</td></tr>`;
+                let inc = users[currentUser]?.customIncome > 0 ? users[currentUser].customIncome : (mTp > 0 ? mTp * 1.2 : 5000);
+                return Math.round(inc - mTp);
+            });
+            return { labels, values, isRealHistory: true };
+        }
 
-        let validExpenses = (data.m.expenses || []).filter(ex => ex.cat || (parseFloat(ex.p)||0) > 0 || (parseFloat(ex.a)||0) > 0);
-        let txRowsHtml = validExpenses.length > 0
-            ? validExpenses.map(ex => {
-                let p = parseFloat(ex.p) || 0;
-                let a = parseFloat(ex.a) || 0;
-                let diff = p - a;
-                let cardObj = data.cards.find(c => c.id === ex.cardId);
-                let cardLabel = cardObj ? cardObj.name : translations[currentLang].noCardSelected;
-                return `
-                    <tr>
-                        <td>${ex.cat || '-'}</td>
-                        <td>${p.toLocaleString()} SAR</td>
-                        <td>${a.toLocaleString()} SAR</td>
-                        <td>${cardLabel}</td>
-                        <td class="${diff < 0 ? 'text-red' : 'text-green'}">${Math.abs(diff).toLocaleString()} SAR</td>
-                    </tr>
-                `;
+        let currentLabel = monthsDB[activeMonthId]?.name || (currentLang === 'ar' ? 'الشهر الحالي' : 'Current');
+        let currentVal = Math.round(fallbackRemPlanned);
+        return {
+            labels: currentLang === 'ar' ? ['أغسطس', 'سبتمبر', 'أكتوبر', currentLabel] : ['Aug', 'Sep', 'Oct', currentLabel],
+            values: [1200, 800, 1500, currentVal],
+            isRealHistory: false
+        };
+    }
+
+    function destroyPdfCharts() {
+        pdfChartsInstances.forEach(ch => {
+            if (ch && typeof ch.destroy === 'function') ch.destroy();
+        });
+        pdfChartsInstances = [];
+    }
+
+    function downloadMonthPdfDirectly(monthId) {
+        let btn = document.getElementById(`pdf-btn-${monthId}`);
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = translations[currentLang].downloadingPdf;
+        }
+
+        let data = getMonthSummaryData(monthId);
+        let sheet = document.getElementById('pdf-report-sheet');
+        if (!sheet) return;
+
+        destroyPdfCharts();
+        let monthTitle = data.m.name || 'Month';
+
+        let progressHtml = data.cats.length > 0
+            ? data.cats.map((cat, idx) => {
+                let p = data.pData[idx] || 0;
+                let a = data.aData[idx] || 0;
+                let pct = p > 0 ? Math.round((a / p) * 100) : (a > 0 ? 100 : 0);
+                return `<div style="margin-bottom:3px;"><strong>${cat}:</strong> ${a.toLocaleString()}/${p.toLocaleString()} (${pct}%)</div>`;
             }).join('')
-            : `<tr><td colspan="5" style="color:var(--text-muted); text-align:center;">${translations[currentLang].noProgressData}</td></tr>`;
+            : `<div style="color:var(--text-muted);">${translations[currentLang].noProgressData}</div>`;
+
+        let alertsHtml = data.alerts.map(al => `<div style="margin-bottom:3px;">• ${al}</div>`).join('');
 
         sheet.innerHTML = `
             <div class="pdf-sheet-header">
                 <div>
-                    <h3 style="margin:0; font-size:18px; font-weight:900;">RiyalBA<span style="color:var(--brand-blue);">.</span> — ${monthTitle}</h3>
-                    <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${translations[currentLang].pdfLandscapeBadge}</div>
+                    <h3 style="margin:0; font-size:17px; font-weight:900;">RiyalBA<span style="color:var(--brand-blue);">.</span> — ${monthTitle}</h3>
+                    <div style="font-size:10px; color:var(--text-muted);">${translations[currentLang].pdfLandscapeBadge}</div>
                 </div>
-                <div style="font-size:12px; font-weight:700; color:var(--text-muted);">${new Date().toLocaleDateString(currentLang === 'ar' ? 'ar-SA' : 'en-US')}</div>
+                <div style="font-size:11px; font-weight:700; color:var(--text-muted);">${new Date().toLocaleDateString(currentLang === 'ar' ? 'ar-SA' : 'en-US')}</div>
             </div>
 
+            <!-- 1. Total Income, Total Expenses, Net Balance, Savings Rate, Cumulative -->
             <div class="pdf-kpi-row">
                 <div class="pdf-kpi-box"><small>${translations[currentLang].kpiIncome}</small><strong class="text-green">${data.totalInc.toLocaleString()} SAR</strong></div>
-                <div class="pdf-kpi-box"><small>${translations[currentLang].plannedBudget}</small><strong>${data.tp.toLocaleString()} SAR</strong></div>
                 <div class="pdf-kpi-box"><small>${translations[currentLang].kpiExpenses}</small><strong class="text-red">${data.ta.toLocaleString()} SAR</strong></div>
-                <div class="pdf-kpi-box"><small>${translations[currentLang].remainingFromPlanned}</small><strong class="${data.remPlanned < 0 ? 'text-red' : 'text-green'}">${data.remPlanned.toLocaleString()} SAR</strong></div>
                 <div class="pdf-kpi-box"><small>${translations[currentLang].kpiNet}</small><strong class="${data.net < 0 ? 'text-red' : 'text-green'}">${data.net.toLocaleString()} SAR</strong></div>
                 <div class="pdf-kpi-box"><small>${translations[currentLang].kpiSavings}</small><strong>${data.savingsRate}%</strong></div>
+                <div class="pdf-kpi-box"><small>${translations[currentLang].kpiCum}</small><strong>${data.cumulativeVal.toLocaleString()} SAR</strong></div>
             </div>
 
-            <div class="pdf-two-col">
-                <div class="pdf-subcard">
-                    <h4>${translations[currentLang].pdfCardsSummaryTitle} (${data.cardsTotal.toLocaleString()} SAR)</h4>
-                    <table class="pdf-table">
-                        <thead>
-                            <tr>
-                                <th>${translations[currentLang].thCard}</th>
-                                <th>${translations[currentLang].cardFullAmountLabel}</th>
-                                <th>${translations[currentLang].cardSpentLabel}</th>
-                                <th>${translations[currentLang].cardLeftLabel}</th>
-                            </tr>
-                        </thead>
-                        <tbody>${cardsRowsHtml}</tbody>
-                    </table>
-                    <div style="margin-top:10px; font-size:12px; font-weight:700; color:var(--text-muted);">
-                        ${translations[currentLang].monthlyTarget}: <strong style="color:var(--text-main);">${data.targetSavings.toLocaleString()} SAR</strong>
+            <!-- 2. Category Distribution, Planned vs Actual, Monthly Comparison, Budget Consumption, Budget Gauge, Spending by Card -->
+            <div class="pdf-charts-grid">
+                <div class="pdf-chart-box">
+                    <h5>${translations[currentLang].chartDist}</h5>
+                    <div class="pdf-chart-canvas-wrap"><canvas id="pdfDonutCanvas"></canvas></div>
+                </div>
+                <div class="pdf-chart-box">
+                    <h5>${translations[currentLang].chartBar}</h5>
+                    <div class="pdf-chart-canvas-wrap"><canvas id="pdfBarCanvas"></canvas></div>
+                </div>
+                <div class="pdf-chart-box">
+                    <h5>${translations[currentLang].chartHistory}</h5>
+                    <div class="pdf-chart-canvas-wrap"><canvas id="pdfHistoryCanvas"></canvas></div>
+                </div>
+                <div class="pdf-chart-box">
+                    <h5>${translations[currentLang].chartProgress}</h5>
+                    <div class="pdf-mini-scroll">${progressHtml}</div>
+                </div>
+                <div class="pdf-chart-box">
+                    <h5>${translations[currentLang].chartGauge}</h5>
+                    <div class="pdf-chart-canvas-wrap"><canvas id="pdfGaugeCanvas"></canvas></div>
+                </div>
+                <div class="pdf-chart-box">
+                    <h5>${translations[currentLang].chartByCard}</h5>
+                    <div class="pdf-chart-canvas-wrap"><canvas id="pdfCardCanvas"></canvas></div>
+                </div>
+            </div>
+
+            <!-- 3. Financial Goals, Smart Alerts, Spending Efficiency Index -->
+            <div class="pdf-bottom-grid">
+                <div class="pdf-info-box">
+                    <h5>${translations[currentLang].finGoals}</h5>
+                    <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:4px;">
+                        <span>${translations[currentLang].monthlyTarget}</span>
+                        <span>${data.targetSavings.toLocaleString()} SAR</span>
                     </div>
+                    <div style="background:#E2E8F0; height:7px; border-radius:999px; overflow:hidden; margin-bottom:4px;">
+                        <div style="background:${data.goalPct >= 100 ? 'var(--success)' : 'var(--brand-blue)'}; width:${data.goalPct}%; height:100%;"></div>
+                    </div>
+                    <div style="font-weight:700; color:var(--text-muted);">${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)</div>
                 </div>
 
-                <div class="pdf-subcard">
-                    <h4>${translations[currentLang].pdfTransactionsTitle}</h4>
-                    <table class="pdf-table">
-                        <thead>
-                            <tr>
-                                <th>${translations[currentLang].thCat}</th>
-                                <th>${translations[currentLang].thPlanned}</th>
-                                <th>${translations[currentLang].thActual}</th>
-                                <th>${translations[currentLang].thCard}</th>
-                                <th>${translations[currentLang].thDiff}</th>
-                            </tr>
-                        </thead>
-                        <tbody>${txRowsHtml}</tbody>
-                    </table>
+                <div class="pdf-info-box">
+                    <h5>${translations[currentLang].smartAlerts}</h5>
+                    <div style="max-height:56px; overflow:hidden; color:var(--text-muted); font-weight:600;">${alertsHtml}</div>
+                </div>
+
+                <div class="pdf-info-box">
+                    <h5>${translations[currentLang].chartEfficiency}</h5>
+                    <div style="position:relative; height:64px; width:100%;"><canvas id="pdfEfficiencyCanvas"></canvas></div>
                 </div>
             </div>
         `;
 
-        modal.classList.remove('hidden');
-    }
+        let comp = getMonthlyComparisonSeries(monthId, data.remPlanned);
+        let effData = data.pData.map((p, idx) => p > 0 ? Math.min(100, Math.max(0, Math.round((data.aData[idx] / p) * 100))) : 0);
+        let chartOpts = { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { display: false } } };
 
-    function closeMonthPdfReport() {
-        let modal = document.getElementById('pdf-report-modal');
-        if (modal) modal.classList.add('hidden');
-    }
+        pdfChartsInstances.push(new Chart(document.getElementById('pdfDonutCanvas').getContext('2d'), {
+            type: 'doughnut',
+            data: { labels: data.cats, datasets: [{ data: (data.tp === 0 && data.ta === 0) ? [1] : data.aData, backgroundColor: ['#008CFF', '#EC4899', '#10B981', '#F59E0B', '#6366F1'] }] },
+            options: chartOpts
+        }));
 
-    function handlePdfBackdropClick(event) {
-        if (event.target && event.target.id === 'pdf-report-modal') {
-            closeMonthPdfReport();
-        }
+        pdfChartsInstances.push(new Chart(document.getElementById('pdfBarCanvas').getContext('2d'), {
+            type: 'bar',
+            data: { labels: data.cats, datasets: [{ label: translations[currentLang].thPlanned, data: data.pData, backgroundColor: '#008CFF' }, { label: translations[currentLang].thActual, data: data.aData, backgroundColor: '#EC4899' }] },
+            options: chartOpts
+        }));
+
+        pdfChartsInstances.push(new Chart(document.getElementById('pdfHistoryCanvas').getContext('2d'), {
+            type: 'line',
+            data: { labels: comp.labels, datasets: [{ label: translations[currentLang].remainingFromPlanned, data: comp.values, borderColor: '#008CFF', backgroundColor: 'rgba(0,140,255,0.16)', fill: true, tension: 0.3 }] },
+            options: chartOpts
+        }));
+
+        pdfChartsInstances.push(new Chart(document.getElementById('pdfGaugeCanvas').getContext('2d'), {
+            type: 'doughnut',
+            data: { labels: [translations[currentLang].actualSpending, translations[currentLang].remainingFromPlanned], datasets: [{ data: (data.tp === 0 && data.ta === 0) ? [0, 1] : [data.ta, Math.max(0, data.tp - data.ta)], backgroundColor: ['#EF4444', '#E5E7EB'] }] },
+            options: { ...chartOpts, rotation: -90, circumference: 180, cutout: '78%' }
+        }));
+
+        let hasCardVals = data.cardSpendLabels.length > 0;
+        pdfChartsInstances.push(new Chart(document.getElementById('pdfCardCanvas').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: hasCardVals ? data.cardSpendLabels : [translations[currentLang].thCard],
+                datasets: [{ data: hasCardVals ? data.cardSpendValues : [0], backgroundColor: hasCardVals ? data.cardSpendColors : ['#D1D5DB'], borderRadius: 4 }]
+            },
+            options: chartOpts
+        }));
+
+        pdfChartsInstances.push(new Chart(document.getElementById('pdfEfficiencyCanvas').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: data.cats,
+                datasets: [{ label: '%', data: effData, backgroundColor: '#008CFF', borderRadius: 4 }]
+            },
+            options: { ...chartOpts, scales: { y: { beginAtZero: true, max: 100 } } }
+        }));
+
+        let safeFileName = `RiyalBA-${monthTitle.replace(/[^\w\u0600-\u06FF-]+/g, '_')}.pdf`;
+        let opt = {
+            margin: 6,
+            filename: safeFileName,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, logging: false },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+        };
+
+        setTimeout(() => {
+            html2pdf().set(opt).from(sheet).save().then(() => {
+                destroyPdfCharts();
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerText = translations[currentLang].pdfBtn;
+                }
+            }).catch(() => {
+                destroyPdfCharts();
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerText = translations[currentLang].pdfBtn;
+                }
+            });
+        }, 120);
     }
 
     function openMonth(id) {
@@ -1972,10 +2048,10 @@
             labels: cardChartLabels,
             values: cardChartValues,
             colors: cardChartColors
-        });
+        }, remPlanned);
     }
 
-    function updateCharts(tp, ta, cats, pData, aData, cardChartData = { labels: [], values: [], colors: [] }) {
+    function updateCharts(tp, ta, cats, pData, aData, cardChartData = { labels: [], values: [], colors: [] }, remPlanned = 0) {
         if(donutChart) donutChart.destroy();
         donutChart = new Chart(document.getElementById('donutChart').getContext('2d'), { type: 'doughnut', data: { labels: cats, datasets: [{ data: (tp===0&&ta===0)?[1]:aData, backgroundColor: ['#008CFF', '#EC4899', '#10B981', '#F59E0B', '#6366F1'] }] }, options: { responsive: true, maintainAspectRatio: false } });
         
@@ -1986,7 +2062,24 @@
         lineDaily = new Chart(document.getElementById('lineChartDaily').getContext('2d'), { type: 'line', data: { labels: ['W1', 'W2', 'W3', 'W4'], datasets: [{ label: translations[currentLang].kpiExpenses, data: [ta*0.2, ta*0.4, ta*0.7, ta], borderColor: '#10B981', fill: false }] }, options: { responsive: true, maintainAspectRatio: false } });
         
         if(lineHistory) lineHistory.destroy();
-        lineHistory = new Chart(document.getElementById('lineChartHistory').getContext('2d'), { type: 'line', data: { labels: ['Aug', 'Sep', 'Oct', 'Nov'], datasets: [{ label: translations[currentLang].remainingFromPlanned, data: [1200, 800, 1500, tp-ta], borderColor: '#008CFF', fill: true }] }, options: { responsive: true, maintainAspectRatio: false } });
+        let compSeries = getMonthlyComparisonSeries(currentMonthId, remPlanned);
+        lineHistory = new Chart(document.getElementById('lineChartHistory').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: compSeries.labels,
+                datasets: [{
+                    label: translations[currentLang].remainingFromPlanned,
+                    data: compSeries.values,
+                    borderColor: '#008CFF',
+                    backgroundColor: 'rgba(0, 140, 255, 0.16)',
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#008CFF'
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
         
         if(gaugeChart) gaugeChart.destroy();
         gaugeChart = new Chart(document.getElementById('gaugeChart').getContext('2d'), { type: 'doughnut', data: { labels: [translations[currentLang].actualSpending, translations[currentLang].remainingFromPlanned], datasets: [{ data: (tp===0&&ta===0)?[0,1]:[ta, Math.max(0, tp-ta)], backgroundColor: ['#EF4444', '#E5E7EB'] }] }, options: { responsive: true, maintainAspectRatio: false, rotation: -90, circumference: 180, cutout: '80%' } });
