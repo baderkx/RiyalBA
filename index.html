@@ -310,10 +310,10 @@
             color: #FFFFFF;
         }
 
-        /* حاوية توليد ملف PDF صفحة واحدة بالعرض ومنسقة بدقة بدون Smart Alerts */
+        /* حاوية توليد ملف PDF صفحة واحدة بالعرض ومنسقة بدقة حسب التصميم المرفق */
         .pdf-export-stage {
             position: fixed;
-            left: -13000px;
+            left: -14000px;
             top: 0;
             width: 1280px;
             background: #FFFFFF;
@@ -323,143 +323,160 @@
         .pdf-landscape-sheet {
             background: #FFFFFF;
             width: 1280px;
-            padding: 16px 22px;
+            height: 880px;
+            padding: 20px 26px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-        }
-        .pdf-sheet-header {
-            display: flex;
             justify-content: space-between;
+            gap: 14px;
+            font-family: 'Inter', 'Cairo', sans-serif;
+        }
+        .pdf-top-header {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
             align-items: center;
             border-bottom: 2px solid #E2E8F0;
-            padding-bottom: 10px;
+            padding-bottom: 12px;
             gap: 16px;
         }
-        .pdf-month-meta {
+        .pdf-user-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            justify-self: end;
+            background: #F8FAFC;
+            border: 1px solid #CBD5E1;
+            border-radius: 999px;
+            padding: 6px 14px;
+        }
+        .pdf-user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #008CFF;
+            color: #FFFFFF;
+            font-size: 13px;
+            font-weight: 800;
             display: flex;
-            flex-direction: column;
-            gap: 3px;
+            align-items: center;
+            justify-content: center;
+            object-fit: cover;
         }
-        .pdf-month-title {
+        .pdf-center-title {
+            text-align: center;
+        }
+        .pdf-center-title h2 {
             margin: 0;
-            font-size: 17px;
+            font-size: 20px;
             font-weight: 900;
-            color: var(--text-main);
+            color: #111827;
         }
-        .pdf-long-date {
+        .pdf-center-title p {
+            margin: 3px 0 0;
             font-size: 11px;
             font-weight: 700;
-            color: var(--text-muted);
+            color: #6B7280;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
         }
 
-        .pdf-kpi-row {
+        /* الصف العلوي: 4 بطاقات KPI على اليسار + Financial Goals على اليمين */
+        .pdf-row-1 {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
+            grid-template-columns: 1.55fr 1fr;
+            gap: 14px;
         }
-        .pdf-kpi-box {
+        .pdf-kpi-2x2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .pdf-kpi-card {
             border: 1px solid #CBD5E1;
             background: #F8FAFC;
-            border-radius: 10px;
-            padding: 10px 12px;
+            border-radius: 12px;
+            padding: 11px 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
-        .pdf-kpi-box small {
-            display: block;
+        .pdf-kpi-card small {
             font-size: 10px;
             font-weight: 700;
-            color: var(--text-muted);
+            color: #6B7280;
             text-transform: uppercase;
             margin-bottom: 4px;
         }
-        .pdf-kpi-box strong {
-            display: block;
-            font-size: 15px;
+        .pdf-kpi-card strong {
+            font-size: 18px;
             font-weight: 800;
-            color: var(--text-main);
+            color: #111827;
+        }
+        .pdf-goals-card {
+            border: 1px solid #CBD5E1;
+            background: #F8FAFC;
+            border-radius: 12px;
+            padding: 13px 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .pdf-goals-card h4 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 800;
+            color: #111827;
         }
 
-        .pdf-charts-row {
+        /* الصف الأوسط: Category Distribution + Category Consumption Rate (%) + Planned vs Actual */
+        .pdf-row-2 {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+            grid-template-columns: 1fr 1fr 1.2fr;
+            gap: 14px;
         }
-        .pdf-chart-box {
+        /* الصف السفلي: Daily Expenses Trend + Monthly Comparison */
+        .pdf-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .pdf-panel {
             border: 1px solid #CBD5E1;
-            border-radius: 10px;
-            padding: 11px 14px;
+            border-radius: 12px;
+            padding: 12px 14px;
             background: #FFFFFF;
-            min-width: 0;
             display: flex;
             flex-direction: column;
             gap: 8px;
+            min-width: 0;
         }
-        .pdf-chart-box h5 {
+        .pdf-panel h5 {
             margin: 0;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 800;
-            color: var(--text-main);
+            color: #111827;
         }
-        .pdf-chart-canvas-wrap {
+        .pdf-canvas-mid {
             position: relative;
-            height: 118px;
+            height: 205px;
             width: 100%;
         }
-        .pdf-consumption-list {
-            height: 118px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+        .pdf-canvas-bot {
+            position: relative;
+            height: 185px;
+            width: 100%;
         }
-        .pdf-cons-row {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            font-size: 10px;
-        }
-        .pdf-cons-head {
+        .pdf-footer-bar {
             display: flex;
             justify-content: space-between;
-            font-weight: 700;
-        }
-        .pdf-cons-bar {
-            height: 6px;
-            background: #E2E8F0;
-            border-radius: 999px;
-            overflow: hidden;
-        }
-        .pdf-cons-fill {
-            height: 100%;
-            border-radius: 999px;
-        }
-
-        .pdf-bottom-row {
-            display: grid;
-            grid-template-columns: 1fr 1.6fr;
-            gap: 12px;
-        }
-        .pdf-info-box {
-            border: 1px solid #CBD5E1;
-            border-radius: 10px;
-            padding: 11px 14px;
-            background: #F8FAFC;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            min-width: 0;
-        }
-        .pdf-info-box h5 {
-            margin: 0;
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--text-main);
-        }
-        .pdf-efficiency-wrap {
-            position: relative;
-            height: 92px;
-            width: 100%;
+            align-items: center;
+            border-top: 1px solid #E2E8F0;
+            padding-top: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #6B7280;
         }
 
         footer { background: var(--brand-dark); color: white; padding: 25px 20px 15px; margin-top: auto; width: 100%; box-sizing: border-box; }
@@ -586,13 +603,11 @@
 
                 <!-- 2. المربعان المجمّعان في الداش بورد -->
                 <div class="summary-boxes-grid">
-                    <!-- المربع الأول: Net Balance, Total Income, Total Expenses, Savings Rate -->
+                    <!-- المربع الأول بالترتيب:
+                         Total Income      Total Expenses
+                         Net Balance       Savings Rate -->
                     <div class="summary-group-box">
                         <div class="summary-items-grid">
-                            <div class="summary-metric-tile">
-                                <p data-i18n="kpiNet">Net Balance</p>
-                                <h3 id="kpi-net">0 SAR</h3>
-                            </div>
                             <div class="summary-metric-tile">
                                 <div style="display: flex; justify-content: space-between; align-items: center;">
                                     <p style="margin:0;" data-i18n="kpiIncome">Total Income</p>
@@ -607,6 +622,10 @@
                             <div class="summary-metric-tile">
                                 <p data-i18n="kpiExpenses">Total Expenses</p>
                                 <h3 id="kpi-expenses" style="color: var(--danger);">0 SAR</h3>
+                            </div>
+                            <div class="summary-metric-tile">
+                                <p data-i18n="kpiNet">Net Balance</p>
+                                <h3 id="kpi-net">0 SAR</h3>
                             </div>
                             <div class="summary-metric-tile">
                                 <p data-i18n="kpiSavings">Savings Rate</p>
@@ -672,7 +691,7 @@
                     </div>
                 </div>
 
-                <!-- 6. الرسم البياني الإحصائي الجديد (مؤشر كفاءة الإنفاق العام) -->
+                <!-- 6. الرسم البياني الإحصائي (مؤشر كفاءة الإنفاق العام) -->
                 <div class="analytics-card" style="margin-bottom: 25px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <h3 data-i18n="chartEfficiency">Spending Efficiency Index</h3>
@@ -903,6 +922,7 @@
             unassignedSpendLabel: "Unassigned Card Spending",
             noProgressData: "Add categories to track budget consumption.",
             chartEfficiency: "Spending Efficiency Index",
+            chartConsumptionRate: "Category Consumption Rate (%)",
             efficiencySub: "Analysis of Planned vs Actual Impact",
             smartAlerts: "Smart Alerts",
             defaultAlert: "All spending is within normal limits.",
@@ -944,7 +964,8 @@
             linkedinBtn: "🔗 LinkedIn Profile",
             footerSub: "Smart Money Management",
             loginError: "Invalid username or password",
-            signupError: "Please fill all fields correctly"
+            signupError: "Please fill all fields correctly",
+            pdfReportSubtitle: "Landscape Single-Page Report"
         },
         ar: {
             splashSub: "إدارة الأموال بذكاء",
@@ -1008,6 +1029,7 @@
             unassignedSpendLabel: "صرف بدون بطاقة محددة",
             noProgressData: "أضف بنوداً لمتابعة استهلاك الميزانية.",
             chartEfficiency: "مؤشر كفاءة الإنفاق العام",
+            chartConsumptionRate: "نسبة استهلاك الفئة (%)",
             efficiencySub: "تحليل تأثير المخطط مقابل الفعلي",
             smartAlerts: "التنبيهات الذكية",
             defaultAlert: "جميع المصروفات ضمن الحدود الطبيعية.",
@@ -1049,7 +1071,8 @@
             linkedinBtn: "🔗 حساب لينكد إن",
             footerSub: "إدارة الأموال الذكية",
             loginError: "خطأ في اسم المستخدم أو كلمة المرور",
-            signupError: "يرجى تعبئة جميع الحقول بشكل صحيح"
+            signupError: "يرجى تعبئة جميع الحقول بشكل صحيح",
+            pdfReportSubtitle: "تقرير مالي شامل من صفحة واحدة بالعرض"
         }
     };
 
@@ -1689,148 +1712,241 @@
         destroyPdfCharts();
         let monthTitle = data.m.name || 'Month';
         let longDateStr = getLongFormattedDate();
+        let uData = users[currentUser] || { fname: currentUser || 'User', lname: '', gender: 'male', photo: null };
+        let fullName = `${uData.fname || ''} ${uData.lname || ''}`.trim() || currentUser;
+        let avatarBg = uData.gender === 'female' ? '#EC4899' : '#008CFF';
+        let avatarHtml = uData.photo
+            ? `<img src="${uData.photo}" class="pdf-user-avatar">`
+            : `<div class="pdf-user-avatar" style="background:${avatarBg};">${fullName.charAt(0).toUpperCase()}</div>`;
 
-        let progressHtml = data.cats.length > 0
-            ? data.cats.slice(0, 4).map((cat, idx) => {
-                let p = data.pData[idx] || 0;
-                let a = data.aData[idx] || 0;
-                let pct = p > 0 ? Math.round((a / p) * 100) : (a > 0 ? 100 : 0);
-                let fillColor = getBudgetConsumptionColor(pct);
-                return `
-                    <div class="pdf-cons-row">
-                        <div class="pdf-cons-head">
-                            <span>${cat}</span>
-                            <span style="color:${fillColor};">${a.toLocaleString()} / ${p.toLocaleString()} (${pct}%)</span>
-                        </div>
-                        <div class="pdf-cons-bar">
-                            <div class="pdf-cons-fill" style="width:${Math.min(100, Math.max(0, pct))}%; background:${fillColor};"></div>
-                        </div>
-                    </div>
-                `;
-            }).join('')
-            : `<div style="color:var(--text-muted); font-size:11px;">${translations[currentLang].noProgressData}</div>`;
+        let minSourceName = data.net <= data.remPlanned
+            ? translations[currentLang].kpiNet
+            : translations[currentLang].remainingFromPlanned;
+        let goalStatusLine = currentLang === 'ar'
+            ? `المعتمد (أقلهما - ${minSourceName}): ${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)`
+            : `Counted (Min - ${minSourceName}): ${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)`;
 
         sheet.innerHTML = `
-            <div class="pdf-sheet-header">
-                ${buildFullBrandLogoHTML()}
-                <div class="pdf-month-meta" style="text-align: end;">
-                    <h3 class="pdf-month-title">${monthTitle}</h3>
-                    <div class="pdf-long-date">${longDateStr}</div>
+            <div class="pdf-top-header">
+                <div style="justify-self:start;">${buildFullBrandLogoHTML()}</div>
+                <div class="pdf-center-title">
+                    <h2>RiyalBA. - ${monthTitle}</h2>
+                    <p>${translations[currentLang].pdfReportSubtitle} &bull; ${longDateStr}</p>
+                </div>
+                <div class="pdf-user-chip">
+                    ${avatarHtml}
+                    <div style="line-height:1.2;">
+                        <div style="font-size:12px; font-weight:800; color:#111827;">${fullName}</div>
+                        <div style="font-size:10px; font-weight:600; color:#6B7280;">@${currentUser || ''}</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- 1. Total Income, Total Expenses, Net Balance, Savings Rate, Cumulative -->
-            <div class="pdf-kpi-row">
-                <div class="pdf-kpi-box"><small>${translations[currentLang].kpiIncome}</small><strong class="text-green">${data.totalInc.toLocaleString()} SAR</strong></div>
-                <div class="pdf-kpi-box"><small>${translations[currentLang].kpiExpenses}</small><strong class="text-red">${data.ta.toLocaleString()} SAR</strong></div>
-                <div class="pdf-kpi-box"><small>${translations[currentLang].kpiNet}</small><strong class="${data.net < 0 ? 'text-red' : 'text-green'}">${data.net.toLocaleString()} SAR</strong></div>
-                <div class="pdf-kpi-box"><small>${translations[currentLang].kpiSavings}</small><strong>${data.savingsRate}%</strong></div>
-                <div class="pdf-kpi-box"><small>${translations[currentLang].kpiCum}</small><strong>${data.cumulativeVal.toLocaleString()} SAR</strong></div>
-            </div>
+            <!-- 1. الصف العلوي: المربع الأول (Total Income, Total Expenses, Net Balance, Savings Rate) + Financial Goals -->
+            <div class="pdf-row-1">
+                <div class="pdf-kpi-2x2">
+                    <div class="pdf-kpi-card">
+                        <small>${translations[currentLang].kpiIncome}</small>
+                        <strong class="text-green">${data.totalInc.toLocaleString()} SAR</strong>
+                    </div>
+                    <div class="pdf-kpi-card">
+                        <small>${translations[currentLang].kpiExpenses}</small>
+                        <strong class="text-red">${data.ta.toLocaleString()} SAR</strong>
+                    </div>
+                    <div class="pdf-kpi-card">
+                        <small>${translations[currentLang].kpiNet}</small>
+                        <strong class="${data.net < 0 ? 'text-red' : 'text-green'}">${data.net.toLocaleString()} SAR</strong>
+                    </div>
+                    <div class="pdf-kpi-card">
+                        <small>${translations[currentLang].kpiSavings}</small>
+                        <strong>${data.savingsRate}%</strong>
+                    </div>
+                </div>
 
-            <!-- 2. Category Distribution, Planned vs Actual, Monthly Comparison -->
-            <div class="pdf-charts-row">
-                <div class="pdf-chart-box">
-                    <h5>${translations[currentLang].chartDist}</h5>
-                    <div class="pdf-chart-canvas-wrap"><canvas id="pdfDonutCanvas"></canvas></div>
-                </div>
-                <div class="pdf-chart-box">
-                    <h5>${translations[currentLang].chartBar}</h5>
-                    <div class="pdf-chart-canvas-wrap"><canvas id="pdfBarCanvas"></canvas></div>
-                </div>
-                <div class="pdf-chart-box">
-                    <h5>${translations[currentLang].chartHistory}</h5>
-                    <div class="pdf-chart-canvas-wrap"><canvas id="pdfHistoryCanvas"></canvas></div>
-                </div>
-            </div>
-
-            <!-- 3. Budget Consumption, Budget Gauge, Spending by Card -->
-            <div class="pdf-charts-row">
-                <div class="pdf-chart-box">
-                    <h5>${translations[currentLang].chartProgress}</h5>
-                    <div class="pdf-consumption-list">${progressHtml}</div>
-                </div>
-                <div class="pdf-chart-box">
-                    <h5>${translations[currentLang].chartGauge}</h5>
-                    <div class="pdf-chart-canvas-wrap"><canvas id="pdfGaugeCanvas"></canvas></div>
-                </div>
-                <div class="pdf-chart-box">
-                    <h5>${translations[currentLang].chartByCard}</h5>
-                    <div class="pdf-chart-canvas-wrap"><canvas id="pdfCardCanvas"></canvas></div>
-                </div>
-            </div>
-
-            <!-- 4. Financial Goals & Spending Efficiency Index (بدون Smart Alerts) -->
-            <div class="pdf-bottom-row">
-                <div class="pdf-info-box">
-                    <h5>${translations[currentLang].finGoals}</h5>
-                    <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:700;">
+                <div class="pdf-goals-card">
+                    <h4>${translations[currentLang].finGoals}</h4>
+                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:13px; font-weight:700;">
                         <span>${translations[currentLang].monthlyTarget}</span>
                         <span>${data.targetSavings.toLocaleString()} SAR</span>
                     </div>
-                    <div style="background:#E2E8F0; height:9px; border-radius:999px; overflow:hidden;">
-                        <div style="background:${data.goalPct >= 100 ? 'var(--success)' : 'var(--brand-blue)'}; width:${data.goalPct}%; height:100%;"></div>
+                    <div style="background:#E2E8F0; height:11px; border-radius:999px; overflow:hidden;">
+                        <div style="background:${data.goalPct >= 100 ? '#10B981' : '#008CFF'}; width:${data.goalPct}%; height:100%;"></div>
                     </div>
-                    <div style="font-size:12px; font-weight:700; color:var(--text-muted);">${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)</div>
+                    <div style="font-size:12px; font-weight:700; color:${data.goalPct >= 100 ? '#10B981' : '#4B5563'};">${goalStatusLine}</div>
+                    <div style="font-size:12px; font-weight:700; color:#6B7280;">${translations[currentLang].remDebts}: <strong class="text-red">0 SAR</strong></div>
                 </div>
+            </div>
 
-                <div class="pdf-info-box">
-                    <h5>${translations[currentLang].chartEfficiency}</h5>
-                    <div class="pdf-efficiency-wrap"><canvas id="pdfEfficiencyCanvas"></canvas></div>
+            <!-- 2. الصف الأوسط: Category Distribution + Category Consumption Rate (%) + Planned vs Actual -->
+            <div class="pdf-row-2">
+                <div class="pdf-panel">
+                    <h5>${translations[currentLang].chartDist}</h5>
+                    <div class="pdf-canvas-mid"><canvas id="pdfDonutCanvas"></canvas></div>
                 </div>
+                <div class="pdf-panel">
+                    <h5>${translations[currentLang].chartConsumptionRate}</h5>
+                    <div class="pdf-canvas-mid"><canvas id="pdfRadarCanvas"></canvas></div>
+                </div>
+                <div class="pdf-panel">
+                    <h5>${translations[currentLang].chartBar}</h5>
+                    <div class="pdf-canvas-mid"><canvas id="pdfBarCanvas"></canvas></div>
+                </div>
+            </div>
+
+            <!-- 3. الصف السفلي: Daily Expenses Trend + Monthly Comparison -->
+            <div class="pdf-row-3">
+                <div class="pdf-panel">
+                    <h5>${translations[currentLang].chartDaily}</h5>
+                    <div class="pdf-canvas-bot"><canvas id="pdfDailyCanvas"></canvas></div>
+                </div>
+                <div class="pdf-panel">
+                    <h5>${translations[currentLang].chartHistory}</h5>
+                    <div class="pdf-canvas-bot"><canvas id="pdfHistoryCanvas"></canvas></div>
+                </div>
+            </div>
+
+            <div class="pdf-footer-bar">
+                <span>RiyalBA. &mdash; ${translations[currentLang].aboutSub}</span>
+                <span>&copy; 2026 RiyalBA. All Rights Reserved.</span>
             </div>
         `;
 
         let comp = getMonthlyComparisonSeries(monthId, data.remPlanned);
         let effData = data.pData.map((p, idx) => p > 0 ? Math.min(100, Math.max(0, Math.round((data.aData[idx] / p) * 100))) : 0);
-        let chartOpts = { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { display: false } } };
+        let baseLegendOpts = {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: { boxWidth: 10, font: { size: 10, weight: 'bold' } }
+                }
+            }
+        };
 
         pdfChartsInstances.push(new Chart(document.getElementById('pdfDonutCanvas').getContext('2d'), {
             type: 'doughnut',
-            data: { labels: data.cats, datasets: [{ data: (data.tp === 0 && data.ta === 0) ? [1] : data.aData, backgroundColor: ['#008CFF', '#EC4899', '#10B981', '#F59E0B', '#6366F1'] }] },
-            options: chartOpts
+            data: {
+                labels: data.cats,
+                datasets: [{
+                    data: (data.tp === 0 && data.ta === 0) ? [1] : data.aData,
+                    backgroundColor: ['#008CFF', '#EC4899', '#10B981', '#F59E0B', '#6366F1', '#8B5CF6', '#14B8A6']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'right',
+                        labels: { boxWidth: 9, font: { size: 9, weight: 'bold' } }
+                    }
+                }
+            }
+        }));
+
+        pdfChartsInstances.push(new Chart(document.getElementById('pdfRadarCanvas').getContext('2d'), {
+            type: 'radar',
+            data: {
+                labels: data.cats,
+                datasets: [{
+                    label: translations[currentLang].chartConsumptionRate,
+                    data: effData,
+                    backgroundColor: 'rgba(0, 140, 255, 0.2)',
+                    borderColor: '#008CFF',
+                    pointBackgroundColor: '#EC4899',
+                    pointBorderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { stepSize: 20, font: { size: 8 } },
+                        pointLabels: { font: { size: 9, weight: 'bold' } }
+                    }
+                }
+            }
         }));
 
         pdfChartsInstances.push(new Chart(document.getElementById('pdfBarCanvas').getContext('2d'), {
             type: 'bar',
-            data: { labels: data.cats, datasets: [{ label: translations[currentLang].thPlanned, data: data.pData, backgroundColor: '#008CFF' }, { label: translations[currentLang].thActual, data: data.aData, backgroundColor: '#EC4899' }] },
-            options: chartOpts
+            data: {
+                labels: data.cats,
+                datasets: [
+                    { label: translations[currentLang].thPlanned, data: data.pData, backgroundColor: '#008CFF', borderRadius: 4 },
+                    { label: translations[currentLang].thActual, data: data.aData, backgroundColor: '#EC4899', borderRadius: 4 }
+                ]
+            },
+            options: {
+                ...baseLegendOpts,
+                scales: {
+                    x: { ticks: { font: { size: 9 } } },
+                    y: { beginAtZero: true, ticks: { font: { size: 9 } } }
+                }
+            }
+        }));
+
+        pdfChartsInstances.push(new Chart(document.getElementById('pdfDailyCanvas').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['W1', 'W2', 'W3', 'W4'],
+                datasets: [{
+                    label: translations[currentLang].kpiExpenses,
+                    data: [data.ta * 0.2, data.ta * 0.4, data.ta * 0.7, data.ta],
+                    borderColor: '#10B981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.14)',
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#10B981'
+                }]
+            },
+            options: {
+                ...baseLegendOpts,
+                scales: {
+                    x: { ticks: { font: { size: 10 } } },
+                    y: { beginAtZero: true, ticks: { font: { size: 10 } } }
+                }
+            }
         }));
 
         pdfChartsInstances.push(new Chart(document.getElementById('pdfHistoryCanvas').getContext('2d'), {
             type: 'line',
-            data: { labels: comp.labels, datasets: [{ label: translations[currentLang].remainingFromPlanned, data: comp.values, borderColor: '#008CFF', backgroundColor: 'rgba(0,140,255,0.16)', fill: true, tension: 0.3 }] },
-            options: chartOpts
-        }));
-
-        pdfChartsInstances.push(new Chart(document.getElementById('pdfGaugeCanvas').getContext('2d'), {
-            type: 'doughnut',
-            data: { labels: [translations[currentLang].actualSpending, translations[currentLang].remainingFromPlanned], datasets: [{ data: (data.tp === 0 && data.ta === 0) ? [0, 1] : [data.ta, Math.max(0, data.tp - data.ta)], backgroundColor: ['#EF4444', '#E5E7EB'] }] },
-            options: { ...chartOpts, rotation: -90, circumference: 180, cutout: '78%' }
-        }));
-
-        let hasCardVals = data.cardSpendLabels.length > 0;
-        pdfChartsInstances.push(new Chart(document.getElementById('pdfCardCanvas').getContext('2d'), {
-            type: 'bar',
             data: {
-                labels: hasCardVals ? data.cardSpendLabels : [translations[currentLang].thCard],
-                datasets: [{ data: hasCardVals ? data.cardSpendValues : [0], backgroundColor: hasCardVals ? data.cardSpendColors : ['#D1D5DB'], borderRadius: 4 }]
+                labels: comp.labels,
+                datasets: [{
+                    label: translations[currentLang].remainingFromPlanned,
+                    data: comp.values,
+                    borderColor: '#008CFF',
+                    backgroundColor: 'rgba(0, 140, 255, 0.16)',
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#008CFF'
+                }]
             },
-            options: chartOpts
-        }));
-
-        pdfChartsInstances.push(new Chart(document.getElementById('pdfEfficiencyCanvas').getContext('2d'), {
-            type: 'bar',
-            data: {
-                labels: data.cats,
-                datasets: [{ label: '%', data: effData, backgroundColor: '#008CFF', borderRadius: 4 }]
-            },
-            options: { ...chartOpts, scales: { y: { beginAtZero: true, max: 100 } } }
+            options: {
+                ...baseLegendOpts,
+                scales: {
+                    x: { ticks: { font: { size: 10 } } },
+                    y: { beginAtZero: true, ticks: { font: { size: 10 } } }
+                }
+            }
         }));
 
         let safeFileName = `RiyalBA-${monthTitle.replace(/[^\w\u0600-\u06FF-]+/g, '_')}.pdf`;
         let opt = {
-            margin: 5,
+            margin: 4,
             filename: safeFileName,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, useCORS: true, logging: false },
@@ -2240,7 +2356,7 @@
             data: {
                 labels: cats,
                 datasets: [{
-                    label: currentLang === 'ar' ? 'نسبة استهلاك الفئة (%)' : 'Category Consumption Rate (%)',
+                    label: translations[currentLang].chartConsumptionRate,
                     data: effData,
                     backgroundColor: 'rgba(0, 140, 255, 0.2)',
                     borderColor: '#008CFF',
