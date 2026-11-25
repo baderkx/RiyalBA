@@ -30,12 +30,12 @@
         .hidden { display: none !important; }
         
         .auth-container { background: url('pexels-brett-sayles-6937714.jpg') center/cover fixed; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 15px;}
-        .auth-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 25px 30px; border-radius: 20px; width: 100%; max-width: 450px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center; max-height: 95vh; overflow-y: auto;}
+        .auth-card { background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px); padding: 32px 30px; border-radius: 20px; width: 100%; max-width: 430px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center; max-height: 95vh; overflow-y: auto;}
         
         .brand-logo-auth { display: inline-flex; align-items: center; gap: 12px; direction: ltr !important; unicode-bidi: isolate; justify-content: center; }
         .brand-text-wrap { display: flex; flex-direction: column; align-items: flex-end; line-height: 1; }
         .brand-subtitle { font-size: 9px; font-weight: 600; color: var(--text-main); margin-bottom: 3px; letter-spacing: 0.2px; }
-        .brand-title { font-size: 24px; font-weight: 800; color: var(--brand-dark); letter-spacing: -0.5px; }
+        .brand-title { font-size: 26px; font-weight: 800; color: var(--brand-dark); letter-spacing: -0.5px; }
         .brand-dot { color: var(--brand-blue); }
         .brand-icon-box { position: relative; width: 55px; height: 35px; flex-shrink: 0; }
         .brand-gray-card { position: absolute; inset: 0; background: var(--brand-gray); border-radius: 6px; }
@@ -48,15 +48,12 @@
         input:focus, select:focus { outline: none; border-color: var(--brand-blue); box-shadow: 0 0 0 3px rgba(0, 140, 255, 0.1); }
         input:disabled, select:disabled { background-color: #F3F4F6; color: #6B7280; cursor: not-allowed; opacity: 0.85; }
         
-        .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.25s; }
         .btn-primary { background: var(--brand-blue); color: white; margin-top: 10px; }
         .btn-primary:hover { background: #0070cc; }
-        .btn-google { background: #FFFFFF; color: #111827; border: 1px solid var(--brand-gray); display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
-        .btn-google:hover { background: #F8FAFC; border-color: var(--brand-blue); }
-        .btn-text { background: transparent; color: var(--brand-blue); margin-top: 10px; }
+        .btn-google { background: #FFFFFF; color: #111827; border: 1.5px solid var(--brand-gray); display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); padding: 15px; font-size: 16px; }
+        .btn-google:hover { background: #F8FAFC; border-color: var(--brand-blue); transform: translateY(-1px); }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .auth-divider { display: flex; align-items: center; gap: 10px; margin: 16px 0; color: var(--text-muted); font-size: 12px; font-weight: 700; }
-        .auth-divider::before, .auth-divider::after { content: ""; flex: 1; height: 1px; background: var(--brand-gray); }
 
         header { background: var(--bg-white); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 0 20px; display: flex; justify-content: space-between; align-items: center; height: 75px; flex-wrap: wrap; }
         .nav-links { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
@@ -351,11 +348,11 @@
 </head>
 <body class="lang-en" id="body">
 
-    <!-- Auth Container -->
+    <!-- Auth Container (Google Sign-In Only + First-Time Profile Setup) -->
     <div id="auth-wrapper" class="auth-container hidden">
-        <!-- Login Form -->
+        <!-- Google Login Card -->
         <div id="login-form" class="auth-card">
-            <div class="auth-logo-box" style="margin-bottom: 15px;">
+            <div class="auth-logo-box" style="margin-bottom: 18px;">
                 <div class="brand-logo-auth">
                     <div class="brand-text-wrap">
                         <span class="brand-subtitle">Money Management</span>
@@ -364,35 +361,25 @@
                     <div class="brand-icon-box"><div class="brand-gray-card"></div><div class="brand-blue-circle"></div></div>
                 </div>
             </div>
-            <p style="color: var(--text-muted); margin-bottom: 16px;" data-i18n="loginDesc">Login to your account</p>
+            <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px; line-height: 1.6;" data-i18n="loginDesc">Sign in with your Google account to sync your budget across mobile and laptop.</p>
 
-            <!-- زر الدخول بحساب Gmail للمزامنة السحابية بين الجوال واللابتوب -->
             <button onclick="loginWithGoogleCloud()" id="google-signin-btn" class="btn btn-google">
-                <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true">
                     <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
                     <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
                     <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
                     <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
                 </svg>
-                <span data-i18n="googleSignInBtn">Continue with Google (Gmail)</span>
+                <span data-i18n="googleSignInBtn">Continue with Google</span>
             </button>
-            <div id="google-auth-error" style="color: var(--danger); font-size: 12px; margin-top: 6px; display: none;"></div>
+            <div id="google-auth-error" style="color: var(--danger); font-size: 12px; margin-top: 10px; display: none;"></div>
 
-            <div class="auth-divider"><span data-i18n="orLocalDivider">OR LOCAL ACCOUNT</span></div>
-
-            <div class="input-group"><input type="text" id="login-user" data-i18n-placeholder="usernamePlaceholder"></div>
-            <div class="input-group">
-                <input type="password" id="login-pass" data-i18n-placeholder="passwordPlaceholder">
-                <div id="login-error-msg" style="color: var(--danger); font-size: 12px; margin-top: 5px; text-align: left; display: none;" data-i18n="loginError">Invalid username or password</div>
-            </div>
-            <button onclick="login()" class="btn btn-primary" data-i18n="loginBtn">Login</button>
-            <button onclick="toggleAuth('signup-form')" class="btn btn-text" data-i18n="createAccBtn">Create a new account</button>
-            <div style="margin-top: 15px;" class="desktop-lang-btn"><button onclick="switchLanguage()" class="lang-toggle-btn" id="auth-lang-btn">عربي / English</button></div>
+            <div style="margin-top: 22px;"><button onclick="switchLanguage()" class="lang-toggle-btn" id="auth-lang-btn">عربي / English</button></div>
         </div>
 
-        <!-- Signup Form -->
-        <div id="signup-form" class="auth-card hidden" style="margin-top: -15px;">
-            <div class="auth-logo-box" style="margin-bottom: 15px;">
+        <!-- First-Time Onboarding Card (Age & Gender after Google Login) -->
+        <div id="onboarding-form" class="auth-card hidden">
+            <div class="auth-logo-box" style="margin-bottom: 14px;">
                 <div class="brand-logo-auth">
                     <div class="brand-text-wrap">
                         <span class="brand-subtitle">Money Management</span>
@@ -401,29 +388,26 @@
                     <div class="brand-icon-box"><div class="brand-gray-card"></div><div class="brand-blue-circle"></div></div>
                 </div>
             </div>
+            <h3 style="margin: 0 0 6px; font-size: 19px;" data-i18n="onboardingTitle">Complete Your Profile</h3>
+            <p style="color: var(--text-muted); margin: 0 0 18px; font-size: 13px;" data-i18n="onboardingSub">Google provides your name & email. Please select your age and gender once to personalize your account.</p>
+
             <div class="grid-2">
-                <div class="input-group"><input type="text" id="reg-fname" data-i18n-placeholder="fnamePlaceholder"></div>
-                <div class="input-group"><input type="text" id="reg-lname" data-i18n-placeholder="lnamePlaceholder"></div>
+                <div class="input-group"><input type="text" id="onb-fname" data-i18n-placeholder="fnamePlaceholder"></div>
+                <div class="input-group"><input type="text" id="onb-lname" data-i18n-placeholder="lnamePlaceholder"></div>
             </div>
             <div class="grid-2">
-                <div class="input-group"><select id="reg-age"><option value="" disabled selected data-i18n="selectAge">Age</option></select></div>
+                <div class="input-group"><select id="onb-age"><option value="" disabled selected data-i18n="selectAge">Age</option></select></div>
                 <div class="input-group">
-                    <select id="reg-gender">
+                    <select id="onb-gender">
                         <option value="" disabled selected data-i18n="selectGender">Gender</option>
                         <option value="male" data-i18n="male">Male</option>
                         <option value="female" data-i18n="female">Female</option>
                     </select>
                 </div>
             </div>
-            <div class="input-group"><input type="email" id="reg-email" data-i18n-placeholder="emailPlaceholder"></div>
-            <div class="input-group"><input type="tel" id="reg-phone" data-i18n-placeholder="phoneIntlPlaceholder"></div>
-            <div class="input-group"><input type="text" id="reg-user" data-i18n-placeholder="usernamePlaceholder"></div>
-            <div class="input-group">
-                <input type="password" id="reg-pass" data-i18n-placeholder="passPlaceholder">
-                <div id="signup-error-msg" style="color: var(--danger); font-size: 12px; margin-top: 5px; text-align: left; display: none;" data-i18n="signupError">Please fill all fields correctly</div>
-            </div>
-            <button onclick="register()" class="btn btn-primary" style="background: var(--brand-dark);" data-i18n="signUpBtn">Sign Up</button>
-            <button onclick="toggleAuth('login-form')" class="btn btn-text" data-i18n="haveAccBtn">I already have an account</button>
+            <div class="input-group"><input type="tel" id="onb-phone" data-i18n-placeholder="phoneIntlPlaceholder" dir="ltr"></div>
+            <div id="onb-error-msg" style="color: var(--danger); font-size: 12px; margin-bottom: 8px; display: none;" data-i18n="onboardingError">Please select your age and gender</div>
+            <button onclick="completeGoogleOnboarding()" class="btn btn-primary" data-i18n="startUsingBtn">Save & Continue</button>
         </div>
     </div>
 
@@ -638,7 +622,7 @@
                     <div style="text-align: center; margin-bottom: 25px;">
                         <div style="display:inline-block; position:relative; cursor:pointer;" onclick="triggerPhotoUpload()"><div id="profile-page-initial" class="profile-pic" style="width: 90px; height: 90px; font-size: 35px; margin: 0 auto;">U</div></div>
                         <input type="file" id="profile-photo-input" accept="image/*" class="hidden" onchange="updateProfilePhoto(event)">
-                        <h2 id="prof-name" style="margin: 15px 0 5px; font-size: 22px;">Full Name</h2><p id="prof-user" style="color: var(--text-muted); margin: 0;">@username</p>
+                        <h2 id="prof-name" style="margin: 15px 0 5px; font-size: 22px;">Full Name</h2><p id="prof-user" style="color: var(--text-muted); margin: 0;">email@gmail.com</p>
                     </div>
                     <div style="display: flex; flex-direction: column; gap: 15px; background: var(--bg-light); padding: 20px; border-radius: 12px; margin-bottom: 25px;">
                         <div class="grid-2">
@@ -649,7 +633,7 @@
                             <div><strong data-i18n="ageLabel">Age</strong><select id="edit-prof-age"></select></div>
                             <div><strong data-i18n="genderLabel">Gender</strong><select id="edit-prof-gender"><option value="male" data-i18n="male">Male</option><option value="female" data-i18n="female">Female</option></select></div>
                         </div>
-                        <div><strong data-i18n="emailLabel">Email Address</strong><input type="email" id="edit-prof-email"></div>
+                        <div><strong data-i18n="emailLabel">Google Email Address</strong><input type="email" id="edit-prof-email" disabled></div>
                         <div>
                             <strong data-i18n="phoneLabel">Phone Number (WhatsApp)</strong>
                             <input type="tel" id="edit-prof-phone" placeholder="9665XXXXXXXX" dir="ltr">
@@ -724,25 +708,19 @@
     const translations = {
         en: {
             splashSub: "Smart Money Management",
-            loginDesc: "Login to sync your account across devices",
-            googleSignInBtn: "Continue with Google (Gmail)",
-            orLocalDivider: "OR LOCAL ACCOUNT",
-            usernamePlaceholder: "Username or Email",
-            passwordPlaceholder: "Password",
-            loginBtn: "Login",
-            createAccBtn: "Create a new account",
-            signupTitle: "Create Account",
+            loginDesc: "Sign in with your Google account to sync your budget across mobile and laptop.",
+            googleSignInBtn: "Continue with Google",
+            onboardingTitle: "Complete Your Profile",
+            onboardingSub: "Google provides your name & email. Please select your age and gender once to personalize your account.",
+            onboardingError: "Please select your age and gender",
+            startUsingBtn: "Save & Continue",
             fnamePlaceholder: "First Name",
             lnamePlaceholder: "Last Name",
             selectAge: "Age",
             selectGender: "Gender",
             male: "Male",
             female: "Female",
-            emailPlaceholder: "Email Address",
-            phoneIntlPlaceholder: "WhatsApp Number (e.g. 9665XXXXXXXX)",
-            passPlaceholder: "Password (Min. 8 char)",
-            signUpBtn: "Sign Up",
-            haveAccBtn: "I already have an account",
+            phoneIntlPlaceholder: "WhatsApp Number (Optional: 9665XXXXXXXX)",
             navDash: "Dashboard",
             navHistory: "History",
             navProfile: "My Profile",
@@ -810,7 +788,7 @@
             lnameLabel: "Last Name",
             ageLabel: "Age",
             genderLabel: "Gender",
-            emailLabel: "Email Address",
+            emailLabel: "Google Email Address",
             phoneLabel: "Phone Number (WhatsApp)",
             waAutoTitle: "Automatic Monthly WhatsApp PDF Report",
             waAutoDesc: "Receive your monthly PDF financial report on WhatsApp at the end of every month.",
@@ -833,31 +811,23 @@
             overviewDesc: "RiyalBA is designed to empower individuals to take complete control of their financial life through smart tracking and advanced analytics.",
             devTitle: "Created & Developed By",
             linkedinBtn: "🔗 LinkedIn Profile",
-            footerSub: "Smart Money Management",
-            loginError: "Invalid username or password",
-            signupError: "Please fill all fields correctly"
+            footerSub: "Smart Money Management"
         },
         ar: {
             splashSub: "إدارة الأموال بذكاء",
-            loginDesc: "سجّل الدخول لمزامنة حسابك بين الجوال واللابتوب",
-            googleSignInBtn: "المتابعة عبر حساب Google (Gmail)",
-            orLocalDivider: "أو حساب محلي",
-            usernamePlaceholder: "اسم المستخدم أو البريد الإلكتروني",
-            passwordPlaceholder: "كلمة المرور",
-            loginBtn: "دخول",
-            createAccBtn: "إنشاء حساب جديد",
-            signupTitle: "إنشاء حساب جديد",
+            loginDesc: "سجّل الدخول بحسابك في Google لمزامنة بياناتك بين الجوال واللابتوب.",
+            googleSignInBtn: "المتابعة عبر حساب Google",
+            onboardingTitle: "إكمال بيانات الملف الشخصي",
+            onboardingSub: "جلبنا اسمك وبريدك من Google تلقائياً. اختر العمر والجنس لمرة واحدة فقط لتخصيص حسابك.",
+            onboardingError: "يرجى اختيار العمر والجنس للمتابعة",
+            startUsingBtn: "حفظ والمتابعة",
             fnamePlaceholder: "الاسم الأول",
             lnamePlaceholder: "اسم العائلة",
             selectAge: "العمر",
             selectGender: "الجنس",
             male: "ذكر",
             female: "أنثى",
-            emailPlaceholder: "البريد الإلكتروني",
-            phoneIntlPlaceholder: "رقم الواتساب بالرمز الدولي (مثال: 9665XXXXXXXX)",
-            passPlaceholder: "كلمة المرور (8 أحرف فأكثر)",
-            signUpBtn: "تسجيل",
-            haveAccBtn: "لديك حساب بالفعل؟",
+            phoneIntlPlaceholder: "رقم الواتساب (اختياري: 9665XXXXXXXX)",
             navDash: "الرئيسية",
             navHistory: "السجل",
             navProfile: "الملف الشخصي",
@@ -925,7 +895,7 @@
             lnameLabel: "اسم العائلة",
             ageLabel: "العمر",
             genderLabel: "الجنس",
-            emailLabel: "البريد الإلكتروني",
+            emailLabel: "البريد الإلكتروني (Google)",
             phoneLabel: "رقم الجوال (واتساب)",
             waAutoTitle: "إرسال تقرير PDF الشهري تلقائياً على الواتساب",
             waAutoDesc: "استلام التقرير المالي بصيغة PDF على واتسابك في نهاية كل شهر.",
@@ -948,9 +918,7 @@
             overviewDesc: "صُممت منصة RiyalBA لمساعدة الأفراد على التحكم الكامل بحياتهم المالية عبر تحليل المصروفات، متابعة أهداف الادخار، وتقديم تقارير دقيقة.",
             devTitle: "تم التطوير بواسطة",
             linkedinBtn: "🔗 حساب لينكد إن",
-            footerSub: "إدارة الأموال الذكية",
-            loginError: "خطأ في اسم المستخدم أو كلمة المرور",
-            signupError: "يرجى تعبئة جميع الحقول بشكل صحيح"
+            footerSub: "إدارة الأموال الذكية"
         }
     };
 
@@ -965,6 +933,7 @@
     let monthsDB = JSON.parse(localStorage.getItem('RiyalBA_months')) || {};
     let currentUser = localStorage.getItem('RiyalBA_currentUser');
     let firebaseUid = null;
+    let pendingGoogleUser = null;
     let currentMonthId = null;
     let cardsLocked = true;
     let donutChart = null, barChart = null, lineDaily = null, lineHistory = null, gaugeChart = null, cardSpendingChart = null, efficiencyChart = null;
@@ -1017,39 +986,91 @@
         let defaultFname = nameParts[0] || (user.email ? user.email.split('@')[0] : 'User');
         let defaultLname = nameParts.slice(1).join(' ');
 
-        if (cloudData && cloudData.profile) {
+        if (cloudData && cloudData.months) {
+            for (let id in cloudData.months) {
+                monthsDB[id] = { ...cloudData.months[id], userId: currentUser };
+            }
+            localStorage.setItem('RiyalBA_months', JSON.stringify(monthsDB));
+        }
+
+        if (cloudData && cloudData.profile && cloudData.profile.profileCompleted) {
             users[currentUser] = {
                 ...cloudData.profile,
                 email: user.email || cloudData.profile.email || '',
                 photo: cloudData.profile.photo || user.photoURL || null
             };
-        } else if (!users[currentUser]) {
-            users[currentUser] = {
-                password: '',
+            localStorage.setItem('RiyalBA_users', JSON.stringify(users));
+            initApp();
+        } else if (users[currentUser] && users[currentUser].profileCompleted) {
+            users[currentUser].email = user.email || users[currentUser].email || '';
+            if (!users[currentUser].photo && user.photoURL) users[currentUser].photo = user.photoURL;
+            localStorage.setItem('RiyalBA_users', JSON.stringify(users));
+            pushStateToCloud();
+            initApp();
+        } else {
+            pendingGoogleUser = {
+                uid: user.uid,
+                email: user.email || '',
                 fname: defaultFname,
                 lname: defaultLname,
-                age: '25',
-                gender: 'male',
-                email: user.email || '',
-                phone: '',
-                waAutoReport: false,
-                customIncome: 0,
-                customGoal: 1000,
                 photo: user.photoURL || null
             };
+            document.getElementById('auth-wrapper').classList.remove('hidden');
+            document.getElementById('app-wrapper').classList.add('hidden');
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('onboarding-form').classList.remove('hidden');
+            document.getElementById('onb-fname').value = defaultFname;
+            document.getElementById('onb-lname').value = defaultLname;
         }
-
-        if (cloudData && cloudData.months) {
-            for (let id in cloudData.months) {
-                monthsDB[id] = { ...cloudData.months[id], userId: currentUser };
-            }
-        }
-
-        localStorage.setItem('RiyalBA_users', JSON.stringify(users));
-        localStorage.setItem('RiyalBA_months', JSON.stringify(monthsDB));
-        initApp();
-        pushStateToCloud();
     });
+
+    window.addEventListener('riyalba:signed-out', function() {
+        firebaseUid = null;
+        pendingGoogleUser = null;
+        localStorage.removeItem('RiyalBA_currentUser');
+        currentUser = null;
+        document.getElementById('app-wrapper').classList.add('hidden');
+        document.getElementById('auth-wrapper').classList.remove('hidden');
+        document.getElementById('login-form').classList.remove('hidden');
+        document.getElementById('onboarding-form').classList.add('hidden');
+    });
+
+    function completeGoogleOnboarding() {
+        let fname = document.getElementById('onb-fname').value.trim();
+        let lname = document.getElementById('onb-lname').value.trim();
+        let age = document.getElementById('onb-age').value;
+        let gender = document.getElementById('onb-gender').value;
+        let phone = normalizeWhatsAppPhone(document.getElementById('onb-phone').value.trim());
+        let errEl = document.getElementById('onb-error-msg');
+
+        if (!fname || !age || !gender) {
+            errEl.style.display = 'block';
+            return;
+        }
+        errEl.style.display = 'none';
+
+        let email = pendingGoogleUser ? pendingGoogleUser.email : currentUser;
+        let photo = pendingGoogleUser ? pendingGoogleUser.photo : null;
+        currentUser = email || currentUser;
+        localStorage.setItem('RiyalBA_currentUser', currentUser);
+
+        users[currentUser] = {
+            fname,
+            lname,
+            age,
+            gender,
+            email,
+            phone,
+            waAutoReport: Boolean(phone),
+            customIncome: 0,
+            customGoal: 1000,
+            photo,
+            profileCompleted: true
+        };
+        localStorage.setItem('RiyalBA_users', JSON.stringify(users));
+        pushStateToCloud();
+        initApp();
+    }
 
     function normalizeWhatsAppPhone(raw) {
         let digits = (raw || '').replace(/\D/g, '');
@@ -1075,6 +1096,7 @@
         currentLang = currentLang === 'en' ? 'ar' : 'en';
         localStorage.setItem('RiyalBA_lang', currentLang);
         applyLanguage(currentLang);
+        populateAgeDropdowns();
         updateDashboardDate();
         loadHistory();
         if(currentMonthId) openMonth(currentMonthId);
@@ -1098,7 +1120,7 @@
     }
 
     function populateAgeDropdowns() {
-        [document.getElementById('reg-age'), document.getElementById('edit-prof-age')].forEach(sel => {
+        [document.getElementById('onb-age'), document.getElementById('edit-prof-age')].forEach(sel => {
             if(!sel) return;
             let currentVal = sel.value;
             sel.innerHTML = `<option value="" disabled selected>${currentLang === 'ar' ? 'العمر' : 'Age'}</option>`;
@@ -1156,7 +1178,7 @@
 
     function initApp() {
         cardsLocked = true;
-        if (currentUser && users[currentUser]) {
+        if (currentUser && users[currentUser] && users[currentUser].profileCompleted) {
             document.getElementById('auth-wrapper').classList.add('hidden');
             document.getElementById('app-wrapper').classList.remove('hidden');
             loadUserProfile();
@@ -1165,59 +1187,7 @@
             openMonth(currentMonthId);
         } else {
             document.getElementById('auth-wrapper').classList.remove('hidden');
-        }
-    }
-
-    function toggleAuth(showId) {
-        document.getElementById('login-form').classList.add('hidden');
-        document.getElementById('signup-form').classList.add('hidden');
-        document.getElementById('login-error-msg').style.display = 'none';
-        document.getElementById('signup-error-msg').style.display = 'none';
-        document.getElementById(showId).classList.remove('hidden');
-    }
-
-    function register() {
-        let fname = document.getElementById('reg-fname').value.trim();
-        let lname = document.getElementById('reg-lname').value.trim();
-        let age = document.getElementById('reg-age').value;
-        let gender = document.getElementById('reg-gender').value;
-        let email = document.getElementById('reg-email').value.trim();
-        let phone = normalizeWhatsAppPhone(document.getElementById('reg-phone').value.trim());
-        let u = document.getElementById('reg-user').value.trim();
-        let p = document.getElementById('reg-pass').value;
-        if (!fname || !lname || !age || !gender || !email || !u || !p) {
-            document.getElementById('signup-error-msg').style.display = 'block';
-            return;
-        }
-        if (users[u]) {
-            document.getElementById('signup-error-msg').style.display = 'block';
-            return;
-        }
-        users[u] = {
-            password: p, fname, lname, age, gender, email,
-            phone: phone,
-            waAutoReport: Boolean(phone),
-            customIncome: 0, customGoal: 1000, photo: null
-        };
-        localStorage.setItem('RiyalBA_users', JSON.stringify(users));
-        currentUser = u;
-        localStorage.setItem('RiyalBA_currentUser', u);
-        location.reload();
-    }
-
-    function login() {
-        let inputKey = document.getElementById('login-user').value.trim();
-        let p = document.getElementById('login-pass').value;
-        let foundUser = null;
-        if (users[inputKey] && users[inputKey].password === p) foundUser = inputKey;
-        else {
-            for (let uname in users) { if (users[uname].email === inputKey && users[uname].password === p) { foundUser = uname; break; } }
-        }
-        if (foundUser) {
-            localStorage.setItem('RiyalBA_currentUser', foundUser);
-            location.reload();
-        } else {
-            document.getElementById('login-error-msg').style.display = 'block';
+            document.getElementById('app-wrapper').classList.add('hidden');
         }
     }
 
@@ -1232,7 +1202,7 @@
     }
 
     function loadUserProfile() {
-        let uData = users[currentUser] || { fname: currentUser, lname: '', gender: 'male', age: '25', email: '', phone: '', waAutoReport: false, customIncome: 0, customGoal: 1000, photo: null };
+        let uData = users[currentUser] || { fname: currentUser, lname: '', gender: 'male', age: '25', email: currentUser, phone: '', waAutoReport: false, customIncome: 0, customGoal: 1000, photo: null };
         let fullName = (uData.fname + ' ' + uData.lname).trim() || currentUser;
         document.getElementById('user-display').innerText = fullName;
         document.getElementById('mobile-user-display').innerText = fullName;
@@ -1248,12 +1218,12 @@
             }
         });
         document.getElementById('prof-name').innerText = fullName;
-        document.getElementById('prof-user').innerText = currentUser.includes('@') ? currentUser : ("@" + currentUser);
+        document.getElementById('prof-user').innerText = uData.email || currentUser;
         document.getElementById('edit-prof-fname').value = uData.fname;
         document.getElementById('edit-prof-lname').value = uData.lname;
         document.getElementById('edit-prof-age').value = uData.age;
         document.getElementById('edit-prof-gender').value = uData.gender;
-        document.getElementById('edit-prof-email').value = uData.email;
+        document.getElementById('edit-prof-email').value = uData.email || currentUser;
         document.getElementById('edit-prof-phone').value = uData.phone || '';
         document.getElementById('edit-prof-wa-auto').checked = Boolean(uData.waAutoReport);
     }
@@ -1290,9 +1260,9 @@
         uData.lname = document.getElementById('edit-prof-lname').value.trim();
         uData.age = document.getElementById('edit-prof-age').value;
         uData.gender = document.getElementById('edit-prof-gender').value;
-        uData.email = document.getElementById('edit-prof-email').value.trim();
         uData.phone = phoneNormalized;
         uData.waAutoReport = waAuto;
+        uData.profileCompleted = true;
         localStorage.setItem('RiyalBA_users', JSON.stringify(users));
         pushStateToCloud();
         loadUserProfile();
@@ -1330,11 +1300,7 @@
     function saveGoalDirect() {
         let val = parseFloat(document.getElementById('goal-input-field').value);
         if(isNaN(val) || val < 0) return;
-        if(typeof users[currentUser] !== 'object') {
-            users[currentUser] = { password: users[currentUser], customGoal: val };
-        } else {
-            users[currentUser].customGoal = val;
-        }
+        users[currentUser].customGoal = val;
         localStorage.setItem('RiyalBA_users', JSON.stringify(users));
         document.getElementById('goal-edit-box').classList.add('hidden');
         calc();
