@@ -1292,6 +1292,7 @@
 
             const data = await response.json();
             if (!response.ok || !data.ok) {
+                console.log('Server OTP Response:', JSON.stringify(data, null, 2));
                 throw new Error((data && data.error && data.error.error && data.error.error.message) || 'OTP send failed');
             }
 
@@ -1304,7 +1305,7 @@
             statusEl.style.color = '#15803D';
             statusEl.innerText = translations[currentLang].waOtpSentMsg;
         } catch (err) {
-            console.error('Send OTP Error:', err);
+            console.error('Send OTP Error:', JSON.stringify(err.message || err, null, 2));
             statusEl.style.color = 'var(--danger)';
             statusEl.innerText = translations[currentLang].waOtpSendFailedMsg;
         } finally {
