@@ -2124,5 +2124,83 @@
         });
     }
 </script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithPopup,
+    signOut,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+  import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDUc87fDlu4E7TWE3l8ZSUzZC1xjVQctrE",
+    authDomain: "riyalba-fda5a.firebaseapp.com",
+    projectId: "riyalba-fda5a",
+    storageBucket: "riyalba-fda5a.firebasestorage.app",
+    messagingSenderId: "663659685584",
+    appId: "1:663659685584:web:3f1b8634110fc7cf1a20d5",
+    measurementId: "G-PMQLFG3ZX4"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const provider = new GoogleAuthProvider();
+
+  async function loginWithGmail() {
+    const result = await signInWithPopup(auth, provider);
+    return result.user;
+  }
+
+  async function logoutGmail() {
+    await signOut(auth);
+  }
+
+  async function saveRiyalBAData(uid, data) {
+    if (!uid) return;
+    await setDoc(doc(db, "users", uid), {
+      ...data,
+      updatedAt: new Date().toISOString()
+    }, { merge: true });
+  }
+
+  async function loadRiyalBAData(uid) {
+    if (!uid) return null;
+    const snap = await getDoc(doc(db, "users", uid));
+    return snap.exists() ? snap.data() : null;
+  }
+
+  // إتاحة الدوال لسكربت موقعك الأساسي
+  window.riyalbaAuth = {
+    loginWithGmail,
+    logoutGmail,
+    saveRiyalBAData,
+    loadRiyalBAData
+  };
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const cloudData = await loadRiyalBAData(user.uid);
+      await saveRiyalBAData(user.uid, {
+        email: user.email,
+        name: user.displayName || user.email
+      });
+      window.dispatchEvent(new CustomEvent("riyalba:ready", {
+        detail: { user, cloudData }
+      }));
+    } else {
+      window.dispatchEvent(new CustomEvent("riyalba:signed-out"));
+    }
+  });
+</script>
 </body>
 </html>
+
