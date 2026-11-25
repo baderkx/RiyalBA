@@ -761,10 +761,11 @@
     </div>
 
 <script>
-    // رابط سيرفر الواتساب الخاص بك (مثال: "https://your-server.onrender.com/api/send-whatsapp-report")
-    const WHATSAPP_API_ENDPOINT = "https://YOUR-RENDER-URL/api/send-whatsapp-report";
-    const WHATSAPP_OTP_ENDPOINT = "https://YOUR-RENDER-URL/api/send-otp";
-    const WHATSAPP_VERIFY_OTP_ENDPOINT = "https://YOUR-RENDER-URL/api/verify-otp";
+    // روابط سيرفر الواتساب على Render (تأكد من مطابقة رابط خدمتك في لوحة Render)
+    const RENDER_BASE_URL = "https://rw.onrender.com";
+    const WHATSAPP_API_ENDPOINT = `${RENDER_BASE_URL}/api/send-whatsapp-report`;
+    const WHATSAPP_OTP_ENDPOINT = `${RENDER_BASE_URL}/api/send-otp`;
+    const WHATSAPP_VERIFY_OTP_ENDPOINT = `${RENDER_BASE_URL}/api/verify-otp`;
 
     const translations = {
         en: {
@@ -858,7 +859,8 @@
             waVerified: "✅ WhatsApp Number Verified & Linked",
             waNotVerified: "⚠️ WhatsApp Number Not Verified",
             waOtpSentMsg: "Verification code sent to WhatsApp. Enter it to link your number.",
-            waOtpInvalidMsg: "Invalid verification code. Please check and try again.",
+            waOtpSendFailedMsg: "Failed to send verification code. Please check your number and server connection.",
+            waOtpInvalidMsg: "Invalid or expired verification code. Please check and try again.",
             waVerifyBeforeSaveMsg: "Please send and verify the WhatsApp code first before linking this number.",
             waAutoTitle: "Automatic Monthly WhatsApp PDF Report",
             waAutoDesc: "Receive your monthly PDF financial report on WhatsApp at the end of every month.",
@@ -974,7 +976,8 @@
             waVerified: "✅ تم التحقق من رقم الواتساب وربطه",
             waNotVerified: "⚠️ رقم الواتساب غير مؤكد بعد",
             waOtpSentMsg: "تم إرسال رمز التحقق إلى واتساب. أدخل الرمز لتأكيد وربط الرقم.",
-            waOtpInvalidMsg: "رمز التحقق غير صحيح، يرجى المحاولة مرة أخرى.",
+            waOtpSendFailedMsg: "تعذر إرسال رمز التحقق، يرجى التأكد من الرقم واتصال السيرفر.",
+            waOtpInvalidMsg: "رمز التحقق غير صحيح أو منتهي الصلاحية، يرجى المحاولة مرة أخرى.",
             waVerifyBeforeSaveMsg: "يرجى إرسال رمز التحقق على الواتساب وتأكيده أولاً قبل حفظ وربط الرقم.",
             waAutoTitle: "إرسال تقرير PDF الشهري تلقائياً على الواتساب",
             waAutoDesc: "استلام التقرير المالي بصيغة PDF على واتسابك في نهاية كل شهر.",
@@ -1007,6 +1010,8 @@
         '#14B8A6', '#D946EF', '#F97316', '#3B82F6'
     ];
 
+    const AUTO_LOGOUT_GRACE_MS = 5 * 60 * 1000; // 5 دقائق بعد الخروج من الموقع
+
     let currentLang = localStorage.getItem('RiyalBA_lang') || 'en';
     let users = {};
     let monthsDB = {};
@@ -1016,10 +1021,10 @@
     let currentMonthId = null;
     let cardsLocked = true;
     let profileLocked = true;
-    let pendingWaOtp = null;
     let pendingWaPhone = "";
     let isSigningInWithPopup = false;
     let autoLoggedOutOnLeave = false;
+    let leaveLogoutTimer = null;
     let donutChart = null, barChart = null, lineDaily = null, lineHistory = null, gaugeChart = null, cardSpendingChart = null, efficiencyChart = null;
     let pdfChartsInstances = [];
 
@@ -1063,6 +1068,7 @@
         if (!window.riyalbaAuth) return;
         isSigningInWithPopup = true;
         autoLoggedOutOnLeave = false;
+        cancelLeaveAutoLogoutTimer();
         try {
             if (btn) btn.disabled = true;
             await window.riyalbaAuth.loginWithGmail();
@@ -1080,7 +1086,7 @@
         }
     }
 
-    function performSecurityAutoLogoutOnLeave() {
+    function executeDelayedSecurityLogout() {
         if (!currentUser && !firebaseUid) return;
         if (isSigningInWithPopup || autoLoggedOutOnLeave) return;
         autoLoggedOutOnLeave = true;
@@ -1092,18 +1098,28 @@
         }
     }
 
+    function startLeaveAutoLogoutTimer() {
+        if (!currentUser && !firebaseUid) return;
+        if (isSigningInWithPopup || autoLoggedOutOnLeave) return;
+        cancelLeaveAutoLogoutTimer();
+        leaveLogoutTimer = setTimeout(() => {
+            executeDelayedSecurityLogout();
+        }, AUTO_LOGOUT_GRACE_MS);
+    }
+
+    function cancelLeaveAutoLogoutTimer() {
+        if (leaveLogoutTimer) {
+            clearTimeout(leaveLogoutTimer);
+            leaveLogoutTimer = null;
+        }
+    }
+
     document.addEventListener('visibilitychange', function() {
         if (document.visibilityState === 'hidden') {
-            performSecurityAutoLogoutOnLeave();
+            startLeaveAutoLogoutTimer();
+        } else if (document.visibilityState === 'visible') {
+            cancelLeaveAutoLogoutTimer();
         }
-    });
-
-    window.addEventListener('pagehide', function() {
-        performSecurityAutoLogoutOnLeave();
-    });
-
-    window.addEventListener('beforeunload', function() {
-        performSecurityAutoLogoutOnLeave();
     });
 
     function hasValidDemographics(prof) {
@@ -1168,6 +1184,7 @@
     });
 
     window.addEventListener('riyalba:signed-out', function() {
+        cancelLeaveAutoLogoutTimer();
         clearUserLocalCache(currentUser);
         firebaseUid = null;
         pendingGoogleUser = null;
@@ -1241,7 +1258,6 @@
         const uData = users[currentUser] || {};
         const currentInputPhone = normalizeWhatsAppPhone(document.getElementById('edit-prof-phone').value.trim());
         const isCurrentVerified = Boolean(currentInputPhone && uData.waPhoneVerified && uData.verifiedPhone === currentInputPhone);
-        pendingWaOtp = null;
         pendingWaPhone = '';
         updateWhatsAppVerificationBadge(isCurrentVerified);
     }
@@ -1249,6 +1265,7 @@
     async function sendWhatsAppVerificationCode() {
         if (profileLocked) return;
         const statusEl = document.getElementById('wa-save-status');
+        const sendBtn = document.getElementById('send-wa-otp-btn');
         const rawPhone = document.getElementById('edit-prof-phone').value.trim();
         const phone = normalizeWhatsAppPhone(rawPhone);
 
@@ -1259,66 +1276,97 @@
             return;
         }
 
-        const code = String(Math.floor(100000 + Math.random() * 900000));
-        pendingWaOtp = code;
-        pendingWaPhone = phone;
-
-        const otpBox = document.getElementById('wa-otp-input-box');
-        if (otpBox) otpBox.classList.remove('hidden');
-        const codeInput = document.getElementById('wa-otp-code-input');
-        if (codeInput) { codeInput.value = ''; codeInput.focus(); }
-
+        if (sendBtn) sendBtn.disabled = true;
         statusEl.style.display = 'block';
-        statusEl.style.color = '#15803D';
-        statusEl.innerText = translations[currentLang].waOtpSentMsg;
+        statusEl.style.color = 'var(--text-muted)';
+        statusEl.innerText = currentLang === 'ar' ? 'جاري إرسال رمز التحقق...' : 'Sending verification code...';
 
-        if (WHATSAPP_OTP_ENDPOINT) {
-            try {
-                await fetch(WHATSAPP_OTP_ENDPOINT, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ phone, code, app: 'RiyalBA' })
-                });
-                return;
-            } catch (e) {
-                console.warn('OTP server fallback to wa.me:', e);
+        try {
+            const response = await fetch(WHATSAPP_OTP_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    phone: phone,
+                    uid: firebaseUid || currentUser || 'anonymous'
+                })
+            });
+
+            const data = await response.json();
+            if (!response.ok || !data.ok) {
+                throw new Error((data && data.error && data.error.error && data.error.error.message) || 'OTP send failed');
             }
-        }
 
-        const otpMsg = currentLang === 'ar'
-            ? `رمز التحقق الخاص بك لربط رقم الواتساب في منصة RiyalBA هو: ${code}`
-            : `Your RiyalBA WhatsApp verification code is: ${code}`;
-        window.open(`https://wa.me/${phone}?text=${encodeURIComponent(otpMsg)}`, '_blank');
+            pendingWaPhone = phone;
+            const otpBox = document.getElementById('wa-otp-input-box');
+            if (otpBox) otpBox.classList.remove('hidden');
+            const codeInput = document.getElementById('wa-otp-code-input');
+            if (codeInput) { codeInput.value = ''; codeInput.focus(); }
+
+            statusEl.style.color = '#15803D';
+            statusEl.innerText = translations[currentLang].waOtpSentMsg;
+        } catch (err) {
+            console.error('Send OTP Error:', err);
+            statusEl.style.color = 'var(--danger)';
+            statusEl.innerText = translations[currentLang].waOtpSendFailedMsg;
+        } finally {
+            if (sendBtn) sendBtn.disabled = false;
+        }
     }
 
-    function verifyWhatsAppCode() {
+    async function verifyWhatsAppCode() {
         if (profileLocked) return;
         const statusEl = document.getElementById('wa-save-status');
+        const verifyBtn = document.getElementById('verify-wa-otp-btn');
         const entered = (document.getElementById('wa-otp-code-input').value || '').trim();
         const currentPhone = normalizeWhatsAppPhone(document.getElementById('edit-prof-phone').value.trim());
 
-        if (!pendingWaOtp || !currentPhone || currentPhone !== pendingWaPhone || entered !== pendingWaOtp) {
+        if (!currentPhone || entered.length !== 6) {
             statusEl.style.display = 'block';
             statusEl.style.color = 'var(--danger)';
             statusEl.innerText = translations[currentLang].waOtpInvalidMsg;
             return;
         }
 
-        const uData = users[currentUser];
-        uData.phone = currentPhone;
-        uData.verifiedPhone = currentPhone;
-        uData.waPhoneVerified = true;
-        pendingWaOtp = null;
-        pendingWaPhone = '';
-        localStorage.setItem('RiyalBA_users', JSON.stringify(users));
-        pushStateToCloud();
+        if (verifyBtn) verifyBtn.disabled = true;
 
-        const otpBox = document.getElementById('wa-otp-input-box');
-        if (otpBox) otpBox.classList.add('hidden');
-        updateWhatsAppVerificationBadge(true);
-        statusEl.style.display = 'block';
-        statusEl.style.color = '#15803D';
-        statusEl.innerText = translations[currentLang].waVerified;
+        try {
+            const response = await fetch(WHATSAPP_VERIFY_OTP_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    phone: currentPhone,
+                    code: entered,
+                    uid: firebaseUid || currentUser || null
+                })
+            });
+
+            const data = await response.json();
+            if (!response.ok || !data.ok || !data.verified) {
+                throw new Error(data.error || 'Verification failed');
+            }
+
+            const uData = users[currentUser];
+            uData.phone = currentPhone;
+            uData.verifiedPhone = currentPhone;
+            uData.waPhoneVerified = true;
+            pendingWaPhone = '';
+            localStorage.setItem('RiyalBA_users', JSON.stringify(users));
+            pushStateToCloud();
+
+            const otpBox = document.getElementById('wa-otp-input-box');
+            if (otpBox) otpBox.classList.add('hidden');
+            updateWhatsAppVerificationBadge(true);
+            statusEl.style.display = 'block';
+            statusEl.style.color = '#15803D';
+            statusEl.innerText = translations[currentLang].waVerified;
+        } catch (err) {
+            console.error('Verify OTP Error:', err);
+            statusEl.style.display = 'block';
+            statusEl.style.color = 'var(--danger)';
+            statusEl.innerText = translations[currentLang].waOtpInvalidMsg;
+        } finally {
+            if (verifyBtn) verifyBtn.disabled = false;
+        }
     }
 
     function getBudgetConsumptionColor(pct) {
@@ -1441,6 +1489,7 @@
     }
 
     async function logout() {
+        cancelLeaveAutoLogoutTimer();
         autoLoggedOutOnLeave = true;
         clearUserLocalCache(currentUser);
         try {
@@ -1487,7 +1536,6 @@
 
     function unlockProfileEditing() {
         profileLocked = false;
-        pendingWaOtp = null;
         pendingWaPhone = '';
         const statusEl = document.getElementById('wa-save-status');
         if (statusEl) statusEl.style.display = 'none';
@@ -2151,35 +2199,33 @@
 
         try {
             const artifact = await buildMonthPdfArtifact(monthId);
-            const summary = getMonthSummaryData(monthId);
+            if (!artifact) throw new Error('Failed to generate PDF');
 
-            if (WHATSAPP_API_ENDPOINT && artifact) {
-                const pdfBase64 = artifact.pdf.output('datauristring').split(',')[1];
-                const response = await fetch(WHATSAPP_API_ENDPOINT, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        phone: phone,
-                        userName: `${uData.fname || ''} ${uData.lname || ''}`.trim() || currentUser,
-                        monthName: artifact.monthTitle,
-                        fileName: artifact.safeFileName,
-                        pdfBase64: pdfBase64
-                    })
-                });
-                if (!response.ok) throw new Error('WhatsApp API request failed');
-                alert(currentLang === 'ar' ? 'تم إرسال ملف PDF إلى واتساب بنجاح!' : 'PDF report sent to WhatsApp successfully!');
-            } else {
-                throw new Error('Fallback to wa.me');
+            const pdfBase64 = artifact.pdf.output('datauristring').split(',')[1];
+            const caption = currentLang === 'ar'
+                ? `تقريرك المالي لشهر ${artifact.monthTitle} من منصة RiyalBA`
+                : `Your RiyalBA financial report for ${artifact.monthTitle}`;
+
+            const response = await fetch(WHATSAPP_API_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    phone: phone,
+                    uid: firebaseUid || currentUser || 'anonymous',
+                    fileName: artifact.safeFileName,
+                    caption: caption,
+                    pdfBase64: pdfBase64
+                })
+            });
+
+            const resData = await response.json();
+            if (!response.ok || !resData.ok) {
+                throw new Error('WhatsApp API request failed');
             }
+            alert(currentLang === 'ar' ? 'تم إرسال ملف PDF إلى واتساب بنجاح!' : 'PDF report sent to WhatsApp successfully!');
         } catch (err) {
-            console.warn('Direct WhatsApp API unavailable, falling back to wa.me:', err.message);
-            const artifact = await buildMonthPdfArtifact(monthId);
-            const summary = getMonthSummaryData(monthId);
-            if (artifact) artifact.pdf.save(artifact.safeFileName);
-            let msg = currentLang === 'ar'
-                ? `مرحباً ${uData.fname || ''}، هذا ملخص تقريرك المالي لشهر ${summary.m.name} من منصة RiyalBA:\n- الدخل: ${summary.totalInc.toLocaleString()} SAR\n- المصروفات: ${summary.ta.toLocaleString()} SAR\n- الصافي: ${summary.net.toLocaleString()} SAR\n(مرفق ملف الـ PDF المحمّل)`
-                : `Hello ${uData.fname || ''}, here is your RiyalBA financial summary for ${summary.m.name}:\n- Income: ${summary.totalInc.toLocaleString()} SAR\n- Expenses: ${summary.ta.toLocaleString()} SAR\n- Net Balance: ${summary.net.toLocaleString()} SAR`;
-            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+            console.error('WhatsApp Report Send Error:', err);
+            alert(currentLang === 'ar' ? 'تعذّر إرسال التقرير عبر الواتساب، تأكد من اتصال السيرفر.' : 'Failed to send PDF report via WhatsApp.');
         } finally {
             resetBtn();
         }
@@ -2522,7 +2568,7 @@
         });
         
         if(efficiencyChart) efficiencyChart.destroy();
-        let effData = pData.map((p, idx) => p > 0 ? Math.min(100, Math.max(0, Math.round((aData[idx] / p) * 100))) : 0);
+        let effData = pData.map((p, idx) => p > 0 ? Math.min(100, Math.max(0, Math.round((data.aData[idx] / p) * 100))) : 0);
         efficiencyChart = new Chart(document.getElementById('efficiencyChart').getContext('2d'), {
             type: 'radar',
             data: { labels: cats, datasets: [{ label: translations[currentLang].chartConsumptionRate, data: effData, backgroundColor: 'rgba(0, 140, 255, 0.2)', borderColor: '#008CFF', pointBackgroundColor: '#EC4899', pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: '#008CFF' }] },
