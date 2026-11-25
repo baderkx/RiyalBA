@@ -761,8 +761,7 @@
     </div>
 
 <script>
-    // روابط سيرفر الواتساب على Render (تأكد من مطابقة رابط خدمتك في لوحة Render)
-    const RENDER_BASE_URL = "https://rw.onrender.com";
+    const RENDER_BASE_URL = "https://rw-k301.onrender.com";
     const WHATSAPP_API_ENDPOINT = `${RENDER_BASE_URL}/api/send-whatsapp-report`;
     const WHATSAPP_OTP_ENDPOINT = `${RENDER_BASE_URL}/api/send-otp`;
     const WHATSAPP_VERIFY_OTP_ENDPOINT = `${RENDER_BASE_URL}/api/verify-otp`;
@@ -1010,7 +1009,7 @@
         '#14B8A6', '#D946EF', '#F97316', '#3B82F6'
     ];
 
-    const AUTO_LOGOUT_GRACE_MS = 5 * 60 * 1000; // 5 دقائق بعد الخروج من الموقع
+    const AUTO_LOGOUT_GRACE_MS = 5 * 60 * 1000;
 
     let currentLang = localStorage.getItem('RiyalBA_lang') || 'en';
     let users = {};
@@ -2568,7 +2567,7 @@
         });
         
         if(efficiencyChart) efficiencyChart.destroy();
-        let effData = pData.map((p, idx) => p > 0 ? Math.min(100, Math.max(0, Math.round((data.aData[idx] / p) * 100))) : 0);
+        let effData = pData.map((p, idx) => p > 0 ? Math.min(100, Math.max(0, Math.round((aData[idx] / p) * 100))) : 0);
         efficiencyChart = new Chart(document.getElementById('efficiencyChart').getContext('2d'), {
             type: 'radar',
             data: { labels: cats, datasets: [{ label: translations[currentLang].chartConsumptionRate, data: effData, backgroundColor: 'rgba(0, 140, 255, 0.2)', borderColor: '#008CFF', pointBackgroundColor: '#EC4899', pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: '#008CFF' }] },
