@@ -44,13 +44,15 @@
         .input-group { margin-bottom: 12px; }
         body.lang-ar .input-group { text-align: right; }
         body.lang-en .input-group { text-align: left; }
-        input, select { width: 100%; padding: 12px; border: 1px solid var(--brand-gray); border-radius: 8px; font-family: inherit; font-size: 15px; box-sizing: border-box; background: white;}
+        input, select { width: 100%; padding: 12px; border: 1px solid var(--brand-gray); border-radius: 8px; font-family: inherit; font-size: 15px; box-sizing: border-box; background: white; transition: 0.2s; }
         input:focus, select:focus { outline: none; border-color: var(--brand-blue); box-shadow: 0 0 0 3px rgba(0, 140, 255, 0.1); }
-        input:disabled, select:disabled { background-color: #F3F4F6; color: #6B7280; cursor: not-allowed; opacity: 0.85; }
+        input:disabled, select:disabled { background-color: #F3F4F6; color: #6B7280; cursor: not-allowed; opacity: 0.85; border-color: #E5E7EB; }
         
         .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.25s; }
         .btn-primary { background: var(--brand-blue); color: white; margin-top: 10px; }
         .btn-primary:hover { background: #0070cc; }
+        .btn-secondary { background: #FFFFFF; color: var(--brand-blue); border: 1.5px solid var(--brand-blue); }
+        .btn-secondary:hover { background: #EFF6FF; }
         .btn-google { background: #FFFFFF; color: #111827; border: 1.5px solid var(--brand-gray); display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); padding: 15px; font-size: 16px; }
         .btn-google:hover { background: #F8FAFC; border-color: var(--brand-blue); transform: translateY(-1px); }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -228,6 +230,42 @@
             accent-color: #16A34A;
             cursor: pointer;
         }
+        .otp-verify-box {
+            background: #FFFFFF;
+            border: 1px dashed #22C55E;
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .otp-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 999px;
+            width: fit-content;
+        }
+        .otp-verified { background: #DCFCE7; color: #166534; }
+        .otp-unverified { background: #FEF3C7; color: #92400E; }
+
+        .profile-lock-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            background: #EFF6FF;
+            border: 1px solid #BFDBFE;
+            color: #1E40AF;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
 
         .pdf-export-stage {
             position: fixed;
@@ -350,7 +388,6 @@
 
     <!-- Google Sign-In Only & First-Time Age/Gender Setup -->
     <div id="auth-wrapper" class="auth-container">
-        <!-- Google Login Card -->
         <div id="login-form" class="auth-card">
             <div class="auth-logo-box" style="margin-bottom: 18px;">
                 <div class="brand-logo-auth">
@@ -622,33 +659,57 @@
                         <input type="file" id="profile-photo-input" accept="image/*" class="hidden" onchange="updateProfilePhoto(event)">
                         <h2 id="prof-name" style="margin: 15px 0 5px; font-size: 22px;">Full Name</h2><p id="prof-user" style="color: var(--text-muted); margin: 0;">email@gmail.com</p>
                     </div>
+
+                    <div id="profile-lock-banner" class="profile-lock-banner">
+                        <span data-i18n="profileLockedNotice">🔒 Profile fields are locked. Click Edit Profile to modify.</span>
+                    </div>
+
                     <div style="display: flex; flex-direction: column; gap: 15px; background: var(--bg-light); padding: 20px; border-radius: 12px; margin-bottom: 25px;">
                         <div class="grid-2">
-                            <div><strong data-i18n="fnameLabel">First Name</strong><input type="text" id="edit-prof-fname"></div>
-                            <div><strong data-i18n="lnameLabel">Last Name</strong><input type="text" id="edit-prof-lname"></div>
+                            <div><strong data-i18n="fnameLabel">First Name</strong><input type="text" id="edit-prof-fname" disabled></div>
+                            <div><strong data-i18n="lnameLabel">Last Name</strong><input type="text" id="edit-prof-lname" disabled></div>
                         </div>
                         <div class="grid-2">
-                            <div><strong data-i18n="ageLabel">Age</strong><select id="edit-prof-age"></select></div>
-                            <div><strong data-i18n="genderLabel">Gender</strong><select id="edit-prof-gender"><option value="male" data-i18n="male">Male</option><option value="female" data-i18n="female">Female</option></select></div>
+                            <div><strong data-i18n="ageLabel">Age</strong><select id="edit-prof-age" disabled></select></div>
+                            <div><strong data-i18n="genderLabel">Gender</strong><select id="edit-prof-gender" disabled><option value="male" data-i18n="male">Male</option><option value="female" data-i18n="female">Female</option></select></div>
                         </div>
                         <div><strong data-i18n="emailLabel">Google Email Address</strong><input type="email" id="edit-prof-email" disabled></div>
-                        <div>
-                            <strong data-i18n="phoneLabel">Phone Number (WhatsApp)</strong>
-                            <input type="tel" id="edit-prof-phone" placeholder="9665XXXXXXXX" dir="ltr">
-                        </div>
 
                         <div class="whatsapp-setting-box">
+                            <div>
+                                <strong data-i18n="phoneLabel">Phone Number (WhatsApp)</strong>
+                                <div style="display:flex; gap:8px; margin-top:6px; flex-wrap:wrap;">
+                                    <input type="tel" id="edit-prof-phone" placeholder="9665XXXXXXXX" dir="ltr" disabled style="flex:1; min-width:180px;" oninput="onWhatsAppPhoneInputChange()">
+                                    <button id="send-wa-otp-btn" type="button" onclick="sendWhatsAppVerificationCode()" class="btn btn-whatsapp" style="padding:10px 14px;" disabled data-i18n="sendOtpBtn">Send Code</button>
+                                </div>
+                            </div>
+
+                            <div id="wa-otp-status-badge" class="otp-status-badge otp-unverified" data-i18n="waNotVerified">Not Verified</div>
+
+                            <div id="wa-otp-input-box" class="otp-verify-box hidden">
+                                <label style="font-size:12px; font-weight:700; color:#166534;" data-i18n="enterOtpLabel">Enter 6-digit WhatsApp verification code:</label>
+                                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                                    <input type="text" id="wa-otp-code-input" maxlength="6" placeholder="123456" dir="ltr" style="flex:1; min-width:140px; letter-spacing:4px; font-weight:800; text-align:center;">
+                                    <button id="verify-wa-otp-btn" type="button" onclick="verifyWhatsAppCode()" class="btn btn-primary" style="width:auto; margin:0; padding:10px 16px;" data-i18n="verifyOtpBtn">Verify</button>
+                                </div>
+                            </div>
+
                             <label class="whatsapp-toggle-row" for="edit-prof-wa-auto">
                                 <div>
                                     <strong style="color:#15803D; font-size:14px;" data-i18n="waAutoTitle">Automatic Monthly WhatsApp PDF Report</strong>
                                     <div style="font-size:12px; color:#166534; margin-top:2px;" data-i18n="waAutoDesc">Receive your monthly PDF financial report on WhatsApp at the end of every month.</div>
                                 </div>
-                                <input type="checkbox" id="edit-prof-wa-auto">
+                                <input type="checkbox" id="edit-prof-wa-auto" disabled>
                             </label>
                             <div id="wa-save-status" style="font-size:12px; font-weight:700; color:#15803D; display:none;"></div>
                         </div>
                     </div>
-                    <div class="grid-2"><button onclick="saveProfileEdits()" class="btn btn-primary" style="margin:0;" data-i18n="saveChangesBtn">Save Changes</button><button onclick="logout()" class="btn" style="background: var(--danger); color: white; margin:0;" data-i18n="logoutBtn">Logout</button></div>
+
+                    <div class="grid-2">
+                        <button id="edit-profile-btn" onclick="unlockProfileEditing()" class="btn btn-secondary" style="margin:0;" data-i18n="editProfileBtn">✏️ Edit Profile</button>
+                        <button id="save-profile-btn" onclick="saveProfileEdits()" class="btn btn-primary hidden" style="margin:0;" data-i18n="saveChangesBtn">Save Changes</button>
+                        <button onclick="logout()" class="btn" style="background: var(--danger); color: white; margin:0;" data-i18n="logoutBtn">Logout</button>
+                    </div>
                 </div>
             </div>
 
@@ -700,7 +761,9 @@
     </div>
 
 <script>
+    // رابط سيرفر الواتساب الخاص بك (مثال: "https://your-server.onrender.com/api/send-whatsapp-report")
     const WHATSAPP_API_ENDPOINT = "";
+    const WHATSAPP_OTP_ENDPOINT = "";
 
     const translations = {
         en: {
@@ -779,15 +842,26 @@
             totalLabel: "Total",
             addItemBtn: "+ Add New Item",
             profileTitle: "My Profile & Account Info",
+            profileLockedNotice: "🔒 Profile fields are locked. Click Edit Profile to modify.",
+            profileUnlockedNotice: "✏️ Editing enabled. Click Save Changes when finished.",
+            editProfileBtn: "✏️ Edit Profile",
             fnameLabel: "First Name",
             lnameLabel: "Last Name",
             ageLabel: "Age",
             genderLabel: "Gender",
             emailLabel: "Google Email Address",
             phoneLabel: "Phone Number (WhatsApp)",
+            sendOtpBtn: "Send Code",
+            verifyOtpBtn: "Verify",
+            enterOtpLabel: "Enter 6-digit WhatsApp verification code:",
+            waVerified: "✅ WhatsApp Number Verified & Linked",
+            waNotVerified: "⚠️ WhatsApp Number Not Verified",
+            waOtpSentMsg: "Verification code sent to WhatsApp. Enter it to link your number.",
+            waOtpInvalidMsg: "Invalid verification code. Please check and try again.",
+            waVerifyBeforeSaveMsg: "Please send and verify the WhatsApp code first before linking this number.",
             waAutoTitle: "Automatic Monthly WhatsApp PDF Report",
             waAutoDesc: "Receive your monthly PDF financial report on WhatsApp at the end of every month.",
-            waSavedMsg: "Saved! Settings synced to your Google account.",
+            waSavedMsg: "Saved & locked! Settings synced to your Google account.",
             waPhoneRequired: "Please enter a valid WhatsApp number with country code (e.g. 9665XXXXXXXX).",
             saveChangesBtn: "Save Changes",
             logoutBtn: "Logout",
@@ -884,15 +958,26 @@
             totalLabel: "الإجمالي",
             addItemBtn: "+ إضافة بند جديد",
             profileTitle: "الملف الشخصي والحساب",
+            profileLockedNotice: "🔒 الحقول مقفلة لحماية بياناتك. اضغط على زر التعديل لفتحها.",
+            profileUnlockedNotice: "✏️ التعديل مفعّل الآن. اضغط حفظ التعديلات بعد الانتهاء.",
+            editProfileBtn: "✏️ تعديل البيانات",
             fnameLabel: "الاسم الأول",
             lnameLabel: "اسم العائلة",
             ageLabel: "العمر",
             genderLabel: "الجنس",
             emailLabel: "البريد الإلكتروني (Google)",
             phoneLabel: "رقم الجوال (واتساب)",
+            sendOtpBtn: "إرسال رمز التحقق",
+            verifyOtpBtn: "تأكيد الرمز",
+            enterOtpLabel: "أدخل رمز التحقق المكوّن من 6 أرقام المرسل على واتساب:",
+            waVerified: "✅ تم التحقق من رقم الواتساب وربطه",
+            waNotVerified: "⚠️ رقم الواتساب غير مؤكد بعد",
+            waOtpSentMsg: "تم إرسال رمز التحقق إلى واتساب. أدخل الرمز لتأكيد وربط الرقم.",
+            waOtpInvalidMsg: "رمز التحقق غير صحيح، يرجى المحاولة مرة أخرى.",
+            waVerifyBeforeSaveMsg: "يرجى إرسال رمز التحقق على الواتساب وتأكيده أولاً قبل حفظ وربط الرقم.",
             waAutoTitle: "إرسال تقرير PDF الشهري تلقائياً على الواتساب",
             waAutoDesc: "استلام التقرير المالي بصيغة PDF على واتسابك في نهاية كل شهر.",
-            waSavedMsg: "تم الحفظ ومزامنة البيانات مع حسابك في Google!",
+            waSavedMsg: "تم الحفظ وقفل التعديل ومزامنة البيانات مع حسابك في Google!",
             waPhoneRequired: "يرجى إدخال رقم واتساب صحيح مع رمز الدولة (مثال: 9665XXXXXXXX).",
             saveChangesBtn: "حفظ التعديلات",
             logoutBtn: "تسجيل الخروج",
@@ -922,15 +1007,38 @@
     ];
 
     let currentLang = localStorage.getItem('RiyalBA_lang') || 'en';
-    let users = JSON.parse(localStorage.getItem('RiyalBA_users')) || {};
-    let monthsDB = JSON.parse(localStorage.getItem('RiyalBA_months')) || {};
+    let users = {};
+    let monthsDB = {};
     let currentUser = null;
     let firebaseUid = null;
     let pendingGoogleUser = null;
     let currentMonthId = null;
     let cardsLocked = true;
+    let profileLocked = true;
+    let pendingWaOtp = null;
+    let pendingWaPhone = "";
+    let isSigningInWithPopup = false;
+    let autoLoggedOutOnLeave = false;
     let donutChart = null, barChart = null, lineDaily = null, lineHistory = null, gaugeChart = null, cardSpendingChart = null, efficiencyChart = null;
     let pdfChartsInstances = [];
+
+    function clearUserLocalCache(userKey) {
+        try {
+            let cachedUsers = JSON.parse(localStorage.getItem('RiyalBA_users') || '{}');
+            let cachedMonths = JSON.parse(localStorage.getItem('RiyalBA_months') || '{}');
+            if (userKey && cachedUsers[userKey]) delete cachedUsers[userKey];
+            for (let id in cachedMonths) {
+                if (!userKey || (cachedMonths[id] && cachedMonths[id].userId === userKey)) {
+                    delete cachedMonths[id];
+                }
+            }
+            localStorage.setItem('RiyalBA_users', JSON.stringify(cachedUsers));
+            localStorage.setItem('RiyalBA_months', JSON.stringify(cachedMonths));
+            localStorage.removeItem('RiyalBA_currentUser');
+        } catch (e) {}
+        users = {};
+        monthsDB = {};
+    }
 
     function pushStateToCloud() {
         if (!firebaseUid || !window.riyalbaAuth || !currentUser || !users[currentUser]) return;
@@ -952,6 +1060,8 @@
         let btn = document.getElementById('google-signin-btn');
         if (errEl) errEl.style.display = 'none';
         if (!window.riyalbaAuth) return;
+        isSigningInWithPopup = true;
+        autoLoggedOutOnLeave = false;
         try {
             if (btn) btn.disabled = true;
             await window.riyalbaAuth.loginWithGmail();
@@ -965,53 +1075,61 @@
             }
         } finally {
             if (btn) btn.disabled = false;
+            setTimeout(() => { isSigningInWithPopup = false; }, 1500);
         }
     }
+
+    function performSecurityAutoLogoutOnLeave() {
+        if (!currentUser && !firebaseUid) return;
+        if (isSigningInWithPopup || autoLoggedOutOnLeave) return;
+        autoLoggedOutOnLeave = true;
+        clearUserLocalCache(currentUser);
+        currentUser = null;
+        firebaseUid = null;
+        if (window.riyalbaAuth && typeof window.riyalbaAuth.logoutGmail === 'function') {
+            window.riyalbaAuth.logoutGmail().catch(() => {});
+        }
+    }
+
+    document.addEventListener('visibilitychange', function() {
+        if (document.visibilityState === 'hidden') {
+            performSecurityAutoLogoutOnLeave();
+        }
+    });
+
+    window.addEventListener('pagehide', function() {
+        performSecurityAutoLogoutOnLeave();
+    });
+
+    window.addEventListener('beforeunload', function() {
+        performSecurityAutoLogoutOnLeave();
+    });
 
     function hasValidDemographics(prof) {
         return Boolean(prof && prof.age && String(prof.age).trim() !== '' && (prof.gender === 'male' || prof.gender === 'female'));
     }
 
     window.addEventListener('riyalba:ready', function(e) {
+        if (autoLoggedOutOnLeave) return;
         const { user, cloudData } = e.detail || {};
         if (!user) return;
         firebaseUid = user.uid;
         currentUser = user.email || user.uid;
-        localStorage.setItem('RiyalBA_currentUser', currentUser);
 
         let nameParts = (user.displayName || '').trim().split(/\s+/);
         let defaultFname = nameParts[0] || (user.email ? user.email.split('@')[0] : 'User');
         let defaultLname = nameParts.slice(1).join(' ');
 
-        if (cloudData && cloudData.months) {
-            for (let id in cloudData.months) {
-                monthsDB[id] = { ...cloudData.months[id], userId: currentUser };
-            }
-            localStorage.setItem('RiyalBA_months', JSON.stringify(monthsDB));
-        }
-
         const cloudProf = (cloudData && cloudData.profile) ? cloudData.profile : null;
-        const localProf = users[currentUser] || null;
-        const mergedProf = {
-            ...(localProf || {}),
-            ...(cloudProf || {}),
-            email: user.email || (cloudProf && cloudProf.email) || (localProf && localProf.email) || '',
-            photo: (cloudProf && cloudProf.photo) || (localProf && localProf.photo) || user.photoURL || null
-        };
 
-        if (hasValidDemographics(mergedProf)) {
-            mergedProf.profileCompleted = true;
-            users[currentUser] = mergedProf;
-            localStorage.setItem('RiyalBA_users', JSON.stringify(users));
-            pushStateToCloud();
-            initApp();
-        } else {
+        if (!cloudData || !hasValidDemographics(cloudProf)) {
+            clearUserLocalCache(currentUser);
             pendingGoogleUser = {
                 uid: user.uid,
                 email: user.email || '',
-                fname: mergedProf.fname || defaultFname,
-                lname: mergedProf.lname || defaultLname,
-                photo: mergedProf.photo || user.photoURL || null
+                fname: (cloudProf && cloudProf.fname) || defaultFname,
+                lname: (cloudProf && cloudProf.lname) || defaultLname,
+                photo: (cloudProf && cloudProf.photo) || user.photoURL || null
             };
             populateAgeDropdowns();
             document.getElementById('app-wrapper').classList.add('hidden');
@@ -1020,13 +1138,38 @@
             document.getElementById('onboarding-form').classList.remove('hidden');
             document.getElementById('onb-fname').value = pendingGoogleUser.fname;
             document.getElementById('onb-lname').value = pendingGoogleUser.lname;
+            return;
         }
+
+        monthsDB = {};
+        if (cloudData.months) {
+            for (let id in cloudData.months) {
+                monthsDB[id] = { ...cloudData.months[id], userId: currentUser };
+            }
+        }
+        localStorage.setItem('RiyalBA_months', JSON.stringify(monthsDB));
+
+        const normalizedPhone = normalizeWhatsAppPhone(cloudProf.phone || '');
+        const mergedProf = {
+            ...cloudProf,
+            phone: normalizedPhone,
+            waPhoneVerified: Boolean(normalizedPhone && cloudProf.waPhoneVerified && cloudProf.verifiedPhone === normalizedPhone),
+            verifiedPhone: normalizedPhone && cloudProf.waPhoneVerified ? normalizedPhone : '',
+            email: user.email || cloudProf.email || '',
+            photo: cloudProf.photo || user.photoURL || null,
+            profileCompleted: true
+        };
+        users = { [currentUser]: mergedProf };
+        localStorage.setItem('RiyalBA_users', JSON.stringify(users));
+        localStorage.setItem('RiyalBA_currentUser', currentUser);
+        profileLocked = true;
+        initApp();
     });
 
     window.addEventListener('riyalba:signed-out', function() {
+        clearUserLocalCache(currentUser);
         firebaseUid = null;
         pendingGoogleUser = null;
-        localStorage.removeItem('RiyalBA_currentUser');
         currentUser = null;
         document.getElementById('app-wrapper').classList.add('hidden');
         document.getElementById('auth-wrapper').classList.remove('hidden');
@@ -1053,20 +1196,27 @@
         currentUser = email || currentUser;
         localStorage.setItem('RiyalBA_currentUser', currentUser);
 
-        users[currentUser] = {
-            fname,
-            lname,
-            age,
-            gender,
-            email,
-            phone,
-            waAutoReport: Boolean(phone),
-            customIncome: 0,
-            customGoal: 1000,
-            photo,
-            profileCompleted: true
+        users = {
+            [currentUser]: {
+                fname,
+                lname,
+                age,
+                gender,
+                email,
+                phone: phone,
+                verifiedPhone: '',
+                waPhoneVerified: false,
+                waAutoReport: false,
+                customIncome: 0,
+                customGoal: 1000,
+                photo,
+                profileCompleted: true
+            }
         };
+        monthsDB = {};
         localStorage.setItem('RiyalBA_users', JSON.stringify(users));
+        localStorage.setItem('RiyalBA_months', JSON.stringify(monthsDB));
+        profileLocked = true;
         pushStateToCloud();
         initApp();
     }
@@ -1076,6 +1226,98 @@
         if (digits.startsWith('00')) digits = digits.slice(2);
         if (digits.startsWith('05') && digits.length === 10) digits = '966' + digits.slice(1);
         return digits;
+    }
+
+    function updateWhatsAppVerificationBadge(isVerified) {
+        const badge = document.getElementById('wa-otp-status-badge');
+        if (!badge) return;
+        badge.className = 'otp-status-badge ' + (isVerified ? 'otp-verified' : 'otp-unverified');
+        badge.innerText = isVerified ? translations[currentLang].waVerified : translations[currentLang].waNotVerified;
+    }
+
+    function onWhatsAppPhoneInputChange() {
+        if (profileLocked) return;
+        const uData = users[currentUser] || {};
+        const currentInputPhone = normalizeWhatsAppPhone(document.getElementById('edit-prof-phone').value.trim());
+        const isCurrentVerified = Boolean(currentInputPhone && uData.waPhoneVerified && uData.verifiedPhone === currentInputPhone);
+        pendingWaOtp = null;
+        pendingWaPhone = '';
+        updateWhatsAppVerificationBadge(isCurrentVerified);
+    }
+
+    async function sendWhatsAppVerificationCode() {
+        if (profileLocked) return;
+        const statusEl = document.getElementById('wa-save-status');
+        const rawPhone = document.getElementById('edit-prof-phone').value.trim();
+        const phone = normalizeWhatsAppPhone(rawPhone);
+
+        if (phone.length < 10) {
+            statusEl.style.display = 'block';
+            statusEl.style.color = 'var(--danger)';
+            statusEl.innerText = translations[currentLang].waPhoneRequired;
+            return;
+        }
+
+        const code = String(Math.floor(100000 + Math.random() * 900000));
+        pendingWaOtp = code;
+        pendingWaPhone = phone;
+
+        const otpBox = document.getElementById('wa-otp-input-box');
+        if (otpBox) otpBox.classList.remove('hidden');
+        const codeInput = document.getElementById('wa-otp-code-input');
+        if (codeInput) { codeInput.value = ''; codeInput.focus(); }
+
+        statusEl.style.display = 'block';
+        statusEl.style.color = '#15803D';
+        statusEl.innerText = translations[currentLang].waOtpSentMsg;
+
+        if (WHATSAPP_OTP_ENDPOINT) {
+            try {
+                await fetch(WHATSAPP_OTP_ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone, code, app: 'RiyalBA' })
+                });
+                return;
+            } catch (e) {
+                console.warn('OTP server fallback to wa.me:', e);
+            }
+        }
+
+        const otpMsg = currentLang === 'ar'
+            ? `رمز التحقق الخاص بك لربط رقم الواتساب في منصة RiyalBA هو: ${code}`
+            : `Your RiyalBA WhatsApp verification code is: ${code}`;
+        window.open(`https://wa.me/${phone}?text=${encodeURIComponent(otpMsg)}`, '_blank');
+    }
+
+    function verifyWhatsAppCode() {
+        if (profileLocked) return;
+        const statusEl = document.getElementById('wa-save-status');
+        const entered = (document.getElementById('wa-otp-code-input').value || '').trim();
+        const currentPhone = normalizeWhatsAppPhone(document.getElementById('edit-prof-phone').value.trim());
+
+        if (!pendingWaOtp || !currentPhone || currentPhone !== pendingWaPhone || entered !== pendingWaOtp) {
+            statusEl.style.display = 'block';
+            statusEl.style.color = 'var(--danger)';
+            statusEl.innerText = translations[currentLang].waOtpInvalidMsg;
+            return;
+        }
+
+        const uData = users[currentUser];
+        uData.phone = currentPhone;
+        uData.verifiedPhone = currentPhone;
+        uData.waPhoneVerified = true;
+        pendingWaOtp = null;
+        pendingWaPhone = '';
+        localStorage.setItem('RiyalBA_users', JSON.stringify(users));
+        pushStateToCloud();
+
+        const otpBox = document.getElementById('wa-otp-input-box');
+        if (otpBox) otpBox.classList.add('hidden');
+        updateWhatsAppVerificationBadge(true);
+        statusEl.style.display = 'block';
+        statusEl.style.color = '#15803D';
+        statusEl.innerText = translations[currentLang].waVerified;
     }
 
     function getBudgetConsumptionColor(pct) {
@@ -1088,7 +1330,6 @@
         applyLanguage(currentLang);
         populateAgeDropdowns();
         updateDashboardDate();
-        // إبقاء شاشة الدخول ظاهرة حتى يكتمل التحقق من حساب Google من Firebase
         document.getElementById('auth-wrapper').classList.remove('hidden');
         document.getElementById('app-wrapper').classList.add('hidden');
     };
@@ -1098,6 +1339,11 @@
         localStorage.setItem('RiyalBA_lang', currentLang);
         applyLanguage(currentLang);
         populateAgeDropdowns();
+        applyProfileLockUI();
+        if (currentUser && users[currentUser]) {
+            const p = normalizeWhatsAppPhone(document.getElementById('edit-prof-phone')?.value || users[currentUser].phone || '');
+            updateWhatsAppVerificationBadge(Boolean(p && users[currentUser].waPhoneVerified && users[currentUser].verifiedPhone === p));
+        }
         updateDashboardDate();
         loadHistory();
         if(currentMonthId) openMonth(currentMonthId);
@@ -1179,6 +1425,7 @@
 
     function initApp() {
         cardsLocked = true;
+        profileLocked = true;
         if (currentUser && users[currentUser] && hasValidDemographics(users[currentUser])) {
             document.getElementById('auth-wrapper').classList.add('hidden');
             document.getElementById('app-wrapper').classList.remove('hidden');
@@ -1193,17 +1440,61 @@
     }
 
     async function logout() {
+        autoLoggedOutOnLeave = true;
+        clearUserLocalCache(currentUser);
         try {
             if (window.riyalbaAuth) await window.riyalbaAuth.logoutGmail();
         } catch (err) {
             console.error(err);
         }
-        localStorage.removeItem('RiyalBA_currentUser');
         location.reload();
     }
 
+    function applyProfileLockUI() {
+        const editableIds = [
+            'edit-prof-fname',
+            'edit-prof-lname',
+            'edit-prof-age',
+            'edit-prof-gender',
+            'edit-prof-phone',
+            'edit-prof-wa-auto'
+        ];
+        editableIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.disabled = profileLocked;
+        });
+
+        const sendOtpBtn = document.getElementById('send-wa-otp-btn');
+        if (sendOtpBtn) sendOtpBtn.disabled = profileLocked;
+
+        const otpBox = document.getElementById('wa-otp-input-box');
+        if (otpBox && profileLocked) otpBox.classList.add('hidden');
+
+        const editBtn = document.getElementById('edit-profile-btn');
+        const saveBtn = document.getElementById('save-profile-btn');
+        const banner = document.getElementById('profile-lock-banner');
+
+        if (editBtn) editBtn.classList.toggle('hidden', !profileLocked);
+        if (saveBtn) saveBtn.classList.toggle('hidden', profileLocked);
+        if (banner) {
+            banner.style.background = profileLocked ? '#EFF6FF' : '#FEF3C7';
+            banner.style.borderColor = profileLocked ? '#BFDBFE' : '#FDE68A';
+            banner.style.color = profileLocked ? '#1E40AF' : '#92400E';
+            banner.innerHTML = `<span>${profileLocked ? translations[currentLang].profileLockedNotice : translations[currentLang].profileUnlockedNotice}</span>`;
+        }
+    }
+
+    function unlockProfileEditing() {
+        profileLocked = false;
+        pendingWaOtp = null;
+        pendingWaPhone = '';
+        const statusEl = document.getElementById('wa-save-status');
+        if (statusEl) statusEl.style.display = 'none';
+        applyProfileLockUI();
+    }
+
     function loadUserProfile() {
-        let uData = users[currentUser] || { fname: currentUser, lname: '', gender: 'male', age: '25', email: currentUser, phone: '', waAutoReport: false, customIncome: 0, customGoal: 1000, photo: null };
+        let uData = users[currentUser] || { fname: currentUser, lname: '', gender: 'male', age: '25', email: currentUser, phone: '', verifiedPhone: '', waPhoneVerified: false, waAutoReport: false, customIncome: 0, customGoal: 1000, photo: null };
         let fullName = (uData.fname + ' ' + uData.lname).trim() || currentUser;
         document.getElementById('user-display').innerText = fullName;
         document.getElementById('mobile-user-display').innerText = fullName;
@@ -1227,6 +1518,9 @@
         document.getElementById('edit-prof-email').value = uData.email || currentUser;
         document.getElementById('edit-prof-phone').value = uData.phone || '';
         document.getElementById('edit-prof-wa-auto').checked = Boolean(uData.waAutoReport);
+        const normalized = normalizeWhatsAppPhone(uData.phone || '');
+        updateWhatsAppVerificationBadge(Boolean(normalized && uData.waPhoneVerified && uData.verifiedPhone === normalized));
+        applyProfileLockUI();
     }
 
     function triggerPhotoUpload() { document.getElementById('profile-photo-input').click(); }
@@ -1245,12 +1539,35 @@
     }
 
     function saveProfileEdits() {
+        if (profileLocked) return;
         let uData = users[currentUser];
         let phoneNormalized = normalizeWhatsAppPhone(document.getElementById('edit-prof-phone').value.trim());
         let waAuto = document.getElementById('edit-prof-wa-auto').checked;
         let statusEl = document.getElementById('wa-save-status');
 
-        if (waAuto && phoneNormalized.length < 10) {
+        if (phoneNormalized) {
+            if (phoneNormalized.length < 10) {
+                statusEl.style.display = 'block';
+                statusEl.style.color = 'var(--danger)';
+                statusEl.innerText = translations[currentLang].waPhoneRequired;
+                return;
+            }
+            const isVerifiedForThisNumber = Boolean(uData.waPhoneVerified && uData.verifiedPhone === phoneNormalized);
+            if (!isVerifiedForThisNumber) {
+                statusEl.style.display = 'block';
+                statusEl.style.color = 'var(--danger)';
+                statusEl.innerText = translations[currentLang].waVerifyBeforeSaveMsg;
+                const otpBox = document.getElementById('wa-otp-input-box');
+                if (otpBox) otpBox.classList.remove('hidden');
+                return;
+            }
+        } else {
+            uData.waPhoneVerified = false;
+            uData.verifiedPhone = '';
+            waAuto = false;
+        }
+
+        if (waAuto && !phoneNormalized) {
             statusEl.style.display = 'block';
             statusEl.style.color = 'var(--danger)';
             statusEl.innerText = translations[currentLang].waPhoneRequired;
@@ -1266,6 +1583,8 @@
         uData.profileCompleted = true;
         localStorage.setItem('RiyalBA_users', JSON.stringify(users));
         pushStateToCloud();
+
+        profileLocked = true;
         loadUserProfile();
 
         statusEl.style.display = 'block';
@@ -1487,6 +1806,9 @@
         } else if (pageId === 'history') {
             ensureCurrentDashboardMonthAutoSaved();
             loadHistory();
+        } else if (pageId === 'profile') {
+            profileLocked = true;
+            loadUserProfile();
         }
     }
 
@@ -1814,6 +2136,7 @@
         if (phone.length < 10) {
             alert(translations[currentLang].waPhoneRequired);
             navigate('profile');
+            unlockProfileEditing();
             return;
         }
 
@@ -1845,14 +2168,17 @@
                 if (!response.ok) throw new Error('WhatsApp API request failed');
                 alert(currentLang === 'ar' ? 'تم إرسال ملف PDF إلى واتساب بنجاح!' : 'PDF report sent to WhatsApp successfully!');
             } else {
-                if (artifact) artifact.pdf.save(artifact.safeFileName);
-                let msg = currentLang === 'ar'
-                    ? `مرحباً ${uData.fname || ''}، هذا ملخص تقريرك المالي لشهر ${summary.m.name} من منصة RiyalBA:\n- الدخل: ${summary.totalInc.toLocaleString()} SAR\n- المصروفات: ${summary.ta.toLocaleString()} SAR\n- الصافي: ${summary.net.toLocaleString()} SAR\n(مرفق ملف الـ PDF المحمّل)`
-                    : `Hello ${uData.fname || ''}, here is your RiyalBA financial summary for ${summary.m.name}:\n- Income: ${summary.totalInc.toLocaleString()} SAR\n- Expenses: ${summary.ta.toLocaleString()} SAR\n- Net Balance: ${summary.net.toLocaleString()} SAR`;
-                window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+                throw new Error('Fallback to wa.me');
             }
         } catch (err) {
-            console.error('WhatsApp Send Error:', err);
+            console.warn('Direct WhatsApp API unavailable, falling back to wa.me:', err.message);
+            const artifact = await buildMonthPdfArtifact(monthId);
+            const summary = getMonthSummaryData(monthId);
+            if (artifact) artifact.pdf.save(artifact.safeFileName);
+            let msg = currentLang === 'ar'
+                ? `مرحباً ${uData.fname || ''}، هذا ملخص تقريرك المالي لشهر ${summary.m.name} من منصة RiyalBA:\n- الدخل: ${summary.totalInc.toLocaleString()} SAR\n- المصروفات: ${summary.ta.toLocaleString()} SAR\n- الصافي: ${summary.net.toLocaleString()} SAR\n(مرفق ملف الـ PDF المحمّل)`
+                : `Hello ${uData.fname || ''}, here is your RiyalBA financial summary for ${summary.m.name}:\n- Income: ${summary.totalInc.toLocaleString()} SAR\n- Expenses: ${summary.ta.toLocaleString()} SAR\n- Net Balance: ${summary.net.toLocaleString()} SAR`;
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
         } finally {
             resetBtn();
         }
@@ -2267,10 +2593,6 @@
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       const cloudData = await loadRiyalBAData(user.uid);
-      await saveRiyalBAData(user.uid, {
-        email: user.email,
-        name: user.displayName || user.email
-      });
       window.dispatchEvent(new CustomEvent("riyalba:ready", {
         detail: { user, cloudData }
       }));
