@@ -265,106 +265,169 @@
             color: #FFFFFF;
         }
 
-        /* حاوية توليد ملف PDF صفحة واحدة بالعرض بدون فتح طباعة */
+        /* حاوية توليد ملف PDF مريحة ومرتبة دون ضغط ودون فتح طباعة */
         .pdf-export-stage {
             position: fixed;
-            left: -10000px;
+            left: -12000px;
             top: 0;
-            width: 1120px;
+            width: 1240px;
             background: #FFFFFF;
             z-index: -1;
             pointer-events: none;
         }
         .pdf-landscape-sheet {
             background: #FFFFFF;
-            width: 1120px;
-            padding: 16px 20px;
+            width: 1240px;
+            padding: 22px 26px;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
         .pdf-sheet-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid var(--brand-blue);
-            padding-bottom: 8px;
-            margin-bottom: 10px;
-            gap: 10px;
+            border-bottom: 2px solid #E2E8F0;
+            padding-bottom: 12px;
+            gap: 16px;
         }
+        .pdf-month-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .pdf-month-title {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--text-main);
+        }
+        .pdf-long-date {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
         .pdf-kpi-row {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-            margin-bottom: 10px;
+            gap: 14px;
         }
         .pdf-kpi-box {
-            border: 1px solid #E2E8F0;
+            border: 1px solid #CBD5E1;
             background: #F8FAFC;
-            border-radius: 8px;
-            padding: 6px 8px;
+            border-radius: 12px;
+            padding: 12px 14px;
         }
         .pdf-kpi-box small {
             display: block;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
+            margin-bottom: 6px;
         }
         .pdf-kpi-box strong {
             display: block;
-            font-size: 13px;
+            font-size: 16px;
             font-weight: 800;
-            margin-top: 2px;
             color: var(--text-main);
         }
-        .pdf-charts-grid {
+
+        .pdf-charts-row-top {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 8px;
-            margin-bottom: 10px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        .pdf-charts-row-mid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
         }
         .pdf-chart-box {
-            border: 1px solid #E2E8F0;
-            border-radius: 8px;
-            padding: 6px 8px;
+            border: 1px solid #CBD5E1;
+            border-radius: 12px;
+            padding: 14px 16px;
             background: #FFFFFF;
             min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
         .pdf-chart-box h5 {
-            margin: 0 0 4px;
-            font-size: 11px;
+            margin: 0;
+            font-size: 13px;
             font-weight: 800;
             color: var(--text-main);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
         .pdf-chart-canvas-wrap {
             position: relative;
-            height: 92px;
+            height: 145px;
             width: 100%;
         }
-        .pdf-mini-scroll {
-            height: 92px;
+        .pdf-consumption-list {
+            height: 145px;
             overflow: hidden;
-            font-size: 10px;
-            line-height: 1.35;
-        }
-        .pdf-bottom-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 8px;
         }
-        .pdf-info-box {
-            border: 1px solid #E2E8F0;
-            border-radius: 8px;
-            padding: 7px 9px;
-            background: #F8FAFC;
+        .pdf-cons-row {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
             font-size: 11px;
         }
+        .pdf-cons-head {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+        }
+        .pdf-cons-bar {
+            height: 6px;
+            background: #E2E8F0;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .pdf-cons-fill {
+            height: 100%;
+            border-radius: 999px;
+        }
+
+        .pdf-bottom-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        .pdf-info-box {
+            border: 1px solid #CBD5E1;
+            border-radius: 12px;
+            padding: 14px 16px;
+            background: #F8FAFC;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 0;
+        }
         .pdf-info-box h5 {
-            margin: 0 0 4px;
-            font-size: 11px;
+            margin: 0;
+            font-size: 13px;
             font-weight: 800;
+            color: var(--text-main);
+        }
+        .pdf-alerts-body {
+            font-size: 11px;
+            line-height: 1.5;
+            color: var(--text-muted);
+            font-weight: 600;
+            max-height: 115px;
+            overflow: hidden;
+        }
+        .pdf-efficiency-wrap {
+            position: relative;
+            height: 115px;
+            width: 100%;
         }
 
         footer { background: var(--brand-dark); color: white; padding: 25px 20px 15px; margin-top: auto; width: 100%; box-sizing: border-box; }
@@ -719,7 +782,7 @@
         </footer>
     </div>
 
-    <!-- حاوية مخفية لتوليد وحفظ ملف PDF صفحة واحدة بالعرض مباشرة -->
+    <!-- حاوية مخفية لتوليد وحفظ ملف PDF مباشرة دون فتح طباعة -->
     <div id="pdf-export-stage" class="pdf-export-stage">
         <div id="pdf-report-sheet" class="pdf-landscape-sheet"></div>
     </div>
@@ -822,7 +885,6 @@
             downloadingPdf: "Downloading...",
             deleteBtn: "Delete",
             confirmDeleteMonth: "Are you sure you want to delete this month?",
-            pdfLandscapeBadge: "Landscape Single-Page Report",
             openBtn: "Open",
             aboutSub: "Your ultimate intelligent partner for personal budgeting and analytics.",
             overviewTitle: "Platform Overview",
@@ -929,7 +991,6 @@
             downloadingPdf: "جاري التحميل...",
             deleteBtn: "حذف",
             confirmDeleteMonth: "هل أنت متأكد من حذف هذا الشهر؟",
-            pdfLandscapeBadge: "تقرير أفقي صفحة واحدة",
             openBtn: "فتح",
             aboutSub: "شريكك الذكي لإدارة ومراقبة ميزانيتك الشخصية بكل سهولة واحترافية.",
             overviewTitle: "فكرة المنصة والهدف",
@@ -1000,11 +1061,15 @@
         });
     }
 
-    function updateDashboardDate() {
+    function getLongFormattedDate() {
         let now = new Date();
         let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        return now.toLocaleDateString(currentLang === 'ar' ? 'ar-SA' : 'en-US', options);
+    }
+
+    function updateDashboardDate() {
         let dateEl = document.getElementById('dashboard-date-badge');
-        if(dateEl) dateEl.innerText = now.toLocaleDateString(currentLang === 'ar' ? 'ar-SA' : 'en-US', options);
+        if(dateEl) dateEl.innerText = getLongFormattedDate();
     }
 
     function syncMonthsDB() {
@@ -1555,6 +1620,21 @@
         pdfChartsInstances = [];
     }
 
+    function buildFullBrandLogoHTML() {
+        return `
+            <div class="brand-logo-auth">
+                <div class="brand-text-wrap">
+                    <span class="brand-subtitle">Money Management</span>
+                    <span class="brand-title">RiyalBA<span class="brand-dot">.</span></span>
+                </div>
+                <div class="brand-icon-box">
+                    <div class="brand-gray-card"></div>
+                    <div class="brand-blue-circle"></div>
+                </div>
+            </div>
+        `;
+    }
+
     function downloadMonthPdfDirectly(monthId) {
         let btn = document.getElementById(`pdf-btn-${monthId}`);
         if (btn) {
@@ -1568,25 +1648,37 @@
 
         destroyPdfCharts();
         let monthTitle = data.m.name || 'Month';
+        let longDateStr = getLongFormattedDate();
 
         let progressHtml = data.cats.length > 0
-            ? data.cats.map((cat, idx) => {
+            ? data.cats.slice(0, 5).map((cat, idx) => {
                 let p = data.pData[idx] || 0;
                 let a = data.aData[idx] || 0;
                 let pct = p > 0 ? Math.round((a / p) * 100) : (a > 0 ? 100 : 0);
-                return `<div style="margin-bottom:3px;"><strong>${cat}:</strong> ${a.toLocaleString()}/${p.toLocaleString()} (${pct}%)</div>`;
+                let fillColor = pct > 100 ? '#EF4444' : (pct >= 85 ? '#F59E0B' : '#008CFF');
+                return `
+                    <div class="pdf-cons-row">
+                        <div class="pdf-cons-head">
+                            <span>${cat}</span>
+                            <span>${a.toLocaleString()} / ${p.toLocaleString()} (${pct}%)</span>
+                        </div>
+                        <div class="pdf-cons-bar">
+                            <div class="pdf-cons-fill" style="width:${Math.min(100, Math.max(0, pct))}%; background:${fillColor};"></div>
+                        </div>
+                    </div>
+                `;
             }).join('')
-            : `<div style="color:var(--text-muted);">${translations[currentLang].noProgressData}</div>`;
+            : `<div style="color:var(--text-muted); font-size:11px;">${translations[currentLang].noProgressData}</div>`;
 
-        let alertsHtml = data.alerts.map(al => `<div style="margin-bottom:3px;">• ${al}</div>`).join('');
+        let alertsHtml = data.alerts.map(al => `<div style="margin-bottom:4px;">• ${al}</div>`).join('');
 
         sheet.innerHTML = `
             <div class="pdf-sheet-header">
-                <div>
-                    <h3 style="margin:0; font-size:17px; font-weight:900;">RiyalBA<span style="color:var(--brand-blue);">.</span> — ${monthTitle}</h3>
-                    <div style="font-size:10px; color:var(--text-muted);">${translations[currentLang].pdfLandscapeBadge}</div>
+                ${buildFullBrandLogoHTML()}
+                <div class="pdf-month-meta" style="text-align: end;">
+                    <h3 class="pdf-month-title">${monthTitle}</h3>
+                    <div class="pdf-long-date">${longDateStr}</div>
                 </div>
-                <div style="font-size:11px; font-weight:700; color:var(--text-muted);">${new Date().toLocaleDateString(currentLang === 'ar' ? 'ar-SA' : 'en-US')}</div>
             </div>
 
             <!-- 1. Total Income, Total Expenses, Net Balance, Savings Rate, Cumulative -->
@@ -1598,8 +1690,8 @@
                 <div class="pdf-kpi-box"><small>${translations[currentLang].kpiCum}</small><strong>${data.cumulativeVal.toLocaleString()} SAR</strong></div>
             </div>
 
-            <!-- 2. Category Distribution, Planned vs Actual, Monthly Comparison, Budget Consumption, Budget Gauge, Spending by Card -->
-            <div class="pdf-charts-grid">
+            <!-- 2. Category Distribution, Planned vs Actual, Monthly Comparison -->
+            <div class="pdf-charts-row-top">
                 <div class="pdf-chart-box">
                     <h5>${translations[currentLang].chartDist}</h5>
                     <div class="pdf-chart-canvas-wrap"><canvas id="pdfDonutCanvas"></canvas></div>
@@ -1612,9 +1704,13 @@
                     <h5>${translations[currentLang].chartHistory}</h5>
                     <div class="pdf-chart-canvas-wrap"><canvas id="pdfHistoryCanvas"></canvas></div>
                 </div>
+            </div>
+
+            <!-- 3. Budget Consumption, Budget Gauge, Spending by Card -->
+            <div class="pdf-charts-row-mid">
                 <div class="pdf-chart-box">
                     <h5>${translations[currentLang].chartProgress}</h5>
-                    <div class="pdf-mini-scroll">${progressHtml}</div>
+                    <div class="pdf-consumption-list">${progressHtml}</div>
                 </div>
                 <div class="pdf-chart-box">
                     <h5>${translations[currentLang].chartGauge}</h5>
@@ -1626,28 +1722,28 @@
                 </div>
             </div>
 
-            <!-- 3. Financial Goals, Smart Alerts, Spending Efficiency Index -->
+            <!-- 4. Financial Goals, Smart Alerts, Spending Efficiency Index -->
             <div class="pdf-bottom-grid">
                 <div class="pdf-info-box">
                     <h5>${translations[currentLang].finGoals}</h5>
-                    <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:4px;">
+                    <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:700;">
                         <span>${translations[currentLang].monthlyTarget}</span>
                         <span>${data.targetSavings.toLocaleString()} SAR</span>
                     </div>
-                    <div style="background:#E2E8F0; height:7px; border-radius:999px; overflow:hidden; margin-bottom:4px;">
+                    <div style="background:#E2E8F0; height:9px; border-radius:999px; overflow:hidden;">
                         <div style="background:${data.goalPct >= 100 ? 'var(--success)' : 'var(--brand-blue)'}; width:${data.goalPct}%; height:100%;"></div>
                     </div>
-                    <div style="font-weight:700; color:var(--text-muted);">${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)</div>
+                    <div style="font-size:12px; font-weight:700; color:var(--text-muted);">${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)</div>
                 </div>
 
                 <div class="pdf-info-box">
                     <h5>${translations[currentLang].smartAlerts}</h5>
-                    <div style="max-height:56px; overflow:hidden; color:var(--text-muted); font-weight:600;">${alertsHtml}</div>
+                    <div class="pdf-alerts-body">${alertsHtml}</div>
                 </div>
 
                 <div class="pdf-info-box">
                     <h5>${translations[currentLang].chartEfficiency}</h5>
-                    <div style="position:relative; height:64px; width:100%;"><canvas id="pdfEfficiencyCanvas"></canvas></div>
+                    <div class="pdf-efficiency-wrap"><canvas id="pdfEfficiencyCanvas"></canvas></div>
                 </div>
             </div>
         `;
