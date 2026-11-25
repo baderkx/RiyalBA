@@ -157,7 +157,7 @@
             cursor: pointer;
         }
 
-        /* Budget Consumption: ترتيب عمودي فقط بدون مؤشر يمين/يسار */
+        /* Budget Consumption */
         #progress-bars-container {
             max-height: 220px;
             overflow-y: auto;
@@ -265,46 +265,46 @@
             color: #FFFFFF;
         }
 
-        /* حاوية توليد ملف PDF مريحة ومرتبة دون ضغط ودون فتح طباعة */
+        /* حاوية توليد ملف PDF صفحة واحدة بالعرض ومنسقة بدقة بدون Smart Alerts */
         .pdf-export-stage {
             position: fixed;
-            left: -12000px;
+            left: -13000px;
             top: 0;
-            width: 1240px;
+            width: 1280px;
             background: #FFFFFF;
             z-index: -1;
             pointer-events: none;
         }
         .pdf-landscape-sheet {
             background: #FFFFFF;
-            width: 1240px;
-            padding: 22px 26px;
+            width: 1280px;
+            padding: 16px 22px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
         }
         .pdf-sheet-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 2px solid #E2E8F0;
-            padding-bottom: 12px;
+            padding-bottom: 10px;
             gap: 16px;
         }
         .pdf-month-meta {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 3px;
         }
         .pdf-month-title {
             margin: 0;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 900;
             color: var(--text-main);
         }
         .pdf-long-date {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             color: var(--text-muted);
         }
@@ -312,72 +312,67 @@
         .pdf-kpi-row {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 14px;
+            gap: 12px;
         }
         .pdf-kpi-box {
             border: 1px solid #CBD5E1;
             background: #F8FAFC;
-            border-radius: 12px;
-            padding: 12px 14px;
+            border-radius: 10px;
+            padding: 10px 12px;
         }
         .pdf-kpi-box small {
             display: block;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
         .pdf-kpi-box strong {
             display: block;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 800;
             color: var(--text-main);
         }
 
-        .pdf-charts-row-top {
+        .pdf-charts-row {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-        }
-        .pdf-charts-row-mid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
+            gap: 12px;
         }
         .pdf-chart-box {
             border: 1px solid #CBD5E1;
-            border-radius: 12px;
-            padding: 14px 16px;
+            border-radius: 10px;
+            padding: 11px 14px;
             background: #FFFFFF;
             min-width: 0;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
         .pdf-chart-box h5 {
             margin: 0;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 800;
             color: var(--text-main);
         }
         .pdf-chart-canvas-wrap {
             position: relative;
-            height: 145px;
+            height: 118px;
             width: 100%;
         }
         .pdf-consumption-list {
-            height: 145px;
+            height: 118px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
         .pdf-cons-row {
             display: flex;
             flex-direction: column;
-            gap: 3px;
-            font-size: 11px;
+            gap: 2px;
+            font-size: 10px;
         }
         .pdf-cons-head {
             display: flex;
@@ -395,15 +390,15 @@
             border-radius: 999px;
         }
 
-        .pdf-bottom-grid {
+        .pdf-bottom-row {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
+            grid-template-columns: 1fr 1.6fr;
+            gap: 12px;
         }
         .pdf-info-box {
             border: 1px solid #CBD5E1;
-            border-radius: 12px;
-            padding: 14px 16px;
+            border-radius: 10px;
+            padding: 11px 14px;
             background: #F8FAFC;
             display: flex;
             flex-direction: column;
@@ -412,21 +407,13 @@
         }
         .pdf-info-box h5 {
             margin: 0;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 800;
             color: var(--text-main);
         }
-        .pdf-alerts-body {
-            font-size: 11px;
-            line-height: 1.5;
-            color: var(--text-muted);
-            font-weight: 600;
-            max-height: 115px;
-            overflow: hidden;
-        }
         .pdf-efficiency-wrap {
             position: relative;
-            height: 115px;
+            height: 92px;
             width: 100%;
         }
 
@@ -646,7 +633,7 @@
                             <input type="number" id="new-card-limit" data-i18n-placeholder="cardLimitPlaceholder" min="0" style="flex: 1; min-width: 140px; padding: 10px;">
                             <button onclick="addNewCard()" id="save-new-card-btn" class="btn btn-primary" style="width: auto; padding: 10px 20px; margin: 0;" data-i18n="saveCardBtn">Add</button>
                         </div>
-                        <div id="cards-locked-note" class="hidden" style="margin-top: 8px; font-size: 12px; font-weight: 700; color: var(--text-muted);" data-i18n="cardsLockedNote">Card balances, colors, and editing are locked after Save. Click Edit Data to unlock.</div>
+                        <div id="cards-locked-note" class="hidden" style="margin-top: 8px; font-size: 12px; font-weight: 700; color: var(--text-muted);" data-i18n="cardsLockedNote">Cards are locked. Click Edit Data to add or edit cards.</div>
                         <div id="cards-manage-list" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px;"></div>
                     </div>
 
@@ -782,7 +769,7 @@
         </footer>
     </div>
 
-    <!-- حاوية مخفية لتوليد وحفظ ملف PDF مباشرة دون فتح طباعة -->
+    <!-- حاوية مخفية لتوليد وحفظ ملف PDF صفحة واحدة بالعرض مباشرة -->
     <div id="pdf-export-stage" class="pdf-export-stage">
         <div id="pdf-report-sheet" class="pdf-landscape-sheet"></div>
     </div>
@@ -828,7 +815,7 @@
             cardSpentLabel: "Spent",
             cardLeftLabel: "Remaining",
             manageCardsTitle: "Manage Cards",
-            cardsLockedNote: "Card balances, colors, and editing are locked after Save. Click Edit Data to unlock.",
+            cardsLockedNote: "Cards are locked. Click Edit Data to add or edit cards.",
             addCardBtn: "+ Add Card",
             cardNamePlaceholder: "Card Name (e.g. Card 1, Card 2)",
             cardLimitPlaceholder: "Card Balance / Limit",
@@ -934,7 +921,7 @@
             cardSpentLabel: "المنصرف",
             cardLeftLabel: "المتبقي",
             manageCardsTitle: "إدارة البطاقات",
-            cardsLockedNote: "مبالغ البطاقات وألوانها وتعديلها مقفلة بعد الحفظ. اضغط تعديل البيانات لفتحها.",
+            cardsLockedNote: "البطاقات مقفلة. اضغط تعديل البيانات لإضافة أو تعديل البطاقات.",
             addCardBtn: "+ إضافة بطاقة",
             cardNamePlaceholder: "اسم البطاقة (مثال: بطاقة 1، بطاقة 2)",
             cardLimitPlaceholder: "رصيد / حد البطاقة",
@@ -1014,9 +1001,15 @@
     let monthsDB = JSON.parse(localStorage.getItem('RiyalBA_months')) || {};
     let currentUser = localStorage.getItem('RiyalBA_currentUser');
     let currentMonthId = null;
-    let cardsLocked = false;
+    let cardsLocked = true;
     let donutChart = null, barChart = null, lineDaily = null, lineHistory = null, gaugeChart = null, cardSpendingChart = null, efficiencyChart = null;
     let pdfChartsInstances = [];
+
+    function getBudgetConsumptionColor(pct) {
+        if (pct > 100) return '#EF4444';
+        if (pct === 100) return '#10B981';
+        return '#008CFF';
+    }
 
     window.onload = function() {
         applyLanguage(currentLang);
@@ -1108,6 +1101,7 @@
     }
 
     function initApp() {
+        cardsLocked = true;
         if (currentUser && users[currentUser]) {
             document.getElementById('auth-wrapper').classList.add('hidden');
             document.getElementById('app-wrapper').classList.remove('hidden');
@@ -1229,8 +1223,6 @@
         users[currentUser].customIncome = val;
         localStorage.setItem('RiyalBA_users', JSON.stringify(users));
         document.getElementById('income-edit-box').classList.add('hidden');
-        cardsLocked = true;
-        applyCardsLockUI();
         calc();
         syncMonthsDB();
     }
@@ -1254,8 +1246,6 @@
         }
         localStorage.setItem('RiyalBA_users', JSON.stringify(users));
         document.getElementById('goal-edit-box').classList.add('hidden');
-        cardsLocked = true;
-        applyCardsLockUI();
         calc();
         syncMonthsDB();
     }
@@ -1324,6 +1314,7 @@
     }
 
     function createCardRecord(name, limit) {
+        if (cardsLocked) return;
         let cards = getMonthCards();
         let usedColors = cards.map(c => c.color);
         cards.push({
@@ -1449,11 +1440,13 @@
         document.getElementById('page-' + pageId).classList.add('active');
         document.getElementById('nav-' + pageId).classList.add('active');
         if(pageId === 'dashboard') {
+            cardsLocked = true;
             ensureCurrentDashboardMonthAutoSaved();
             applyCardsLockUI();
             renderTableReadonly();
             calc();
         } else if (pageId === 'edit-month' && currentMonthId) {
+            cardsLocked = false;
             applyCardsLockUI();
             renderTableEdit();
         } else if (pageId === 'history') {
@@ -1556,22 +1549,6 @@
             }
         }
 
-        let alerts = [];
-        (m.expenses || []).forEach(ex => {
-            let p = parseFloat(ex.p) || 0;
-            let a = parseFloat(ex.a) || 0;
-            if (a > p && p > 0) {
-                alerts.push(currentLang === 'ar'
-                    ? `تجاوزت فئة "${ex.cat || '-'}" الميزانية المخططة.`
-                    : `Category "${ex.cat || '-'}" exceeded planned budget.`);
-            } else if (a >= p * 0.85 && p > 0) {
-                alerts.push(currentLang === 'ar'
-                    ? `فئة "${ex.cat || '-'}" تقترب من الحد المخطط.`
-                    : `Category "${ex.cat || '-'}" is approaching budget limit.`);
-            }
-        });
-        if (alerts.length === 0) alerts.push(translations[currentLang].defaultAlert);
-
         let minForGoal = Math.min(net, remPlanned);
         let goalPct = targetSavings === 0
             ? (minForGoal >= 0 ? 100 : 0)
@@ -1581,7 +1558,7 @@
             m, tp, ta, totalInc, net, remPlanned, savingsRate, cumulativeVal,
             cats, pData, aData, cards, cardsTotal,
             cardSpendLabels, cardSpendValues, cardSpendColors,
-            targetSavings, minForGoal, goalPct, alerts
+            targetSavings, minForGoal, goalPct
         };
     }
 
@@ -1651,16 +1628,16 @@
         let longDateStr = getLongFormattedDate();
 
         let progressHtml = data.cats.length > 0
-            ? data.cats.slice(0, 5).map((cat, idx) => {
+            ? data.cats.slice(0, 4).map((cat, idx) => {
                 let p = data.pData[idx] || 0;
                 let a = data.aData[idx] || 0;
                 let pct = p > 0 ? Math.round((a / p) * 100) : (a > 0 ? 100 : 0);
-                let fillColor = pct > 100 ? '#EF4444' : (pct >= 85 ? '#F59E0B' : '#008CFF');
+                let fillColor = getBudgetConsumptionColor(pct);
                 return `
                     <div class="pdf-cons-row">
                         <div class="pdf-cons-head">
                             <span>${cat}</span>
-                            <span>${a.toLocaleString()} / ${p.toLocaleString()} (${pct}%)</span>
+                            <span style="color:${fillColor};">${a.toLocaleString()} / ${p.toLocaleString()} (${pct}%)</span>
                         </div>
                         <div class="pdf-cons-bar">
                             <div class="pdf-cons-fill" style="width:${Math.min(100, Math.max(0, pct))}%; background:${fillColor};"></div>
@@ -1669,8 +1646,6 @@
                 `;
             }).join('')
             : `<div style="color:var(--text-muted); font-size:11px;">${translations[currentLang].noProgressData}</div>`;
-
-        let alertsHtml = data.alerts.map(al => `<div style="margin-bottom:4px;">• ${al}</div>`).join('');
 
         sheet.innerHTML = `
             <div class="pdf-sheet-header">
@@ -1691,7 +1666,7 @@
             </div>
 
             <!-- 2. Category Distribution, Planned vs Actual, Monthly Comparison -->
-            <div class="pdf-charts-row-top">
+            <div class="pdf-charts-row">
                 <div class="pdf-chart-box">
                     <h5>${translations[currentLang].chartDist}</h5>
                     <div class="pdf-chart-canvas-wrap"><canvas id="pdfDonutCanvas"></canvas></div>
@@ -1707,7 +1682,7 @@
             </div>
 
             <!-- 3. Budget Consumption, Budget Gauge, Spending by Card -->
-            <div class="pdf-charts-row-mid">
+            <div class="pdf-charts-row">
                 <div class="pdf-chart-box">
                     <h5>${translations[currentLang].chartProgress}</h5>
                     <div class="pdf-consumption-list">${progressHtml}</div>
@@ -1722,8 +1697,8 @@
                 </div>
             </div>
 
-            <!-- 4. Financial Goals, Smart Alerts, Spending Efficiency Index -->
-            <div class="pdf-bottom-grid">
+            <!-- 4. Financial Goals & Spending Efficiency Index (بدون Smart Alerts) -->
+            <div class="pdf-bottom-row">
                 <div class="pdf-info-box">
                     <h5>${translations[currentLang].finGoals}</h5>
                     <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:700;">
@@ -1734,11 +1709,6 @@
                         <div style="background:${data.goalPct >= 100 ? 'var(--success)' : 'var(--brand-blue)'}; width:${data.goalPct}%; height:100%;"></div>
                     </div>
                     <div style="font-size:12px; font-weight:700; color:var(--text-muted);">${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)</div>
-                </div>
-
-                <div class="pdf-info-box">
-                    <h5>${translations[currentLang].smartAlerts}</h5>
-                    <div class="pdf-alerts-body">${alertsHtml}</div>
                 </div>
 
                 <div class="pdf-info-box">
@@ -1797,11 +1767,12 @@
 
         let safeFileName = `RiyalBA-${monthTitle.replace(/[^\w\u0600-\u06FF-]+/g, '_')}.pdf`;
         let opt = {
-            margin: 6,
+            margin: 5,
             filename: safeFileName,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, useCORS: true, logging: false },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
+            pagebreak: { mode: ['avoid-all'] }
         };
 
         setTimeout(() => {
@@ -1824,6 +1795,7 @@
     function openMonth(id) {
         if (!monthsDB[id] || monthsDB[id].isDeleted) return;
         currentMonthId = id;
+        cardsLocked = true;
         let nowMonthName = new Date().toLocaleString(currentLang === 'ar' ? 'ar-SA' : 'en-US', { month: 'long', year: 'numeric' });
         if (!monthsDB[id].name) monthsDB[id].name = nowMonthName;
         syncMonthsDB();
@@ -1957,11 +1929,12 @@
             let a = parseFloat(ex.a) || 0;
             let pct = p > 0 ? Math.round((a / p) * 100) : (a > 0 ? 100 : 0);
             let barPct = Math.min(100, Math.max(0, pct));
-            let barColor = pct > 100 ? 'var(--danger)' : (pct >= 85 ? 'var(--warning)' : 'var(--brand-blue)');
+            let barColor = getBudgetConsumptionColor(pct);
+            let textColor = pct > 100 ? 'var(--danger)' : (pct === 100 ? 'var(--success)' : 'var(--text-muted)');
             return `
                 <div class="progress-item">
                     <div class="progress-cat-title">${label}</div>
-                    <div class="progress-val-sub" style="color:${pct > 100 ? 'var(--danger)' : 'var(--text-muted)'};">${a.toLocaleString()} / ${p.toLocaleString()} SAR (${pct}%)</div>
+                    <div class="progress-val-sub" style="color:${textColor};">${a.toLocaleString()} / ${p.toLocaleString()} SAR (${pct}%)</div>
                     <div class="progress-track">
                         <div class="progress-fill" style="width:${barPct}%; background:${barColor};"></div>
                     </div>
