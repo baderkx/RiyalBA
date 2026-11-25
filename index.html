@@ -326,51 +326,48 @@
             background: #FFFFFF;
             width: 1122px;
             height: 793px;
-            padding: 12px 18px;
+            padding: 10px 16px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 8px;
+            gap: 5px;
             overflow: hidden;
             font-family: 'Inter', 'Cairo', sans-serif;
         }
         .pdf-top-header {
             display: grid;
-            grid-template-columns: 1fr auto 1fr;
+            grid-template-columns: auto 1fr auto;
             align-items: center;
-            border-bottom: 1.5px solid #E2E8F0;
+            border-bottom: 2px solid #00B0F0;
             padding-bottom: 6px;
-            gap: 10px;
+            gap: 12px;
             flex-shrink: 0;
         }
-        .pdf-top-header .brand-title { font-size: 18px; }
-        .pdf-top-header .brand-subtitle { font-size: 8px; }
-        .pdf-top-header .brand-icon-box { width: 40px; height: 26px; }
-        .pdf-top-header .brand-blue-circle { left: 4px; top: 3px; width: 20px; height: 20px; }
-
-        .pdf-user-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            justify-self: end;
-            background: #F8FAFC;
-            border: 1px solid #CBD5E1;
-            border-radius: 999px;
-            padding: 4px 11px;
+        .pdf-symbol-only {
+            position: relative;
+            width: 44px;
+            height: 28px;
+            border-radius: 6px;
+            background: #D1D5DB;
+            flex-shrink: 0;
         }
-        .pdf-user-avatar {
-            width: 24px;
-            height: 24px;
+        .pdf-symbol-only::after {
+            content: "";
+            position: absolute;
+            left: 5px;
+            top: 3px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
             background: #008CFF;
-            color: #FFFFFF;
-            font-size: 11px;
+        }
+        .pdf-user-name-only {
+            justify-self: end;
+            font-size: 13px;
             font-weight: 800;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            object-fit: cover;
+            color: #111827;
+            white-space: nowrap;
         }
         .pdf-center-title {
             text-align: center;
@@ -384,41 +381,42 @@
         }
         .pdf-center-title p {
             margin: 2px 0 0;
-            font-size: 9.5px;
-            font-weight: 700;
-            color: #6B7280;
+            font-size: 10.5px;
+            font-weight: 600;
+            color: #4B5563;
             line-height: 1.2;
         }
 
         .pdf-row-1 {
             display: grid;
             grid-template-columns: 1.45fr 1fr;
-            gap: 10px;
+            gap: 6px;
             flex-shrink: 0;
         }
         .pdf-kpi-2x2 {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
+            gap: 4px;
         }
         .pdf-kpi-card {
             border: 1px solid #CBD5E1;
             background: #F8FAFC;
-            border-radius: 10px;
-            padding: 8px 12px;
+            border-radius: 8px;
+            padding: 4px 9px;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            gap: 1px;
         }
         .pdf-kpi-card small {
-            font-size: 9px;
+            font-size: 8.5px;
             font-weight: 700;
             color: #6B7280;
             text-transform: uppercase;
-            margin-bottom: 2px;
+            line-height: 1.1;
         }
         .pdf-kpi-card strong {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 800;
             color: #111827;
             line-height: 1.2;
@@ -426,68 +424,68 @@
         .pdf-goals-card {
             border: 1px solid #CBD5E1;
             background: #F8FAFC;
-            border-radius: 10px;
-            padding: 9px 13px;
+            border-radius: 8px;
+            padding: 5px 10px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            gap: 4px;
+            justify-content: center;
+            gap: 2.5px;
             min-width: 0;
         }
         .pdf-goals-card h4 {
             margin: 0;
-            font-size: 12.5px;
+            font-size: 12px;
             font-weight: 800;
             color: #111827;
-            line-height: 1.25;
+            line-height: 1.2;
         }
 
         .pdf-row-2 {
             display: grid;
             grid-template-columns: 1fr 1fr 1.25fr;
-            gap: 10px;
+            gap: 7px;
             flex-shrink: 0;
         }
         .pdf-row-3 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 7px;
             flex-shrink: 0;
         }
         .pdf-panel {
             border: 1px solid #CBD5E1;
-            border-radius: 10px;
-            padding: 8px 12px;
+            border-radius: 8px;
+            padding: 7px 11px;
             background: #FFFFFF;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 3px;
             min-width: 0;
         }
         .pdf-panel h5 {
             margin: 0;
-            font-size: 11.5px;
+            font-size: 11px;
             font-weight: 800;
             color: #111827;
-            line-height: 1.25;
+            line-height: 1.2;
         }
         .pdf-canvas-mid {
             position: relative;
-            height: 184px;
+            height: 196px;
             width: 100%;
         }
         .pdf-canvas-bot {
             position: relative;
-            height: 164px;
+            height: 178px;
             width: 100%;
         }
         .pdf-footer-bar {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             border-top: 1px solid #E2E8F0;
-            padding-top: 5px;
-            font-size: 10px;
+            padding-top: 4px;
+            font-size: 9.5px;
             font-weight: 600;
             color: #6B7280;
             flex-shrink: 0;
@@ -981,8 +979,7 @@
             linkedinBtn: "🔗 LinkedIn Profile",
             footerSub: "Smart Money Management",
             loginError: "Invalid username or password",
-            signupError: "Please fill all fields correctly",
-            pdfReportSubtitle: "Landscape Single-Page Report"
+            signupError: "Please fill all fields correctly"
         },
         ar: {
             splashSub: "إدارة الأموال بذكاء",
@@ -1088,8 +1085,7 @@
             linkedinBtn: "🔗 حساب لينكد إن",
             footerSub: "إدارة الأموال الذكية",
             loginError: "خطأ في اسم المستخدم أو كلمة المرور",
-            signupError: "يرجى تعبئة جميع الحقول بشكل صحيح",
-            pdfReportSubtitle: "تقرير مالي شامل من صفحة واحدة بالعرض"
+            signupError: "يرجى تعبئة جميع الحقول بشكل صحيح"
         }
     };
 
@@ -1705,21 +1701,6 @@
         pdfChartsInstances = [];
     }
 
-    function buildFullBrandLogoHTML() {
-        return `
-            <div class="brand-logo-auth">
-                <div class="brand-text-wrap">
-                    <span class="brand-subtitle">Money Management</span>
-                    <span class="brand-title">RiyalBA<span class="brand-dot">.</span></span>
-                </div>
-                <div class="brand-icon-box">
-                    <div class="brand-gray-card"></div>
-                    <div class="brand-blue-circle"></div>
-                </div>
-            </div>
-        `;
-    }
-
     function renderPdfSheetContent(monthId) {
         let data = getMonthSummaryData(monthId);
         let sheet = document.getElementById('pdf-report-sheet');
@@ -1727,13 +1708,8 @@
 
         destroyPdfCharts();
         let monthTitle = data.m.name || 'Month';
-        let longDateStr = getLongFormattedDate();
-        let uData = users[currentUser] || { fname: currentUser || 'User', lname: '', gender: 'male', photo: null };
+        let uData = users[currentUser] || { fname: currentUser || 'User', lname: '' };
         let fullName = `${uData.fname || ''} ${uData.lname || ''}`.trim() || currentUser;
-        let avatarBg = uData.gender === 'female' ? '#EC4899' : '#008CFF';
-        let avatarHtml = uData.photo
-            ? `<img src="${uData.photo}" class="pdf-user-avatar" crossorigin="anonymous">`
-            : `<div class="pdf-user-avatar" style="background:${avatarBg};">${fullName.charAt(0).toUpperCase()}</div>`;
 
         let minSourceName = data.net <= data.remPlanned
             ? translations[currentLang].kpiNet
@@ -1744,18 +1720,12 @@
 
         sheet.innerHTML = `
             <div class="pdf-top-header">
-                <div style="justify-self:start;">${buildFullBrandLogoHTML()}</div>
+                <div class="pdf-symbol-only"></div>
                 <div class="pdf-center-title">
-                    <h2>RiyalBA. - ${monthTitle}</h2>
-                    <p>${translations[currentLang].pdfReportSubtitle} &bull; ${longDateStr}</p>
+                    <h2>${monthTitle}</h2>
+                    <p>${translations[currentLang].aboutSub}</p>
                 </div>
-                <div class="pdf-user-chip">
-                    ${avatarHtml}
-                    <div style="line-height:1.15;">
-                        <div style="font-size:11px; font-weight:800; color:#111827;">${fullName}</div>
-                        <div style="font-size:9.5px; font-weight:600; color:#6B7280;">@${currentUser || ''}</div>
-                    </div>
-                </div>
+                <div class="pdf-user-name-only">${fullName}</div>
             </div>
 
             <div class="pdf-row-1">
@@ -1784,11 +1754,11 @@
                         <span>${translations[currentLang].monthlyTarget}</span>
                         <span>${data.targetSavings.toLocaleString()} SAR</span>
                     </div>
-                    <div style="background:#E2E8F0; height:8px; border-radius:999px; overflow:hidden;">
+                    <div style="background:#E2E8F0; height:7px; border-radius:999px; overflow:hidden;">
                         <div style="background:${data.goalPct >= 100 ? '#10B981' : '#008CFF'}; width:${data.goalPct}%; height:100%;"></div>
                     </div>
-                    <div style="font-size:10.5px; font-weight:700; color:${data.goalPct >= 100 ? '#10B981' : '#4B5563'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${goalStatusLine}</div>
-                    <div style="font-size:10.5px; font-weight:700; color:#6B7280;">${translations[currentLang].remDebts}: <strong class="text-red">0 SAR</strong></div>
+                    <div style="font-size:10px; font-weight:700; color:${data.goalPct >= 100 ? '#10B981' : '#4B5563'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${goalStatusLine}</div>
+                    <div style="font-size:10px; font-weight:700; color:#6B7280;">${translations[currentLang].remDebts}: <strong class="text-red">0 SAR</strong></div>
                 </div>
             </div>
 
@@ -1819,7 +1789,6 @@
             </div>
 
             <div class="pdf-footer-bar">
-                <span>RiyalBA. &mdash; ${translations[currentLang].aboutSub}</span>
                 <span>&copy; 2026 RiyalBA. All Rights Reserved.</span>
             </div>
         `;
