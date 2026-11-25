@@ -1,0 +1,2283 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en" id="html-root">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RiyalBA - Money Management</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 50'%3E%3Crect width='80' height='50' rx='8' fill='%23D1D5DB'/%3E%3Ccircle cx='30' cy='25' r='20' fill='%23008CFF'/%3E%3C/svg%3E">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-blue: #008CFF;
+            --brand-pink: #EC4899;
+            --brand-gray: #D1D5DB;
+            --brand-dark: #000000;
+            --success: #10B981;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --whatsapp: #25D366;
+            --bg-white: #FFFFFF;
+            --bg-light: #F8FAFC;
+            --text-main: #111827;
+            --text-muted: #6B7280;
+        }
+        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; background-color: var(--bg-light); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        body.lang-ar { font-family: 'Cairo', sans-serif; direction: rtl; text-align: right; }
+        body.lang-en { font-family: 'Inter', sans-serif; direction: ltr; text-align: left; }
+        .hidden { display: none !important; }
+        
+        .auth-container { background: url('pexels-brett-sayles-6937714.jpg') center/cover fixed; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 15px;}
+        .auth-card { background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px); padding: 32px 30px; border-radius: 20px; width: 100%; max-width: 430px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center; max-height: 95vh; overflow-y: auto;}
+        
+        .brand-logo-auth { display: inline-flex; align-items: center; gap: 12px; direction: ltr !important; unicode-bidi: isolate; justify-content: center; }
+        .brand-text-wrap { display: flex; flex-direction: column; align-items: flex-end; line-height: 1; }
+        .brand-subtitle { font-size: 9px; font-weight: 600; color: var(--text-main); margin-bottom: 3px; letter-spacing: 0.2px; }
+        .brand-title { font-size: 26px; font-weight: 800; color: var(--brand-dark); letter-spacing: -0.5px; }
+        .brand-dot { color: var(--brand-blue); }
+        .brand-icon-box { position: relative; width: 55px; height: 35px; flex-shrink: 0; }
+        .brand-gray-card { position: absolute; inset: 0; background: var(--brand-gray); border-radius: 6px; }
+        .brand-blue-circle { position: absolute; left: 6px; top: 4px; width: 27px; height: 27px; background: var(--brand-blue); border-radius: 50%; }
+
+        .input-group { margin-bottom: 12px; }
+        body.lang-ar .input-group { text-align: right; }
+        body.lang-en .input-group { text-align: left; }
+        input, select { width: 100%; padding: 12px; border: 1px solid var(--brand-gray); border-radius: 8px; font-family: inherit; font-size: 15px; box-sizing: border-box; background: white;}
+        input:focus, select:focus { outline: none; border-color: var(--brand-blue); box-shadow: 0 0 0 3px rgba(0, 140, 255, 0.1); }
+        input:disabled, select:disabled { background-color: #F3F4F6; color: #6B7280; cursor: not-allowed; opacity: 0.85; }
+        
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.25s; }
+        .btn-primary { background: var(--brand-blue); color: white; margin-top: 10px; }
+        .btn-primary:hover { background: #0070cc; }
+        .btn-google { background: #FFFFFF; color: #111827; border: 1.5px solid var(--brand-gray); display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); padding: 15px; font-size: 16px; }
+        .btn-google:hover { background: #F8FAFC; border-color: var(--brand-blue); transform: translateY(-1px); }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+        header { background: var(--bg-white); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 0 20px; display: flex; justify-content: space-between; align-items: center; height: 75px; flex-wrap: wrap; }
+        .nav-links { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+        .nav-link { color: var(--text-muted); text-decoration: none; font-weight: 600; cursor: pointer; padding: 25px 0; font-size: 14px;}
+        .nav-link.active { color: var(--brand-blue); border-bottom: 3px solid var(--brand-blue); }
+        
+        .profile-pic { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; font-size: 16px; border: 2px solid white; box-shadow: 0 0 0 2px var(--brand-gray); object-fit: cover; }
+        .main-content { padding: 20px; max-width: 1400px; margin: 0 auto; flex: 1; width: 100%; box-sizing: border-box; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .card { background: var(--bg-white); border-radius: 16px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid var(--brand-gray); margin-bottom: 20px; overflow-x: auto; box-sizing: border-box; }
+
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .kpi-card { background: var(--bg-white); border-radius: 12px; padding: 15px; border: 1px solid var(--brand-gray); box-shadow: 0 2px 8px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; }
+        .kpi-card p { margin: 0; color: var(--text-muted); font-size: 11px; text-transform: uppercase; font-weight: 700; }
+        .kpi-card h3 { margin: 8px 0 0; font-size: 20px; font-weight: 800; color: var(--brand-dark); }
+
+        .summary-boxes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .summary-group-box {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--brand-gray);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.025);
+            box-sizing: border-box;
+        }
+        .summary-items-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+        .summary-metric-tile {
+            background: var(--bg-light);
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 6px;
+            box-sizing: border-box;
+        }
+        .summary-metric-tile p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        .summary-metric-tile h3 {
+            margin: 0;
+            font-size: 19px;
+            font-weight: 800;
+            color: var(--brand-dark);
+        }
+
+        .card-details-list {
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid var(--bg-light);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .card-detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+        }
+        .card-detail-row span:last-child {
+            color: var(--text-main);
+        }
+        
+        .analytics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 25px; }
+        .analytics-card { background: var(--bg-white); border-radius: 16px; padding: 20px; border: 1px solid var(--brand-gray); box-shadow: 0 4px 10px rgba(0,0,0,0.02); box-sizing: border-box; min-width: 0; }
+        .analytics-card h3 { margin-top: 0; margin-bottom: 12px; font-size: 16px; font-weight: 800; }
+
+        table { width: 100%; border-collapse: collapse; min-width: 550px; }
+        th, td { padding: 12px; border-bottom: 1px solid var(--bg-light); }
+        body.lang-ar th, body.lang-ar td { text-align: right; }
+        body.lang-en th, body.lang-en td { text-align: left; }
+        th { background: var(--bg-light); color: var(--text-muted); font-size: 12px; text-transform: uppercase; font-weight: 700;}
+        td { font-weight: 600; font-size: 14px; }
+        
+        .text-green { color: var(--success) !important; }
+        .text-red { color: var(--danger) !important; }
+
+        .card-colored-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #FFFFFF;
+            white-space: nowrap;
+        }
+        .card-manage-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: var(--bg-white);
+            border: 1px solid var(--brand-gray);
+        }
+        .card-manage-row input[type="text"] { width: 140px; padding: 6px 10px; font-size: 13px; }
+        .card-manage-row input[type="number"] { width: 110px; padding: 6px 10px; font-size: 13px; }
+        .card-manage-row input[type="color"] { width: 34px; height: 32px; padding: 2px; border: 1px solid var(--brand-gray); border-radius: 6px; cursor: pointer; background: white; }
+        .card-manage-row input[type="color"]:disabled { cursor: not-allowed; opacity: 0.6; }
+        .table-card-select { padding: 6px 10px; font-size: 13px; border-radius: 8px; border: 1px solid var(--brand-gray); background: var(--bg-light); font-weight: 700; min-width: 135px; cursor: pointer; }
+
+        #progress-bars-container { max-height: 220px; overflow-y: auto; overflow-x: hidden; box-sizing: border-box; width: 100%; padding-inline-end: 4px; }
+        .progress-item { margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #E5E7EB; display: flex; flex-direction: column; gap: 4px; width: 100%; max-width: 100%; box-sizing: border-box; }
+        .progress-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .progress-cat-title { font-size: 13px; font-weight: 800; color: var(--text-main); overflow-wrap: anywhere; }
+        .progress-val-sub { font-size: 12px; font-weight: 700; overflow-wrap: anywhere; }
+        .progress-track { width: 100%; max-width: 100%; height: 8px; background: var(--bg-light); border-radius: 999px; overflow: hidden; border: 1px solid #E5E7EB; box-sizing: border-box; }
+        .progress-fill { height: 100%; border-radius: 999px; transition: width 0.3s ease; }
+
+        .stat-mini-box { background: var(--bg-light); border: 1px solid #E5E7EB; border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 700; }
+
+        .history-month-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: white;
+            border: 1px solid var(--brand-gray);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .history-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .btn-pdf { background: #0F172A; color: #FFFFFF; width: auto; padding: 8px 14px; margin: 0; font-size: 13px; }
+        .btn-pdf:hover { background: #1E293B; }
+        .btn-whatsapp { background: #16A34A; color: #FFFFFF; width: auto; padding: 8px 14px; margin: 0; font-size: 13px; }
+        .btn-whatsapp:hover { background: #15803D; }
+        .btn-delete-month { background: #FEE2E2; color: var(--danger); border: 1px solid #FCA5A5; width: auto; padding: 8px 14px; margin: 0; font-size: 13px; }
+        .btn-delete-month:hover { background: var(--danger); color: #FFFFFF; }
+
+        .whatsapp-setting-box {
+            background: #F0FDF4;
+            border: 1px solid #86EFAC;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .whatsapp-toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .whatsapp-toggle-row input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #16A34A;
+            cursor: pointer;
+        }
+
+        .pdf-export-stage {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 1122px;
+            height: 793px;
+            opacity: 0.01;
+            background: #FFFFFF;
+            z-index: -50;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .pdf-landscape-sheet {
+            background: #FFFFFF;
+            width: 1122px;
+            height: 793px;
+            padding: 10px 16px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 4px;
+            overflow: hidden;
+            font-family: 'Inter', 'Cairo', sans-serif;
+        }
+        .pdf-top-header {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            margin-top: 6px;
+            border-bottom: 2px solid #00B0F0;
+            padding-bottom: 8px;
+            gap: 14px;
+            flex-shrink: 0;
+        }
+        .pdf-symbol-only {
+            position: relative;
+            width: 50px;
+            height: 32px;
+            border-radius: 7px;
+            background: #D1D5DB;
+            flex-shrink: 0;
+        }
+        .pdf-symbol-only::after {
+            content: "";
+            position: absolute;
+            left: 6px;
+            top: 3px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #008CFF;
+        }
+        .pdf-user-name-only { justify-self: end; font-size: 14.5px; font-weight: 800; color: #111827; white-space: nowrap; }
+        .pdf-center-title { text-align: center; }
+        .pdf-center-title h2 { margin: 0; font-size: 17px; font-weight: 900; color: #111827; line-height: 1.25; }
+        .pdf-center-title p { margin: 3px 0 0; font-size: 11px; font-weight: 600; color: #4B5563; line-height: 1.2; }
+
+        .pdf-row-1 { display: grid; grid-template-columns: 1.45fr 1fr; gap: 5px; flex-shrink: 0; }
+        .pdf-kpi-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3px; }
+        .pdf-kpi-card { border: 1px solid #CBD5E1; background: #F8FAFC; border-radius: 7px; padding: 3px 8px; display: flex; flex-direction: column; justify-content: center; gap: 0; }
+        .pdf-kpi-card small { font-size: 8px; font-weight: 700; color: #6B7280; text-transform: uppercase; line-height: 1.1; }
+        .pdf-kpi-card strong { font-size: 13.5px; font-weight: 800; color: #111827; line-height: 1.15; }
+        .pdf-goals-card { border: 1px solid #CBD5E1; background: #F8FAFC; border-radius: 7px; padding: 4px 9px; display: flex; flex-direction: column; justify-content: center; gap: 2px; min-width: 0; }
+        .pdf-goals-card h4 { margin: 0; font-size: 11.5px; font-weight: 800; color: #111827; line-height: 1.15; }
+
+        .pdf-row-2 { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 7px; flex-shrink: 0; }
+        .pdf-row-3 { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; flex-shrink: 0; }
+        .pdf-panel { border: 1px solid #CBD5E1; border-radius: 8px; padding: 6px 10px; background: #FFFFFF; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+        .pdf-panel h5 { margin: 0; font-size: 11px; font-weight: 800; color: #111827; line-height: 1.2; }
+        .pdf-canvas-mid { position: relative; height: 194px; width: 100%; }
+        .pdf-canvas-bot { position: relative; height: 174px; width: 100%; }
+        .pdf-footer-bar { display: flex; justify-content: center; align-items: center; border-top: 1px solid #E2E8F0; padding-top: 4px; font-size: 9.5px; font-weight: 600; color: #6B7280; flex-shrink: 0; }
+
+        footer { background: var(--brand-dark); color: white; padding: 25px 20px 15px; margin-top: auto; width: 100%; box-sizing: border-box; }
+        .footer-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 15px; flex-wrap: wrap; gap: 15px; }
+        .footer-links a { color: var(--brand-gray); text-decoration: none; margin: 0 10px; cursor: pointer; font-size: 14px; }
+        .date-badge { background: var(--bg-light); padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 700; border: 1px solid var(--brand-gray); color: var(--text-main); }
+        .action-btn { background: none; border: none; cursor: pointer; font-size: 16px; padding: 4px 8px; border-radius: 4px; }
+        .lang-toggle-btn { background: var(--bg-light); border: 1px solid var(--brand-gray); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 12px; color: var(--text-main); transition: 0.2s; }
+        .lang-toggle-btn:hover { background: var(--brand-blue); color: white; border-color: var(--brand-blue); }
+
+        .desktop-lang-btn { display: inline-block; }
+        .mobile-header-user { display: none; }
+        .mobile-lang-setting { display: none; }
+
+        @media(max-width: 768px) {
+            .kpi-grid { grid-template-columns: 1fr 1fr; }
+            .summary-boxes-grid { grid-template-columns: 1fr; }
+            .summary-items-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .analytics-grid { grid-template-columns: 1fr; }
+            header { padding: 10px 15px; height: auto; }
+            .auth-container { padding: 0; align-items: stretch; justify-content: stretch; }
+            .auth-card { max-width: 100%; min-height: 100vh; border-radius: 0; display: flex; flex-direction: column; justify-content: center; box-shadow: none; }
+            .desktop-lang-btn { display: none !important; }
+            .mobile-header-user { display: flex !important; align-items: center; gap: 8px; }
+            .mobile-lang-setting { display: block !important; }
+            .nav-links .lang-toggle-btn { display: none; }
+        }
+
+        @media print {
+            body * { visibility: hidden !important; }
+            #pdf-export-stage, #pdf-export-stage * { visibility: visible !important; }
+            #pdf-export-stage {
+                position: fixed !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                height: auto !important;
+                opacity: 1 !important;
+                z-index: 999999 !important;
+                background: #FFFFFF !important;
+            }
+            @page { size: A4 landscape; margin: 0; }
+        }
+    </style>
+</head>
+<body class="lang-en" id="body">
+
+    <!-- Google Sign-In Only & First-Time Age/Gender Setup -->
+    <div id="auth-wrapper" class="auth-container">
+        <!-- Google Login Card -->
+        <div id="login-form" class="auth-card">
+            <div class="auth-logo-box" style="margin-bottom: 18px;">
+                <div class="brand-logo-auth">
+                    <div class="brand-text-wrap">
+                        <span class="brand-subtitle">Money Management</span>
+                        <span class="brand-title">RiyalBA<span class="brand-dot">.</span></span>
+                    </div>
+                    <div class="brand-icon-box"><div class="brand-gray-card"></div><div class="brand-blue-circle"></div></div>
+                </div>
+            </div>
+            <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px; line-height: 1.6;" data-i18n="loginDesc">Sign in with your Google account to sync your budget across mobile and laptop.</p>
+
+            <button onclick="loginWithGoogleCloud()" id="google-signin-btn" class="btn btn-google">
+                <svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                </svg>
+                <span data-i18n="googleSignInBtn">Continue with Google</span>
+            </button>
+            <div id="google-auth-error" style="color: var(--danger); font-size: 12px; margin-top: 10px; display: none;"></div>
+
+            <div style="margin-top: 22px;"><button onclick="switchLanguage()" class="lang-toggle-btn" id="auth-lang-btn">عربي / English</button></div>
+        </div>
+
+        <!-- Onboarding Card (Asks Age & Gender once after Google Login) -->
+        <div id="onboarding-form" class="auth-card hidden">
+            <div class="auth-logo-box" style="margin-bottom: 14px;">
+                <div class="brand-logo-auth">
+                    <div class="brand-text-wrap">
+                        <span class="brand-subtitle">Money Management</span>
+                        <span class="brand-title">RiyalBA<span class="brand-dot">.</span></span>
+                    </div>
+                    <div class="brand-icon-box"><div class="brand-gray-card"></div><div class="brand-blue-circle"></div></div>
+                </div>
+            </div>
+            <h3 style="margin: 0 0 6px; font-size: 19px;" data-i18n="onboardingTitle">Complete Your Profile</h3>
+            <p style="color: var(--text-muted); margin: 0 0 18px; font-size: 13px;" data-i18n="onboardingSub">Please enter your age and gender once to personalize your RiyalBA account.</p>
+
+            <div class="grid-2">
+                <div class="input-group"><input type="text" id="onb-fname" data-i18n-placeholder="fnamePlaceholder"></div>
+                <div class="input-group"><input type="text" id="onb-lname" data-i18n-placeholder="lnamePlaceholder"></div>
+            </div>
+            <div class="grid-2">
+                <div class="input-group"><select id="onb-age"><option value="" disabled selected data-i18n="selectAge">Age</option></select></div>
+                <div class="input-group">
+                    <select id="onb-gender">
+                        <option value="" disabled selected data-i18n="selectGender">Gender</option>
+                        <option value="male" data-i18n="male">Male</option>
+                        <option value="female" data-i18n="female">Female</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-group"><input type="tel" id="onb-phone" data-i18n-placeholder="phoneIntlPlaceholder" dir="ltr"></div>
+            <div id="onb-error-msg" style="color: var(--danger); font-size: 12px; margin-bottom: 8px; display: none;" data-i18n="onboardingError">Please select your age and gender</div>
+            <button onclick="completeGoogleOnboarding()" class="btn btn-primary" data-i18n="startUsingBtn">Save & Continue</button>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="app-wrapper" class="hidden" style="display: flex; flex-direction: column; min-height: 100vh;">
+        <header>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="font-weight:900; font-size:22px;">RiyalBA<span style="color:var(--brand-blue);">.</span></div>
+                <div class="mobile-header-user">
+                    <div id="mobile-profile-pic-container"><div class="profile-pic" id="mobile-profile-initial" style="width: 30px; height: 30px; font-size: 12px;">U</div></div>
+                    <span id="mobile-user-display" style="font-weight: 600; font-size: 13px;">User</span>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a onclick="navigate('dashboard')" id="nav-dashboard" class="nav-link active" data-i18n="navDash">Dashboard</a>
+                <a onclick="navigate('history')" id="nav-history" class="nav-link" data-i18n="navHistory">History</a>
+                <a onclick="navigate('profile')" id="nav-profile" class="nav-link" data-i18n="navProfile">My Profile</a>
+                <a onclick="navigate('about')" id="nav-about" class="nav-link" data-i18n="navAbout">About us</a>
+                <button onclick="switchLanguage()" class="lang-toggle-btn desktop-lang-btn" id="nav-lang-btn">AR / EN</button>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;" class="desktop-lang-btn">
+                <span id="user-display" style="font-weight: 600; font-size: 14px;">User</span>
+                <div id="profile-pic-container"><div class="profile-pic" id="profile-initial">U</div></div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Dashboard -->
+            <div id="page-dashboard" class="page active">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+                    <h2 id="dash-month-title" style="font-size: 22px; margin: 0;">Overview: Current Month</h2>
+                    <div id="dashboard-date-badge" class="date-badge">Loading date...</div>
+                </div>
+
+                <div class="summary-boxes-grid">
+                    <div class="summary-group-box">
+                        <div class="summary-items-grid">
+                            <div class="summary-metric-tile">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <p style="margin:0;" data-i18n="kpiIncome">Total Income</p>
+                                    <span onclick="toggleIncomeEdit()" style="cursor: pointer;">✏️</span>
+                                </div>
+                                <h3 id="kpi-income" style="color: var(--success);">0 SAR</h3>
+                                <div id="income-edit-box" class="hidden" style="margin-top: 6px;">
+                                    <input type="number" id="income-input-field" data-i18n-placeholder="incomePlaceholder" style="padding: 8px; font-size: 13px;">
+                                    <button onclick="saveIncomeDirect()" class="btn btn-primary" style="padding:5px; margin-top:4px; font-size:12px;" data-i18n="saveBtn">Save</button>
+                                </div>
+                            </div>
+                            <div class="summary-metric-tile">
+                                <p data-i18n="kpiExpenses">Total Expenses</p>
+                                <h3 id="kpi-expenses" style="color: var(--danger);">0 SAR</h3>
+                            </div>
+                            <div class="summary-metric-tile">
+                                <p data-i18n="kpiNet">Net Balance</p>
+                                <h3 id="kpi-net">0 SAR</h3>
+                            </div>
+                            <div class="summary-metric-tile">
+                                <p data-i18n="kpiSavings">Savings Rate</p>
+                                <h3 id="kpi-savings-rate">0%</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="summary-group-box">
+                        <div class="summary-items-grid">
+                            <div class="summary-metric-tile">
+                                <p data-i18n="plannedBudget">Planned Budget</p>
+                                <h3 id="bento-planned">0 SAR</h3>
+                            </div>
+                            <div class="summary-metric-tile">
+                                <p data-i18n="kpiCum">Cumulative</p>
+                                <h3 id="bento-cumulative">0 SAR</h3>
+                            </div>
+                            <div class="summary-metric-tile">
+                                <p data-i18n="remainingFromPlanned">Remaining from Planned</p>
+                                <h3 id="bento-remaining-planned">0 SAR</h3>
+                            </div>
+                            <div class="summary-metric-tile">
+                                <p data-i18n="budgetUtilizationLabel">Budget Utilization</p>
+                                <h3 id="bento-budget-utilization">0%</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="cards-widgets-grid" class="kpi-grid" style="margin-bottom: 25px;"></div>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card"><h3 data-i18n="chartDist">Category Distribution</h3><div style="position: relative; height: 220px;"><canvas id="donutChart"></canvas></div></div>
+                    <div class="analytics-card"><h3 data-i18n="chartBar">Planned vs Actual</h3><div style="position: relative; height: 220px;"><canvas id="barChart"></canvas></div></div>
+                    <div class="analytics-card"><h3 data-i18n="chartDaily">Daily Expenses Trend</h3><div style="position: relative; height: 220px;"><canvas id="lineChartDaily"></canvas></div></div>
+                    <div class="analytics-card"><h3 data-i18n="chartHistory">Monthly Comparison</h3><div style="position: relative; height: 220px;"><canvas id="lineChartHistory"></canvas></div></div>
+                    <div class="analytics-card"><h3 data-i18n="chartProgress">Budget Consumption</h3><div id="progress-bars-container"></div></div>
+                    <div class="analytics-card" style="display: flex; flex-direction: column; justify-content: space-between;"><h3 data-i18n="chartGauge">Budget Gauge</h3><div style="position: relative; height: 185px; width: 100%;"><canvas id="gaugeChart"></canvas></div></div>
+                    <div class="analytics-card"><h3 data-i18n="chartByCard">Spending by Card</h3><div style="position: relative; height: 220px;"><canvas id="cardSpendingChart"></canvas></div></div>
+                    <div class="analytics-card"><h3 data-i18n="topInsightsTitle">Quick Spending Insights</h3><div id="spending-insights-container" style="max-height: 220px; overflow-y: auto;"></div></div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 25px;">
+                    <div class="card" style="margin:0;"><h3 data-i18n="smartAlerts">Smart Alerts</h3><ul id="alerts-list" style="padding-left: 20px; margin: 0; color: var(--text-muted); font-size: 14px; line-height: 1.8;"><li data-i18n="defaultAlert">All spending is within normal limits.</li></ul></div>
+                    <div class="card" style="margin:0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <h3 style="margin:0;" data-i18n="finGoals">Financial Goals</h3>
+                            <span onclick="toggleGoalEdit()" style="cursor: pointer;" title="Edit Target">✏️</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700; margin-bottom:6px;"><span data-i18n="monthlyTarget">Monthly Savings Target</span><span id="goal-target-text">1,000 SAR</span></div>
+                        <div id="goal-edit-box" class="hidden" style="margin-bottom: 10px;">
+                            <input type="number" id="goal-input-field" placeholder="Enter target">
+                            <button onclick="saveGoalDirect()" class="btn btn-primary" style="padding:4px; font-size:12px; margin-top:4px;" data-i18n="saveBtn">Save</button>
+                        </div>
+                        <div style="background:var(--bg-light); height:10px; border-radius:5px; overflow:hidden; margin-bottom: 8px;"><div id="goal-progress-bar" style="background:var(--success); width:0%; height:100%; transition: width 0.3s ease;"></div></div>
+                        <div id="goal-status-text" style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px;"></div>
+                        <p style="font-size: 13px; color: var(--text-muted); margin:0;"><span data-i18n="remDebts">Remaining Debts</span>: <strong style="color:var(--danger)">0 SAR</strong></p>
+                    </div>
+                </div>
+
+                <div class="analytics-card" style="margin-bottom: 25px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 data-i18n="chartEfficiency">Spending Efficiency Index</h3>
+                        <span style="font-size: 12px; color: var(--text-muted);" data-i18n="efficiencySub">Analysis of Planned vs Actual Impact</span>
+                    </div>
+                    <div style="position: relative; height: 220px;"><canvas id="efficiencyChart"></canvas></div>
+                </div>
+
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+                        <h3 style="margin:0;" data-i18n="transactionsTitle">Transactions</h3>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button onclick="toggleAddCardBox()" id="toggle-add-card-btn" class="btn" style="width: auto; padding: 10px 16px; margin:0; border-radius:6px; background: var(--bg-light); border: 1px solid var(--brand-blue); color: var(--brand-blue);" data-i18n="addCardBtn">+ Add Card</button>
+                            <button onclick="unlockCardsAndEditData()" class="btn btn-primary" style="width: auto; padding: 10px 20px; margin:0; border-radius:6px;" data-i18n="editDataBtn">Edit Data</button>
+                        </div>
+                    </div>
+
+                    <div id="add-card-box" style="background: var(--bg-light); padding: 15px; border-radius: 12px; border: 1px solid var(--brand-gray); margin-bottom: 15px;">
+                        <div id="add-card-form-row" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                            <input type="text" id="new-card-name" data-i18n-placeholder="cardNamePlaceholder" style="flex: 2; min-width: 160px; padding: 10px;">
+                            <input type="number" id="new-card-limit" data-i18n-placeholder="cardLimitPlaceholder" min="0" style="flex: 1; min-width: 140px; padding: 10px;">
+                            <button onclick="addNewCard()" id="save-new-card-btn" class="btn btn-primary" style="width: auto; padding: 10px 20px; margin: 0;" data-i18n="saveCardBtn">Add</button>
+                        </div>
+                        <div id="cards-locked-note" class="hidden" style="margin-top: 8px; font-size: 12px; font-weight: 700; color: var(--text-muted);" data-i18n="cardsLockedNote">Cards are locked. Click Edit Data to add or edit cards.</div>
+                        <div id="cards-manage-list" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px;"></div>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th data-i18n="thCat">Category</th>
+                                <th data-i18n="thPlanned">Planned</th>
+                                <th data-i18n="thActual">Actual</th>
+                                <th data-i18n="thCard">Card</th>
+                                <th data-i18n="thDiff">Difference</th>
+                            </tr>
+                        </thead>
+                        <tbody id="readonly-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Edit Month -->
+            <div id="page-edit-month" class="page">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 10px;">
+                    <div><h2 style="margin: 0; font-size: 22px;" data-i18n="editMonthTitle">Edit Monthly Purchases</h2></div>
+                    <div style="display: flex; gap: 10px;"><button onclick="navigate('dashboard')" class="btn" style="background:transparent; border:1px solid var(--brand-gray); width:auto;" data-i18n="cancelBtn">Cancel</button><button onclick="saveMonthData()" class="btn btn-primary" style="width: auto; margin:0;" data-i18n="saveBtn">Save</button></div>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-top:0; margin-bottom:12px;" data-i18n="manageCardsTitle">Manage Cards</h3>
+                    <div id="edit-page-card-form-row" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                        <input type="text" id="edit-new-card-name" data-i18n-placeholder="cardNamePlaceholder" style="flex: 2; min-width: 160px; padding: 10px;">
+                        <input type="number" id="edit-new-card-limit" data-i18n-placeholder="cardLimitPlaceholder" min="0" style="flex: 1; min-width: 140px; padding: 10px;">
+                        <button onclick="addNewCardFromEditPage()" class="btn btn-primary" style="width: auto; padding: 10px 20px; margin: 0;" data-i18n="saveCardBtn">Add</button>
+                    </div>
+                    <div id="edit-cards-manage-list" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px;"></div>
+                </div>
+
+                <div class="card">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th data-i18n="thCat">Category</th>
+                                <th data-i18n="thPlanned">Planned</th>
+                                <th data-i18n="thActual">Actual</th>
+                                <th data-i18n="thCard">Card</th>
+                                <th data-i18n="thDiff">Difference</th>
+                                <th style="width: 50px;" data-i18n="thAction">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="excel-table-body"></tbody>
+                        <tfoot>
+                            <tr style="background: var(--bg-light);">
+                                <td data-i18n="totalLabel">Total</td>
+                                <td id="sum-planned" style="font-weight: 700;">0</td>
+                                <td id="sum-actual" style="font-weight: 700;">0</td>
+                                <td>-</td>
+                                <td id="sum-remaining" style="font-weight: 800;" colspan="2">0</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <button onclick="addNewRow()" class="btn" style="background: transparent; border: 2px dashed var(--brand-blue); color: var(--brand-blue); margin-top: 20px;" data-i18n="addItemBtn">+ Add New Item</button>
+                </div>
+            </div>
+
+            <!-- Profile -->
+            <div id="page-profile" class="page">
+                <h2 style="margin-bottom: 25px;" data-i18n="profileTitle">My Profile & Account Info</h2>
+                <div class="card" style="max-width: 650px; margin: 0 auto; padding: 25px;">
+                    <div class="mobile-lang-setting" style="margin-bottom: 20px; text-align: center;">
+                        <button onclick="switchLanguage()" class="lang-toggle-btn" style="width: 100%; padding: 12px;" id="profile-lang-btn">عربي / English</button>
+                    </div>
+                    <div style="text-align: center; margin-bottom: 25px;">
+                        <div style="display:inline-block; position:relative; cursor:pointer;" onclick="triggerPhotoUpload()"><div id="profile-page-initial" class="profile-pic" style="width: 90px; height: 90px; font-size: 35px; margin: 0 auto;">U</div></div>
+                        <input type="file" id="profile-photo-input" accept="image/*" class="hidden" onchange="updateProfilePhoto(event)">
+                        <h2 id="prof-name" style="margin: 15px 0 5px; font-size: 22px;">Full Name</h2><p id="prof-user" style="color: var(--text-muted); margin: 0;">email@gmail.com</p>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 15px; background: var(--bg-light); padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+                        <div class="grid-2">
+                            <div><strong data-i18n="fnameLabel">First Name</strong><input type="text" id="edit-prof-fname"></div>
+                            <div><strong data-i18n="lnameLabel">Last Name</strong><input type="text" id="edit-prof-lname"></div>
+                        </div>
+                        <div class="grid-2">
+                            <div><strong data-i18n="ageLabel">Age</strong><select id="edit-prof-age"></select></div>
+                            <div><strong data-i18n="genderLabel">Gender</strong><select id="edit-prof-gender"><option value="male" data-i18n="male">Male</option><option value="female" data-i18n="female">Female</option></select></div>
+                        </div>
+                        <div><strong data-i18n="emailLabel">Google Email Address</strong><input type="email" id="edit-prof-email" disabled></div>
+                        <div>
+                            <strong data-i18n="phoneLabel">Phone Number (WhatsApp)</strong>
+                            <input type="tel" id="edit-prof-phone" placeholder="9665XXXXXXXX" dir="ltr">
+                        </div>
+
+                        <div class="whatsapp-setting-box">
+                            <label class="whatsapp-toggle-row" for="edit-prof-wa-auto">
+                                <div>
+                                    <strong style="color:#15803D; font-size:14px;" data-i18n="waAutoTitle">Automatic Monthly WhatsApp PDF Report</strong>
+                                    <div style="font-size:12px; color:#166534; margin-top:2px;" data-i18n="waAutoDesc">Receive your monthly PDF financial report on WhatsApp at the end of every month.</div>
+                                </div>
+                                <input type="checkbox" id="edit-prof-wa-auto">
+                            </label>
+                            <div id="wa-save-status" style="font-size:12px; font-weight:700; color:#15803D; display:none;"></div>
+                        </div>
+                    </div>
+                    <div class="grid-2"><button onclick="saveProfileEdits()" class="btn btn-primary" style="margin:0;" data-i18n="saveChangesBtn">Save Changes</button><button onclick="logout()" class="btn" style="background: var(--danger); color: white; margin:0;" data-i18n="logoutBtn">Logout</button></div>
+                </div>
+            </div>
+
+            <!-- History -->
+            <div id="page-history" class="page">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+                    <div>
+                        <h2 style="margin: 0;" data-i18n="historyTitle">Monthly History</h2>
+                        <p style="margin: 4px 0 0; font-size: 13px; color: var(--text-muted);" data-i18n="autoHistoryHint">Months added or updated in Dashboard are saved here automatically.</p>
+                    </div>
+                </div>
+                <div class="card" id="history-container" style="background: transparent; border: none; box-shadow: none; padding: 0;"></div>
+            </div>
+
+            <!-- About -->
+            <div id="page-about" class="page">
+                <div class="card" style="padding: 30px 20px; max-width: 900px; margin: 0 auto;">
+                    <div style="text-align: center; margin-bottom: 30px;"><h1 style="color: var(--brand-dark); margin: 0; font-size: 32px;">RiyalBA<span style="color:var(--brand-blue);">.</span></h1><p style="color: var(--text-muted); font-size: 15px; margin-top:10px;" data-i18n="aboutSub">Your ultimate intelligent partner for personal budgeting and analytics.</p></div>
+                    <hr style="border: 0; border-top: 1px solid var(--brand-gray); margin: 25px 0;">
+                    <div style="margin-bottom: 30px;">
+                        <h3 style="font-size: 18px; color: var(--brand-dark); margin-bottom: 15px;" data-i18n="overviewTitle">Platform Overview</h3>
+                        <p style="color: var(--text-muted); font-size: 14px; line-height: 1.7;" data-i18n="overviewDesc">RiyalBA is designed to empower individuals to take complete control of their financial life through smart tracking and advanced analytics.</p>
+                    </div>
+                    <hr style="border: 0; border-top: 1px solid var(--brand-gray); margin: 25px 0;">
+                    <div style="text-align: center;">
+                        <h3 style="font-size: 18px; color: var(--brand-dark); margin-bottom: 15px;" data-i18n="devTitle">Created & Developed By</h3>
+                        <p style="font-size: 18px; font-weight: 700; color: var(--brand-dark); margin-bottom: 5px;">Bader Khalid Saad Almalki</p>
+                        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 25px;">Bader is an Industrial Engineering student at Taif University, Saudi Arabia</p>
+                        <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                            <a href="mailto:bader.ie@gmail.com" class="btn btn-primary" style="width: 220px; padding: 12px 20px; text-decoration: none; display: inline-block;">📧 bader.ie@gmail.com</a>
+                            <a href="https://www.linkedin.com/in/bader-khalid-almalki" target="_blank" class="btn" style="background: #0A66C2; color: white; width: 220px; padding: 12px 20px; text-decoration: none; display: inline-block;" data-i18n="linkedinBtn">🔗 LinkedIn Profile</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-content">
+                <div><div style="font-size: 20px; font-weight: 800;">RiyalBA<span style="color:var(--brand-blue);">.</span></div><p style="color: #9ca3af; font-size: 13px; margin-top: 6px;" data-i18n="footerSub">Smart Money Management</p></div>
+                <div class="footer-links"><a onclick="navigate('dashboard')" data-i18n="navDash">Dashboard</a><a onclick="navigate('history')" data-i18n="navHistory">History</a><a onclick="navigate('profile')" data-i18n="navProfile">Profile</a><a onclick="navigate('about')" data-i18n="navAbout">About us</a></div>
+            </div>
+            <div style="text-align: center; color: #6b7280; font-size: 12px;">&copy; 2026 RiyalBA. All Rights Reserved.</div>
+        </footer>
+    </div>
+
+    <div id="pdf-export-stage" class="pdf-export-stage">
+        <div id="pdf-report-sheet" class="pdf-landscape-sheet"></div>
+    </div>
+
+<script>
+    const WHATSAPP_API_ENDPOINT = "";
+
+    const translations = {
+        en: {
+            loginDesc: "Sign in with your Google account to sync your budget across mobile and laptop.",
+            googleSignInBtn: "Continue with Google",
+            onboardingTitle: "Complete Your Profile",
+            onboardingSub: "Please enter your age and gender once to personalize your RiyalBA account.",
+            onboardingError: "Please select your age and gender",
+            startUsingBtn: "Save & Continue",
+            fnamePlaceholder: "First Name",
+            lnamePlaceholder: "Last Name",
+            selectAge: "Age",
+            selectGender: "Gender",
+            male: "Male",
+            female: "Female",
+            phoneIntlPlaceholder: "WhatsApp Number (Optional: 9665XXXXXXXX)",
+            navDash: "Dashboard",
+            navHistory: "History",
+            navProfile: "My Profile",
+            navAbout: "About us",
+            kpiIncome: "Total Income",
+            incomePlaceholder: "Enter income",
+            saveBtn: "Save",
+            kpiExpenses: "Total Expenses",
+            kpiNet: "Net Balance",
+            kpiSavings: "Savings Rate",
+            kpiCum: "Cumulative",
+            plannedBudget: "Planned Budget",
+            actualSpending: "Actual Spending",
+            remainingFromPlanned: "Remaining from Planned",
+            budgetUtilizationLabel: "Budget Utilization",
+            cardRemainingSuffix: "Remaining",
+            cardFullAmountLabel: "Full Balance",
+            cardSpentLabel: "Spent",
+            cardLeftLabel: "Remaining",
+            manageCardsTitle: "Manage Cards",
+            cardsLockedNote: "Cards are locked. Click Edit Data to add or edit cards.",
+            addCardBtn: "+ Add Card",
+            cardNamePlaceholder: "Card Name (e.g. Card 1, Card 2)",
+            cardLimitPlaceholder: "Card Balance / Limit",
+            saveCardBtn: "Add",
+            updateCardBtn: "Save",
+            thCard: "Card",
+            selectCardDefault: "Select Card",
+            chartDist: "Category Distribution",
+            chartBar: "Planned vs Actual",
+            chartDaily: "Daily Expenses Trend",
+            chartHistory: "Monthly Comparison",
+            chartProgress: "Budget Consumption",
+            chartGauge: "Budget Gauge",
+            chartByCard: "Spending by Card",
+            topInsightsTitle: "Quick Spending Insights",
+            highestCatLabel: "Highest Expense Category",
+            avgItemLabel: "Average Expense per Item",
+            onTrackCatsLabel: "Categories Within Plan",
+            overBudgetCatsLabel: "Categories Over Plan",
+            unassignedSpendLabel: "Unassigned Card Spending",
+            noProgressData: "Add categories to track budget consumption.",
+            chartEfficiency: "Spending Efficiency Index",
+            chartConsumptionRate: "Category Consumption Rate (%)",
+            efficiencySub: "Analysis of Planned vs Actual Impact",
+            smartAlerts: "Smart Alerts",
+            defaultAlert: "All spending is within normal limits.",
+            finGoals: "Financial Goals",
+            monthlyTarget: "Monthly Savings Target",
+            remDebts: "Remaining Debts",
+            transactionsTitle: "Transactions",
+            editDataBtn: "Edit Data",
+            thCat: "Category",
+            thPlanned: "Planned",
+            thActual: "Actual",
+            thDiff: "Difference",
+            thAction: "Action",
+            editMonthTitle: "Edit Monthly Purchases",
+            cancelBtn: "Cancel",
+            totalLabel: "Total",
+            addItemBtn: "+ Add New Item",
+            profileTitle: "My Profile & Account Info",
+            fnameLabel: "First Name",
+            lnameLabel: "Last Name",
+            ageLabel: "Age",
+            genderLabel: "Gender",
+            emailLabel: "Google Email Address",
+            phoneLabel: "Phone Number (WhatsApp)",
+            waAutoTitle: "Automatic Monthly WhatsApp PDF Report",
+            waAutoDesc: "Receive your monthly PDF financial report on WhatsApp at the end of every month.",
+            waSavedMsg: "Saved! Settings synced to your Google account.",
+            waPhoneRequired: "Please enter a valid WhatsApp number with country code (e.g. 9665XXXXXXXX).",
+            saveChangesBtn: "Save Changes",
+            logoutBtn: "Logout",
+            historyTitle: "Monthly History",
+            autoHistoryHint: "Months added or updated in Dashboard are saved here automatically.",
+            noMonthsInHistory: "No saved months yet. Open Dashboard to start a month automatically.",
+            pdfBtn: "PDF Report",
+            waSendBtn: "Send WhatsApp",
+            waSending: "Sending...",
+            downloadingPdf: "Downloading...",
+            deleteBtn: "Delete",
+            confirmDeleteMonth: "Are you sure you want to delete this month?",
+            openBtn: "Open",
+            aboutSub: "Your ultimate intelligent partner for personal budgeting and analytics.",
+            overviewTitle: "Platform Overview",
+            overviewDesc: "RiyalBA is designed to empower individuals to take complete control of their financial life through smart tracking and advanced analytics.",
+            devTitle: "Created & Developed By",
+            linkedinBtn: "🔗 LinkedIn Profile",
+            footerSub: "Smart Money Management"
+        },
+        ar: {
+            loginDesc: "سجّل الدخول بحسابك في Google لمزامنة بياناتك بين الجوال واللابتوب.",
+            googleSignInBtn: "المتابعة عبر حساب Google",
+            onboardingTitle: "إكمال بيانات الملف الشخصي",
+            onboardingSub: "يرجى إدخال العمر والجنس لمرة واحدة فقط لتخصيص حسابك في RiyalBA.",
+            onboardingError: "يرجى اختيار العمر والجنس للمتابعة",
+            startUsingBtn: "حفظ والمتابعة",
+            fnamePlaceholder: "الاسم الأول",
+            lnamePlaceholder: "اسم العائلة",
+            selectAge: "العمر",
+            selectGender: "الجنس",
+            male: "ذكر",
+            female: "أنثى",
+            phoneIntlPlaceholder: "رقم الواتساب (اختياري: 9665XXXXXXXX)",
+            navDash: "الرئيسية",
+            navHistory: "السجل",
+            navProfile: "الملف الشخصي",
+            navAbout: "عن المنصة",
+            kpiIncome: "إجمالي الدخل",
+            incomePlaceholder: "أدخل الدخل",
+            saveBtn: "حفظ",
+            kpiExpenses: "إجمالي المصروفات",
+            kpiNet: "الصافي (المتبقي)",
+            kpiSavings: "نسبة الادخار",
+            kpiCum: "التراكمي",
+            plannedBudget: "المخطط له",
+            actualSpending: "المصروف الفعلي",
+            remainingFromPlanned: "المتبقي من المخطط له",
+            budgetUtilizationLabel: "نسبة استهلاك الميزانية",
+            cardRemainingSuffix: "المتبقي",
+            cardFullAmountLabel: "المبلغ الكامل",
+            cardSpentLabel: "المنصرف",
+            cardLeftLabel: "المتبقي",
+            manageCardsTitle: "إدارة البطاقات",
+            cardsLockedNote: "البطاقات مقفلة. اضغط تعديل البيانات لإضافة أو تعديل البطاقات.",
+            addCardBtn: "+ إضافة بطاقة",
+            cardNamePlaceholder: "اسم البطاقة (مثال: بطاقة 1، بطاقة 2)",
+            cardLimitPlaceholder: "رصيد / حد البطاقة",
+            saveCardBtn: "إضافة",
+            updateCardBtn: "حفظ",
+            thCard: "البطاقة",
+            selectCardDefault: "اختر البطاقة",
+            chartDist: "توزيع الفئات",
+            chartBar: "المخطط مقابل الفعلي",
+            chartDaily: "المصروفات اليومية",
+            chartHistory: "مقارنة الأشهر",
+            chartProgress: "استهلاك الميزانية",
+            chartGauge: "مؤشر الميزانية",
+            chartByCard: "الصرف حسب البطاقات",
+            topInsightsTitle: "إحصائيات سريعة للإنفاق",
+            highestCatLabel: "أعلى فئة صرفاً",
+            avgItemLabel: "متوسط الصرف لكل بند",
+            onTrackCatsLabel: "فئات ضمن المخطط",
+            overBudgetCatsLabel: "فئات متجاوزة للمخطط",
+            unassignedSpendLabel: "صرف بدون بطاقة محددة",
+            noProgressData: "أضف بنوداً لمتابعة استهلاك الميزانية.",
+            chartEfficiency: "مؤشر كفاءة الإنفاق العام",
+            chartConsumptionRate: "نسبة استهلاك الفئة (%)",
+            efficiencySub: "تحليل تأثير المخطط مقابل الفعلي",
+            smartAlerts: "التنبيهات الذكية",
+            defaultAlert: "جميع المصروفات ضمن الحدود الطبيعية.",
+            finGoals: "أهداف الادخار",
+            monthlyTarget: "هدف الادخار الشهري",
+            remDebts: "الديون المتبقية",
+            transactionsTitle: "معاملات الشهر",
+            editDataBtn: "تعديل البيانات",
+            thCat: "الفئة",
+            thPlanned: "المخطط له",
+            thActual: "الفعلي",
+            thDiff: "الفرق",
+            thAction: "حذف",
+            editMonthTitle: "تعديل مصروفات الشهر",
+            cancelBtn: "إلغاء",
+            totalLabel: "الإجمالي",
+            addItemBtn: "+ إضافة بند جديد",
+            profileTitle: "الملف الشخصي والحساب",
+            fnameLabel: "الاسم الأول",
+            lnameLabel: "اسم العائلة",
+            ageLabel: "العمر",
+            genderLabel: "الجنس",
+            emailLabel: "البريد الإلكتروني (Google)",
+            phoneLabel: "رقم الجوال (واتساب)",
+            waAutoTitle: "إرسال تقرير PDF الشهري تلقائياً على الواتساب",
+            waAutoDesc: "استلام التقرير المالي بصيغة PDF على واتسابك في نهاية كل شهر.",
+            waSavedMsg: "تم الحفظ ومزامنة البيانات مع حسابك في Google!",
+            waPhoneRequired: "يرجى إدخال رقم واتساب صحيح مع رمز الدولة (مثال: 9665XXXXXXXX).",
+            saveChangesBtn: "حفظ التعديلات",
+            logoutBtn: "تسجيل الخروج",
+            historyTitle: "سجل الأشهر",
+            autoHistoryHint: "أي شهر يضاف أو يُحدّث في الداش بورد يُحفظ هنا تلقائياً.",
+            noMonthsInHistory: "لا توجد أشهر محفوظة حالياً. افتح الداش بورد ليتم إنشاء الشهر تلقائياً.",
+            pdfBtn: "تقرير PDF",
+            waSendBtn: "إرسال واتساب",
+            waSending: "جاري الإرسال...",
+            downloadingPdf: "جاري التحميل...",
+            deleteBtn: "حذف",
+            confirmDeleteMonth: "هل أنت متأكد من حذف هذا الشهر؟",
+            openBtn: "فتح",
+            aboutSub: "شريكك الذكي لإدارة ومراقبة ميزانيتك الشخصية بكل سهولة واحترافية.",
+            overviewTitle: "فكرة المنصة والهدف",
+            overviewDesc: "صُممت منصة RiyalBA لمساعدة الأفراد على التحكم الكامل بحياتهم المالية عبر تحليل المصروفات، متابعة أهداف الادخار، وتقديم تقارير دقيقة.",
+            devTitle: "تم التطوير بواسطة",
+            linkedinBtn: "🔗 حساب لينكد إن",
+            footerSub: "إدارة الأموال الذكية"
+        }
+    };
+
+    const CARD_COLOR_PALETTE = [
+        '#008CFF', '#EC4899', '#10B981', '#8B5CF6',
+        '#F59E0B', '#06B6D4', '#EF4444', '#6366F1',
+        '#14B8A6', '#D946EF', '#F97316', '#3B82F6'
+    ];
+
+    let currentLang = localStorage.getItem('RiyalBA_lang') || 'en';
+    let users = JSON.parse(localStorage.getItem('RiyalBA_users')) || {};
+    let monthsDB = JSON.parse(localStorage.getItem('RiyalBA_months')) || {};
+    let currentUser = null;
+    let firebaseUid = null;
+    let pendingGoogleUser = null;
+    let currentMonthId = null;
+    let cardsLocked = true;
+    let donutChart = null, barChart = null, lineDaily = null, lineHistory = null, gaugeChart = null, cardSpendingChart = null, efficiencyChart = null;
+    let pdfChartsInstances = [];
+
+    function pushStateToCloud() {
+        if (!firebaseUid || !window.riyalbaAuth || !currentUser || !users[currentUser]) return;
+        let userMonths = {};
+        for (let id in monthsDB) {
+            if (monthsDB[id] && monthsDB[id].userId === currentUser) {
+                userMonths[id] = monthsDB[id];
+            }
+        }
+        window.riyalbaAuth.saveRiyalBAData(firebaseUid, {
+            profile: users[currentUser],
+            months: userMonths,
+            email: users[currentUser].email || currentUser
+        }).catch(err => console.error('Cloud sync save error:', err));
+    }
+
+    async function loginWithGoogleCloud() {
+        let errEl = document.getElementById('google-auth-error');
+        let btn = document.getElementById('google-signin-btn');
+        if (errEl) errEl.style.display = 'none';
+        if (!window.riyalbaAuth) return;
+        try {
+            if (btn) btn.disabled = true;
+            await window.riyalbaAuth.loginWithGmail();
+        } catch (err) {
+            console.error('Google Sign-In Error:', err);
+            if (errEl) {
+                errEl.innerText = currentLang === 'ar'
+                    ? 'تعذّر تسجيل الدخول عبر Google: ' + (err.message || '')
+                    : 'Google Sign-In failed: ' + (err.message || '');
+                errEl.style.display = 'block';
+            }
+        } finally {
+            if (btn) btn.disabled = false;
+        }
+    }
+
+    function hasValidDemographics(prof) {
+        return Boolean(prof && prof.age && String(prof.age).trim() !== '' && (prof.gender === 'male' || prof.gender === 'female'));
+    }
+
+    window.addEventListener('riyalba:ready', function(e) {
+        const { user, cloudData } = e.detail || {};
+        if (!user) return;
+        firebaseUid = user.uid;
+        currentUser = user.email || user.uid;
+        localStorage.setItem('RiyalBA_currentUser', currentUser);
+
+        let nameParts = (user.displayName || '').trim().split(/\s+/);
+        let defaultFname = nameParts[0] || (user.email ? user.email.split('@')[0] : 'User');
+        let defaultLname = nameParts.slice(1).join(' ');
+
+        if (cloudData && cloudData.months) {
+            for (let id in cloudData.months) {
+                monthsDB[id] = { ...cloudData.months[id], userId: currentUser };
+            }
+            localStorage.setItem('RiyalBA_months', JSON.stringify(monthsDB));
+        }
+
+        const cloudProf = (cloudData && cloudData.profile) ? cloudData.profile : null;
+        const localProf = users[currentUser] || null;
+        const mergedProf = {
+            ...(localProf || {}),
+            ...(cloudProf || {}),
+            email: user.email || (cloudProf && cloudProf.email) || (localProf && localProf.email) || '',
+            photo: (cloudProf && cloudProf.photo) || (localProf && localProf.photo) || user.photoURL || null
+        };
+
+        if (hasValidDemographics(mergedProf)) {
+            mergedProf.profileCompleted = true;
+            users[currentUser] = mergedProf;
+            localStorage.setItem('RiyalBA_users', JSON.stringify(users));
+            pushStateToCloud();
+            initApp();
+        } else {
+            pendingGoogleUser = {
+                uid: user.uid,
+                email: user.email || '',
+                fname: mergedProf.fname || defaultFname,
+                lname: mergedProf.lname || defaultLname,
+                photo: mergedProf.photo || user.photoURL || null
+            };
+            populateAgeDropdowns();
+            document.getElementById('app-wrapper').classList.add('hidden');
+            document.getElementById('auth-wrapper').classList.remove('hidden');
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('onboarding-form').classList.remove('hidden');
+            document.getElementById('onb-fname').value = pendingGoogleUser.fname;
+            document.getElementById('onb-lname').value = pendingGoogleUser.lname;
+        }
+    });
+
+    window.addEventListener('riyalba:signed-out', function() {
+        firebaseUid = null;
+        pendingGoogleUser = null;
+        localStorage.removeItem('RiyalBA_currentUser');
+        currentUser = null;
+        document.getElementById('app-wrapper').classList.add('hidden');
+        document.getElementById('auth-wrapper').classList.remove('hidden');
+        document.getElementById('login-form').classList.remove('hidden');
+        document.getElementById('onboarding-form').classList.add('hidden');
+    });
+
+    function completeGoogleOnboarding() {
+        let fname = document.getElementById('onb-fname').value.trim();
+        let lname = document.getElementById('onb-lname').value.trim();
+        let age = document.getElementById('onb-age').value;
+        let gender = document.getElementById('onb-gender').value;
+        let phone = normalizeWhatsAppPhone(document.getElementById('onb-phone').value.trim());
+        let errEl = document.getElementById('onb-error-msg');
+
+        if (!fname || !age || !gender) {
+            errEl.style.display = 'block';
+            return;
+        }
+        errEl.style.display = 'none';
+
+        let email = pendingGoogleUser ? pendingGoogleUser.email : currentUser;
+        let photo = pendingGoogleUser ? pendingGoogleUser.photo : null;
+        currentUser = email || currentUser;
+        localStorage.setItem('RiyalBA_currentUser', currentUser);
+
+        users[currentUser] = {
+            fname,
+            lname,
+            age,
+            gender,
+            email,
+            phone,
+            waAutoReport: Boolean(phone),
+            customIncome: 0,
+            customGoal: 1000,
+            photo,
+            profileCompleted: true
+        };
+        localStorage.setItem('RiyalBA_users', JSON.stringify(users));
+        pushStateToCloud();
+        initApp();
+    }
+
+    function normalizeWhatsAppPhone(raw) {
+        let digits = (raw || '').replace(/\D/g, '');
+        if (digits.startsWith('00')) digits = digits.slice(2);
+        if (digits.startsWith('05') && digits.length === 10) digits = '966' + digits.slice(1);
+        return digits;
+    }
+
+    function getBudgetConsumptionColor(pct) {
+        if (pct > 100) return '#EF4444';
+        if (pct === 100) return '#10B981';
+        return '#008CFF';
+    }
+
+    window.onload = function() {
+        applyLanguage(currentLang);
+        populateAgeDropdowns();
+        updateDashboardDate();
+        // إبقاء شاشة الدخول ظاهرة حتى يكتمل التحقق من حساب Google من Firebase
+        document.getElementById('auth-wrapper').classList.remove('hidden');
+        document.getElementById('app-wrapper').classList.add('hidden');
+    };
+
+    function switchLanguage() {
+        currentLang = currentLang === 'en' ? 'ar' : 'en';
+        localStorage.setItem('RiyalBA_lang', currentLang);
+        applyLanguage(currentLang);
+        populateAgeDropdowns();
+        updateDashboardDate();
+        loadHistory();
+        if(currentMonthId) openMonth(currentMonthId);
+    }
+
+    function applyLanguage(lang) {
+        let body = document.getElementById('body');
+        body.className = lang === 'ar' ? 'lang-ar' : 'lang-en';
+        document.getElementById('html-root').setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+        document.getElementById('html-root').setAttribute('lang', lang);
+
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            let key = el.getAttribute('data-i18n');
+            if(translations[lang][key]) el.innerText = translations[lang][key];
+        });
+
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            let key = el.getAttribute('data-i18n-placeholder');
+            if(translations[lang][key]) el.setAttribute('placeholder', translations[lang][key]);
+        });
+    }
+
+    function populateAgeDropdowns() {
+        [document.getElementById('onb-age'), document.getElementById('edit-prof-age')].forEach(sel => {
+            if(!sel) return;
+            let currentVal = sel.value;
+            sel.innerHTML = `<option value="" disabled selected>${currentLang === 'ar' ? 'العمر' : 'Age'}</option>`;
+            for(let i = 12; i <= 80; i++) sel.innerHTML += `<option value="${i}">${i} ${currentLang === 'ar' ? 'سنة' : 'years'}</option>`;
+            if(currentVal) sel.value = currentVal;
+        });
+    }
+
+    function getLongFormattedDate() {
+        let now = new Date();
+        let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        return now.toLocaleDateString(currentLang === 'ar' ? 'ar-SA' : 'en-US', options);
+    }
+
+    function updateDashboardDate() {
+        let dateEl = document.getElementById('dashboard-date-badge');
+        if(dateEl) dateEl.innerText = getLongFormattedDate();
+    }
+
+    function syncMonthsDB() {
+        localStorage.setItem('RiyalBA_months', JSON.stringify(monthsDB));
+        pushStateToCloud();
+        if (document.getElementById('page-history')?.classList.contains('active')) {
+            loadHistory();
+        }
+    }
+
+    function ensureCurrentDashboardMonthAutoSaved() {
+        if (!currentUser) return;
+        let now = new Date();
+        let monthName = now.toLocaleString(currentLang === 'ar' ? 'ar-SA' : 'en-US', { month: 'long', year: 'numeric' });
+        let existingId = null;
+        for (let id in monthsDB) {
+            let m = monthsDB[id];
+            if (m.userId === currentUser && !m.isDeleted) {
+                existingId = id;
+                if (!m.name) m.name = monthName;
+                break;
+            }
+        }
+        if (!existingId) {
+            let id = Date.now().toString();
+            monthsDB[id] = {
+                userId: currentUser,
+                name: monthName,
+                isDeleted: false,
+                cards: [],
+                expenses: [{ cat: "", p: '', a: '', cardId: '' }]
+            };
+            existingId = id;
+        }
+        currentMonthId = existingId;
+        syncMonthsDB();
+    }
+
+    function initApp() {
+        cardsLocked = true;
+        if (currentUser && users[currentUser] && hasValidDemographics(users[currentUser])) {
+            document.getElementById('auth-wrapper').classList.add('hidden');
+            document.getElementById('app-wrapper').classList.remove('hidden');
+            loadUserProfile();
+            ensureCurrentDashboardMonthAutoSaved();
+            loadHistory();
+            openMonth(currentMonthId);
+        } else {
+            document.getElementById('auth-wrapper').classList.remove('hidden');
+            document.getElementById('app-wrapper').classList.add('hidden');
+        }
+    }
+
+    async function logout() {
+        try {
+            if (window.riyalbaAuth) await window.riyalbaAuth.logoutGmail();
+        } catch (err) {
+            console.error(err);
+        }
+        localStorage.removeItem('RiyalBA_currentUser');
+        location.reload();
+    }
+
+    function loadUserProfile() {
+        let uData = users[currentUser] || { fname: currentUser, lname: '', gender: 'male', age: '25', email: currentUser, phone: '', waAutoReport: false, customIncome: 0, customGoal: 1000, photo: null };
+        let fullName = (uData.fname + ' ' + uData.lname).trim() || currentUser;
+        document.getElementById('user-display').innerText = fullName;
+        document.getElementById('mobile-user-display').innerText = fullName;
+        
+        let picContainers = [document.getElementById('profile-initial'), document.getElementById('mobile-profile-initial'), document.getElementById('profile-page-initial')];
+        picContainers.forEach((container, idx) => {
+            if(!container) return;
+            if(uData.photo) {
+                container.outerHTML = `<img src="${uData.photo}" class="profile-pic" id="${container.id}" style="${idx === 1 ? 'width: 30px; height: 30px;' : (idx === 2 ? 'width: 90px; height: 90px;' : '')}">`;
+            } else { 
+                container.innerText = fullName.charAt(0).toUpperCase(); 
+                container.style.backgroundColor = uData.gender === 'female' ? 'var(--brand-pink)' : 'var(--brand-blue)'; 
+            }
+        });
+        document.getElementById('prof-name').innerText = fullName;
+        document.getElementById('prof-user').innerText = uData.email || currentUser;
+        document.getElementById('edit-prof-fname').value = uData.fname;
+        document.getElementById('edit-prof-lname').value = uData.lname;
+        document.getElementById('edit-prof-age').value = uData.age;
+        document.getElementById('edit-prof-gender').value = uData.gender;
+        document.getElementById('edit-prof-email').value = uData.email || currentUser;
+        document.getElementById('edit-prof-phone').value = uData.phone || '';
+        document.getElementById('edit-prof-wa-auto').checked = Boolean(uData.waAutoReport);
+    }
+
+    function triggerPhotoUpload() { document.getElementById('profile-photo-input').click(); }
+    function updateProfilePhoto(event) {
+        let file = event.target.files[0];
+        if (file) {
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                users[currentUser].photo = e.target.result;
+                localStorage.setItem('RiyalBA_users', JSON.stringify(users));
+                pushStateToCloud();
+                loadUserProfile();
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function saveProfileEdits() {
+        let uData = users[currentUser];
+        let phoneNormalized = normalizeWhatsAppPhone(document.getElementById('edit-prof-phone').value.trim());
+        let waAuto = document.getElementById('edit-prof-wa-auto').checked;
+        let statusEl = document.getElementById('wa-save-status');
+
+        if (waAuto && phoneNormalized.length < 10) {
+            statusEl.style.display = 'block';
+            statusEl.style.color = 'var(--danger)';
+            statusEl.innerText = translations[currentLang].waPhoneRequired;
+            return;
+        }
+
+        uData.fname = document.getElementById('edit-prof-fname').value.trim();
+        uData.lname = document.getElementById('edit-prof-lname').value.trim();
+        uData.age = document.getElementById('edit-prof-age').value;
+        uData.gender = document.getElementById('edit-prof-gender').value;
+        uData.phone = phoneNormalized;
+        uData.waAutoReport = waAuto;
+        uData.profileCompleted = true;
+        localStorage.setItem('RiyalBA_users', JSON.stringify(users));
+        pushStateToCloud();
+        loadUserProfile();
+
+        statusEl.style.display = 'block';
+        statusEl.style.color = '#15803D';
+        statusEl.innerText = translations[currentLang].waSavedMsg;
+    }
+
+    function toggleIncomeEdit() {
+        let box = document.getElementById('income-edit-box');
+        box.classList.toggle('hidden');
+        if(!box.classList.contains('hidden')) document.getElementById('income-input-field').value = users[currentUser].customIncome || '';
+    }
+
+    function saveIncomeDirect() {
+        let val = parseFloat(document.getElementById('income-input-field').value);
+        if(isNaN(val) || val <= 0) return;
+        users[currentUser].customIncome = val;
+        localStorage.setItem('RiyalBA_users', JSON.stringify(users));
+        document.getElementById('income-edit-box').classList.add('hidden');
+        calc();
+        syncMonthsDB();
+    }
+
+    function toggleGoalEdit() {
+        let box = document.getElementById('goal-edit-box');
+        box.classList.toggle('hidden');
+        if(!box.classList.contains('hidden')) {
+            let uData = users[currentUser];
+            document.getElementById('goal-input-field').value = (uData && uData.customGoal !== undefined) ? uData.customGoal : 1000;
+        }
+    }
+
+    function saveGoalDirect() {
+        let val = parseFloat(document.getElementById('goal-input-field').value);
+        if(isNaN(val) || val < 0) return;
+        users[currentUser].customGoal = val;
+        localStorage.setItem('RiyalBA_users', JSON.stringify(users));
+        document.getElementById('goal-edit-box').classList.add('hidden');
+        calc();
+        syncMonthsDB();
+    }
+
+    function applyCardsLockUI() {
+        let addBtn = document.getElementById('toggle-add-card-btn');
+        let formRow = document.getElementById('add-card-form-row');
+        let editPageFormRow = document.getElementById('edit-page-card-form-row');
+        let lockedNote = document.getElementById('cards-locked-note');
+        if (addBtn) {
+            addBtn.disabled = cardsLocked;
+            addBtn.style.opacity = cardsLocked ? '0.5' : '1';
+            addBtn.style.cursor = cardsLocked ? 'not-allowed' : 'pointer';
+        }
+        if (formRow) formRow.classList.toggle('hidden', cardsLocked);
+        if (editPageFormRow) editPageFormRow.classList.toggle('hidden', cardsLocked);
+        if (lockedNote) lockedNote.classList.toggle('hidden', !cardsLocked);
+        renderCardsManageList();
+    }
+
+    function unlockCardsAndEditData() {
+        cardsLocked = false;
+        applyCardsLockUI();
+        renderTableEdit();
+        navigate('edit-month');
+    }
+
+    function getRandomCardColor(usedColors = []) {
+        let available = CARD_COLOR_PALETTE.filter(c => !usedColors.includes(c));
+        if (available.length > 0) return available[Math.floor(Math.random() * available.length)];
+        let hue = Math.floor(Math.random() * 360);
+        return `hsl(${hue}, 75%, 48%)`;
+    }
+
+    function getMonthCards(monthId = currentMonthId) {
+        let m = monthsDB[monthId];
+        if (!m) return [];
+        if (!m.cards) m.cards = [];
+        let changed = false;
+        let used = m.cards.map(c => c.color).filter(Boolean);
+        m.cards.forEach(c => {
+            if (!c.color) {
+                let col = getRandomCardColor(used);
+                c.color = col;
+                used.push(col);
+                changed = true;
+            }
+        });
+        if (changed) localStorage.setItem('RiyalBA_months', JSON.stringify(monthsDB));
+        return m.cards;
+    }
+
+    function toggleAddCardBox() {
+        if (cardsLocked) return;
+        let box = document.getElementById('add-card-box');
+        box.classList.toggle('hidden');
+        renderCardsManageList();
+    }
+
+    function createCardRecord(name, limit) {
+        if (cardsLocked) return;
+        let cards = getMonthCards();
+        let usedColors = cards.map(c => c.color);
+        cards.push({ id: 'card_' + Date.now(), name: name, limit: limit, color: getRandomCardColor(usedColors) });
+        syncMonthsDB();
+        renderCardsManageList();
+        renderTableReadonly();
+        renderTableEdit();
+        calc();
+    }
+
+    function addNewCard() {
+        if (cardsLocked) return;
+        let nameInput = document.getElementById('new-card-name');
+        let limitInput = document.getElementById('new-card-limit');
+        let name = nameInput.value.trim();
+        let limit = parseFloat(limitInput.value);
+        if (!name || isNaN(limit) || limit < 0) return;
+        createCardRecord(name, limit);
+        nameInput.value = '';
+        limitInput.value = '';
+    }
+
+    function addNewCardFromEditPage() {
+        if (cardsLocked) return;
+        let nameInput = document.getElementById('edit-new-card-name');
+        let limitInput = document.getElementById('edit-new-card-limit');
+        let name = nameInput.value.trim();
+        let limit = parseFloat(limitInput.value);
+        if (!name || isNaN(limit) || limit < 0) return;
+        createCardRecord(name, limit);
+        nameInput.value = '';
+        limitInput.value = '';
+    }
+
+    function editCardInline(cardId, nameInputId, limitInputId, colorInputId) {
+        if (cardsLocked) return;
+        let m = monthsDB[currentMonthId];
+        let nameVal = document.getElementById(nameInputId).value.trim();
+        let limitVal = parseFloat(document.getElementById(limitInputId).value);
+        let colorVal = document.getElementById(colorInputId).value;
+        if (!nameVal || isNaN(limitVal) || limitVal < 0) return;
+        let cardObj = (m.cards || []).find(c => c.id === cardId);
+        if (cardObj) {
+            cardObj.name = nameVal;
+            cardObj.limit = limitVal;
+            cardObj.color = colorVal;
+            syncMonthsDB();
+            renderCardsManageList();
+            renderTableReadonly();
+            renderTableEdit();
+            calc();
+        }
+    }
+
+    function deleteCard(cardId) {
+        if (cardsLocked) return;
+        let m = monthsDB[currentMonthId];
+        m.cards = (m.cards || []).filter(c => c.id !== cardId);
+        m.expenses.forEach(ex => { if (ex.cardId === cardId) ex.cardId = ''; });
+        syncMonthsDB();
+        renderCardsManageList();
+        renderTableReadonly();
+        renderTableEdit();
+        calc();
+    }
+
+    function buildCardManageItemsHTML(prefix) {
+        let cards = getMonthCards();
+        let disabledAttr = cardsLocked ? 'disabled' : '';
+        return cards.map((c, idx) => {
+            let colorId = `${prefix}_card_edit_color_${idx}`;
+            let nameId = `${prefix}_card_edit_name_${idx}`;
+            let limitId = `${prefix}_card_edit_limit_${idx}`;
+            let actionButtons = cardsLocked ? '' : `
+                <button onclick="editCardInline('${c.id}', '${nameId}', '${limitId}', '${colorId}')" class="btn btn-primary" style="width:auto; padding:6px 12px; margin:0; font-size:12px;">${translations[currentLang].updateCardBtn}</button>
+                <button onclick="deleteCard('${c.id}')" class="action-btn" title="Delete">🗑️</button>
+            `;
+            return `
+                <div class="card-manage-row" style="border-inline-start: 4px solid ${c.color};">
+                    <input type="color" id="${colorId}" value="${c.color}" title="Color" ${disabledAttr}>
+                    <input type="text" id="${nameId}" value="${c.name}" ${disabledAttr}>
+                    <input type="number" id="${limitId}" value="${c.limit}" min="0" ${disabledAttr}>
+                    ${actionButtons}
+                </div>
+            `;
+        }).join('');
+    }
+
+    function renderCardsManageList() {
+        let container = document.getElementById('cards-manage-list');
+        if (container) container.innerHTML = buildCardManageItemsHTML('dash');
+        let editContainer = document.getElementById('edit-cards-manage-list');
+        if (editContainer) editContainer.innerHTML = buildCardManageItemsHTML('edit');
+    }
+
+    function updateExpenseCardInDashboard(expIndex, cardId) {
+        let m = monthsDB[currentMonthId];
+        if (m.expenses[expIndex]) {
+            m.expenses[expIndex].cardId = cardId;
+            syncMonthsDB();
+            calc();
+        }
+    }
+
+    function navigate(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+        document.getElementById('page-' + pageId).classList.add('active');
+        document.getElementById('nav-' + pageId).classList.add('active');
+        if(pageId === 'dashboard') {
+            cardsLocked = true;
+            ensureCurrentDashboardMonthAutoSaved();
+            applyCardsLockUI();
+            renderTableReadonly();
+            calc();
+        } else if (pageId === 'edit-month' && currentMonthId) {
+            cardsLocked = false;
+            applyCardsLockUI();
+            renderTableEdit();
+        } else if (pageId === 'history') {
+            ensureCurrentDashboardMonthAutoSaved();
+            loadHistory();
+        }
+    }
+
+    function loadHistory() {
+        let container = document.getElementById('history-container');
+        if (!container) return;
+        container.innerHTML = '';
+        let hasData = false;
+
+        for (let id in monthsDB) {
+            let m = monthsDB[id];
+            if (m.userId === currentUser && !m.isDeleted) {
+                hasData = true;
+                let summary = getMonthSummaryData(id);
+                container.innerHTML += `
+                    <div class="history-month-card">
+                        <div>
+                            <strong style="font-size:15px;">${m.name}</strong>
+                            <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">
+                                ${translations[currentLang].kpiExpenses}: <strong>${summary.ta.toLocaleString()} SAR</strong> |
+                                ${translations[currentLang].kpiNet}: <strong class="${summary.net < 0 ? 'text-red' : 'text-green'}">${summary.net.toLocaleString()} SAR</strong>
+                            </div>
+                        </div>
+                        <div class="history-actions">
+                            <button onclick="openMonth('${id}')" class="btn btn-primary" style="width:auto; padding:8px 16px; margin:0; font-size:13px;">${translations[currentLang].openBtn}</button>
+                            <button id="pdf-btn-${id}" onclick="downloadMonthPdfDirectly('${id}')" class="btn btn-pdf">${translations[currentLang].pdfBtn}</button>
+                            <button id="wa-btn-${id}" onclick="sendMonthPdfToWhatsApp('${id}')" class="btn btn-whatsapp">📲 ${translations[currentLang].waSendBtn}</button>
+                            <button onclick="deleteMonthFromHistory('${id}')" class="btn btn-delete-month">${translations[currentLang].deleteBtn}</button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        if (!hasData) {
+            container.innerHTML = `<div class="history-month-card"><span style="color:var(--text-muted); font-size:14px;">${translations[currentLang].noMonthsInHistory}</span></div>`;
+        }
+        calcCumulative();
+    }
+
+    function deleteMonthFromHistory(id) {
+        let m = monthsDB[id];
+        if (!m || m.userId !== currentUser) return;
+        if (!confirm(translations[currentLang].confirmDeleteMonth)) return;
+        m.isDeleted = true;
+        if (currentMonthId === id) currentMonthId = null;
+        syncMonthsDB();
+        ensureCurrentDashboardMonthAutoSaved();
+        loadHistory();
+    }
+
+    function getMonthSummaryData(monthId) {
+        let m = monthsDB[monthId] || { expenses: [], cards: [] };
+        let tp = 0, ta = 0, cats = [], pData = [], aData = [];
+        (m.expenses || []).forEach((ex, idx) => {
+            let p = parseFloat(ex.p) || 0;
+            let a = parseFloat(ex.a) || 0;
+            tp += p;
+            ta += a;
+            cats.push(ex.cat || `Item ${idx + 1}`);
+            pData.push(p);
+            aData.push(a);
+        });
+        if (cats.length === 0) {
+            cats = ['General'];
+            pData = [0];
+            aData = [0];
+        }
+        let uData = users[currentUser] || {};
+        let totalInc = uData.customIncome > 0 ? uData.customIncome : (tp > 0 ? tp * 1.2 : 5000);
+        let net = totalInc - ta;
+        let remPlanned = totalInc - tp;
+        let savingsRate = totalInc > 0 ? Math.max(0, Math.round((net / totalInc) * 100)) : 0;
+        let cards = getMonthCards(monthId);
+        let cardsTotal = cards.reduce((s, c) => s + (parseFloat(c.limit) || 0), 0);
+        let targetSavings = (uData.customGoal !== undefined) ? uData.customGoal : 1000;
+
+        let cardSpendLabels = [];
+        let cardSpendValues = [];
+        let cardSpendColors = [];
+        cards.forEach(c => {
+            let spent = 0;
+            (m.expenses || []).forEach(ex => { if (ex.cardId === c.id) spent += (parseFloat(ex.a) || 0); });
+            cardSpendLabels.push(c.name);
+            cardSpendValues.push(spent);
+            cardSpendColors.push(c.color);
+        });
+
+        let cumulativeVal = 0;
+        for (let id in monthsDB) {
+            let itemM = monthsDB[id];
+            if (itemM.userId === currentUser && !itemM.isDeleted) {
+                (itemM.expenses || []).forEach(ex => {
+                    cumulativeVal += ((parseFloat(ex.p) || 0) - (parseFloat(ex.a) || 0));
+                });
+            }
+        }
+
+        let minForGoal = Math.min(net, remPlanned);
+        let goalPct = targetSavings === 0
+            ? (minForGoal >= 0 ? 100 : 0)
+            : (minForGoal >= targetSavings ? 100 : Math.min(100, Math.max(0, Math.round((minForGoal / targetSavings) * 100))));
+
+        return {
+            m, tp, ta, totalInc, net, remPlanned, savingsRate, cumulativeVal,
+            cats, pData, aData, cards, cardsTotal,
+            cardSpendLabels, cardSpendValues, cardSpendColors,
+            targetSavings, minForGoal, goalPct
+        };
+    }
+
+    function getMonthlyComparisonSeries(activeMonthId, fallbackRemPlanned) {
+        let userMonths = Object.entries(monthsDB)
+            .filter(([_, m]) => m && m.userId === currentUser && !m.isDeleted)
+            .sort((a, b) => Number(a[0]) - Number(b[0]));
+
+        if (userMonths.length >= 2) {
+            let labels = userMonths.map(([_, m]) => m.name || '-');
+            let values = userMonths.map(([id, m]) => {
+                let mTp = 0;
+                (m.expenses || []).forEach(ex => { mTp += (parseFloat(ex.p) || 0); });
+                let inc = users[currentUser]?.customIncome > 0 ? users[currentUser].customIncome : (mTp > 0 ? mTp * 1.2 : 5000);
+                return Math.round(inc - mTp);
+            });
+            return { labels, values, isRealHistory: true };
+        }
+
+        let currentLabel = monthsDB[activeMonthId]?.name || (currentLang === 'ar' ? 'الشهر الحالي' : 'Current');
+        let currentVal = Math.round(fallbackRemPlanned);
+        return {
+            labels: currentLang === 'ar' ? ['أغسطس', 'سبتمبر', 'أكتوبر', currentLabel] : ['Aug', 'Sep', 'Oct', currentLabel],
+            values: [1200, 800, 1500, currentVal],
+            isRealHistory: false
+        };
+    }
+
+    function destroyPdfCharts() {
+        pdfChartsInstances.forEach(ch => { if (ch && typeof ch.destroy === 'function') ch.destroy(); });
+        pdfChartsInstances = [];
+    }
+
+    function renderPdfSheetContent(monthId) {
+        let data = getMonthSummaryData(monthId);
+        let sheet = document.getElementById('pdf-report-sheet');
+        if (!sheet) return null;
+
+        destroyPdfCharts();
+        let monthTitle = data.m.name || 'Month';
+        let uData = users[currentUser] || { fname: currentUser || 'User', lname: '' };
+        let fullName = `${uData.fname || ''} ${uData.lname || ''}`.trim() || currentUser;
+
+        let minSourceName = data.net <= data.remPlanned
+            ? translations[currentLang].kpiNet
+            : translations[currentLang].remainingFromPlanned;
+        let goalStatusLine = currentLang === 'ar'
+            ? `المعتمد (${minSourceName}): ${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)`
+            : `Counted (${minSourceName}): ${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)`;
+
+        sheet.innerHTML = `
+            <div class="pdf-top-header">
+                <div class="pdf-symbol-only"></div>
+                <div class="pdf-center-title">
+                    <h2>RiyalBA. - ${monthTitle}</h2>
+                    <p>${translations[currentLang].aboutSub}</p>
+                </div>
+                <div class="pdf-user-name-only">${fullName}</div>
+            </div>
+
+            <div class="pdf-row-1">
+                <div class="pdf-kpi-2x2">
+                    <div class="pdf-kpi-card">
+                        <small>${translations[currentLang].kpiIncome}</small>
+                        <strong class="text-green">${data.totalInc.toLocaleString()} SAR</strong>
+                    </div>
+                    <div class="pdf-kpi-card">
+                        <small>${translations[currentLang].kpiExpenses}</small>
+                        <strong class="text-red">${data.ta.toLocaleString()} SAR</strong>
+                    </div>
+                    <div class="pdf-kpi-card">
+                        <small>${translations[currentLang].kpiNet}</small>
+                        <strong class="${data.net < 0 ? 'text-red' : 'text-green'}">${data.net.toLocaleString()} SAR</strong>
+                    </div>
+                    <div class="pdf-kpi-card">
+                        <small>${translations[currentLang].kpiSavings}</small>
+                        <strong>${data.savingsRate}%</strong>
+                    </div>
+                </div>
+
+                <div class="pdf-goals-card">
+                    <h4>${translations[currentLang].finGoals}</h4>
+                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:10.5px; font-weight:700;">
+                        <span>${translations[currentLang].monthlyTarget}</span>
+                        <span>${data.targetSavings.toLocaleString()} SAR</span>
+                    </div>
+                    <div style="background:#E2E8F0; height:6px; border-radius:999px; overflow:hidden;">
+                        <div style="background:${data.goalPct >= 100 ? '#10B981' : '#008CFF'}; width:${data.goalPct}%; height:100%;"></div>
+                    </div>
+                    <div style="font-size:9.5px; font-weight:700; color:${data.goalPct >= 100 ? '#10B981' : '#4B5563'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${goalStatusLine}</div>
+                    <div style="font-size:9.5px; font-weight:700; color:#6B7280;">${translations[currentLang].remDebts}: <strong class="text-red">0 SAR</strong></div>
+                </div>
+            </div>
+
+            <div class="pdf-row-2">
+                <div class="pdf-panel">
+                    <h5>${translations[currentLang].chartDist}</h5>
+                    <div class="pdf-canvas-mid"><canvas id="pdfDonutCanvas"></canvas></div>
+                </div>
+                <div class="pdf-panel">
+                    <h5>${translations[currentLang].chartConsumptionRate}</h5>
+                    <div class="pdf-canvas-mid"><canvas id="pdfRadarCanvas"></canvas></div>
+                </div>
+                <div class="pdf-panel">
+                    <h5>${translations[currentLang].chartBar}</h5>
+                    <div class="pdf-canvas-mid"><canvas id="pdfBarCanvas"></canvas></div>
+                </div>
+            </div>
+
+            <div class="pdf-row-3">
+                <div class="pdf-panel">
+                    <h5>${translations[currentLang].chartDaily}</h5>
+                    <div class="pdf-canvas-bot"><canvas id="pdfDailyCanvas"></canvas></div>
+                </div>
+                <div class="pdf-panel">
+                    <h5>${translations[currentLang].chartHistory}</h5>
+                    <div class="pdf-canvas-bot"><canvas id="pdfHistoryCanvas"></canvas></div>
+                </div>
+            </div>
+
+            <div class="pdf-footer-bar">
+                <span>&copy; 2026 RiyalBA. All Rights Reserved.</span>
+            </div>
+        `;
+
+        let comp = getMonthlyComparisonSeries(monthId, data.remPlanned);
+        let effData = data.pData.map((p, idx) => p > 0 ? Math.min(100, Math.max(0, Math.round((data.aData[idx] / p) * 100))) : 0);
+        let baseLegendOpts = {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 9, padding: 6, font: { size: 9, weight: 'bold' } } } }
+        };
+
+        pdfChartsInstances.push(new Chart(document.getElementById('pdfDonutCanvas').getContext('2d'), {
+            type: 'doughnut',
+            data: { labels: data.cats, datasets: [{ data: (data.tp === 0 && data.ta === 0) ? [1] : data.aData, backgroundColor: ['#008CFF', '#EC4899', '#10B981', '#F59E0B', '#6366F1', '#8B5CF6', '#14B8A6'] }] },
+            options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { display: true, position: 'right', labels: { boxWidth: 8, padding: 5, font: { size: 8.5, weight: 'bold' } } } } }
+        }));
+
+        pdfChartsInstances.push(new Chart(document.getElementById('pdfRadarCanvas').getContext('2d'), {
+            type: 'radar',
+            data: { labels: data.cats, datasets: [{ label: translations[currentLang].chartConsumptionRate, data: effData, backgroundColor: 'rgba(0, 140, 255, 0.2)', borderColor: '#008CFF', pointBackgroundColor: '#EC4899', pointBorderColor: '#fff', pointRadius: 2.5 }] },
+            options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { display: false } }, scales: { r: { beginAtZero: true, max: 100, ticks: { stepSize: 25, font: { size: 7.5 }, backdropPadding: 1 }, pointLabels: { font: { size: 8, weight: 'bold' } } } } }
+        }));
+
+        pdfChartsInstances.push(new Chart(document.getElementById('pdfBarCanvas').getContext('2d'), {
+            type: 'bar',
+            data: { labels: data.cats, datasets: [{ label: translations[currentLang].thPlanned, data: data.pData, backgroundColor: '#008CFF', borderRadius: 3 }, { label: translations[currentLang].thActual, data: data.aData, backgroundColor: '#EC4899', borderRadius: 3 }] },
+            options: { ...baseLegendOpts, scales: { x: { ticks: { font: { size: 8 }, maxRotation: 35, minRotation: 0 } }, y: { beginAtZero: true, ticks: { font: { size: 8.5 } } } } }
+        }));
+
+        pdfChartsInstances.push(new Chart(document.getElementById('pdfDailyCanvas').getContext('2d'), {
+            type: 'line',
+            data: { labels: ['W1', 'W2', 'W3', 'W4'], datasets: [{ label: translations[currentLang].kpiExpenses, data: [data.ta * 0.2, data.ta * 0.4, data.ta * 0.7, data.ta], borderColor: '#10B981', backgroundColor: 'rgba(16, 185, 129, 0.14)', fill: true, tension: 0.3, pointRadius: 3, pointBackgroundColor: '#10B981' }] },
+            options: { ...baseLegendOpts, scales: { x: { ticks: { font: { size: 9 } } }, y: { beginAtZero: true, ticks: { font: { size: 9 } } } } }
+        }));
+
+        pdfChartsInstances.push(new Chart(document.getElementById('pdfHistoryCanvas').getContext('2d'), {
+            type: 'line',
+            data: { labels: comp.labels, datasets: [{ label: translations[currentLang].remainingFromPlanned, data: comp.values, borderColor: '#008CFF', backgroundColor: 'rgba(0, 140, 255, 0.16)', fill: true, tension: 0.3, pointRadius: 3, pointBackgroundColor: '#008CFF' }] },
+            options: { ...baseLegendOpts, scales: { x: { ticks: { font: { size: 9 } } }, y: { beginAtZero: true, ticks: { font: { size: 9 } } } } }
+        }));
+
+        return { sheet, monthTitle };
+    }
+
+    async function buildMonthPdfArtifact(monthId) {
+        let rendered = renderPdfSheetContent(monthId);
+        if (!rendered || !rendered.sheet) return null;
+
+        if (document.fonts && document.fonts.ready) await document.fonts.ready;
+        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+        await new Promise(resolve => setTimeout(resolve, 180));
+
+        const canvas = await html2canvas(rendered.sheet, {
+            scale: 2, width: 1122, height: 793, windowWidth: 1122, windowHeight: 793,
+            useCORS: true, allowTaint: true, backgroundColor: '#FFFFFF', logging: false
+        });
+
+        const imgData = canvas.toDataURL('image/jpeg', 0.96);
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+        pdf.addImage(imgData, 'JPEG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), undefined, 'FAST');
+
+        let safeFileName = `RiyalBA-${rendered.monthTitle.replace(/[^\w\u0600-\u06FF-]+/g, '_')}.pdf`;
+        return { pdf, safeFileName, monthTitle: rendered.monthTitle };
+    }
+
+    async function downloadMonthPdfDirectly(monthId) {
+        let btn = document.getElementById(`pdf-btn-${monthId}`);
+        if (btn) { btn.disabled = true; btn.innerText = translations[currentLang].downloadingPdf; }
+
+        const resetBtn = () => {
+            destroyPdfCharts();
+            if (btn) { btn.disabled = false; btn.innerText = translations[currentLang].pdfBtn; }
+        };
+
+        try {
+            if (typeof html2canvas === 'function' && window.jspdf && typeof window.jspdf.jsPDF === 'function') {
+                const artifact = await buildMonthPdfArtifact(monthId);
+                if (artifact) artifact.pdf.save(artifact.safeFileName);
+                resetBtn();
+            } else {
+                window.print();
+                resetBtn();
+            }
+        } catch (err) {
+            console.error('PDF Export Error:', err);
+            resetBtn();
+        }
+    }
+
+    async function sendMonthPdfToWhatsApp(monthId) {
+        let uData = users[currentUser] || {};
+        let phone = normalizeWhatsAppPhone(uData.phone || '');
+        if (phone.length < 10) {
+            alert(translations[currentLang].waPhoneRequired);
+            navigate('profile');
+            return;
+        }
+
+        let btn = document.getElementById(`wa-btn-${monthId}`);
+        if (btn) { btn.disabled = true; btn.innerText = translations[currentLang].waSending; }
+
+        const resetBtn = () => {
+            destroyPdfCharts();
+            if (btn) { btn.disabled = false; btn.innerText = `📲 ${translations[currentLang].waSendBtn}`; }
+        };
+
+        try {
+            const artifact = await buildMonthPdfArtifact(monthId);
+            const summary = getMonthSummaryData(monthId);
+
+            if (WHATSAPP_API_ENDPOINT && artifact) {
+                const pdfBase64 = artifact.pdf.output('datauristring').split(',')[1];
+                const response = await fetch(WHATSAPP_API_ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        phone: phone,
+                        userName: `${uData.fname || ''} ${uData.lname || ''}`.trim() || currentUser,
+                        monthName: artifact.monthTitle,
+                        fileName: artifact.safeFileName,
+                        pdfBase64: pdfBase64
+                    })
+                });
+                if (!response.ok) throw new Error('WhatsApp API request failed');
+                alert(currentLang === 'ar' ? 'تم إرسال ملف PDF إلى واتساب بنجاح!' : 'PDF report sent to WhatsApp successfully!');
+            } else {
+                if (artifact) artifact.pdf.save(artifact.safeFileName);
+                let msg = currentLang === 'ar'
+                    ? `مرحباً ${uData.fname || ''}، هذا ملخص تقريرك المالي لشهر ${summary.m.name} من منصة RiyalBA:\n- الدخل: ${summary.totalInc.toLocaleString()} SAR\n- المصروفات: ${summary.ta.toLocaleString()} SAR\n- الصافي: ${summary.net.toLocaleString()} SAR\n(مرفق ملف الـ PDF المحمّل)`
+                    : `Hello ${uData.fname || ''}, here is your RiyalBA financial summary for ${summary.m.name}:\n- Income: ${summary.totalInc.toLocaleString()} SAR\n- Expenses: ${summary.ta.toLocaleString()} SAR\n- Net Balance: ${summary.net.toLocaleString()} SAR`;
+                window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+            }
+        } catch (err) {
+            console.error('WhatsApp Send Error:', err);
+        } finally {
+            resetBtn();
+        }
+    }
+
+    function openMonth(id) {
+        if (!monthsDB[id] || monthsDB[id].isDeleted) return;
+        currentMonthId = id;
+        cardsLocked = true;
+        let nowMonthName = new Date().toLocaleString(currentLang === 'ar' ? 'ar-SA' : 'en-US', { month: 'long', year: 'numeric' });
+        if (!monthsDB[id].name) monthsDB[id].name = nowMonthName;
+        syncMonthsDB();
+
+        let prefix = currentLang === 'ar' ? 'نظرة عامة: ' : 'Overview: ';
+        document.getElementById('dash-month-title').innerText = prefix + monthsDB[id].name;
+        applyCardsLockUI();
+        renderTableEdit(); 
+        renderTableReadonly(); 
+        calc(); 
+        navigate('dashboard');
+    }
+
+    function buildCardSelectHTML(selectedCardId, onchangeHandler) {
+        let cards = getMonthCards();
+        let selectedCard = cards.find(c => c.id === selectedCardId);
+        let styleAttr = selectedCard ? `background:${selectedCard.color}; color:#FFFFFF; border-color:${selectedCard.color};` : '';
+        let options = `<option value="" style="background:#FFFFFF; color:#111827;">${translations[currentLang].selectCardDefault}</option>`;
+        cards.forEach(c => {
+            let sel = (selectedCardId === c.id) ? 'selected' : '';
+            options += `<option value="${c.id}" ${sel} style="background:#FFFFFF; color:#111827;">${c.name}</option>`;
+        });
+        return `<select class="table-card-select" style="${styleAttr}" onchange="${onchangeHandler}">${options}</select>`;
+    }
+
+    function renderTableReadonly() {
+        let m = monthsDB[currentMonthId];
+        if (!m) return;
+        let tbody = document.getElementById('readonly-table-body');
+        tbody.innerHTML = '';
+        m.expenses.forEach((ex, i) => {
+            if(!ex.cat && ex.p === '' && ex.a === '') return;
+            let rem = (parseFloat(ex.p)||0) - (parseFloat(ex.a)||0);
+            let cardSelect = buildCardSelectHTML(ex.cardId || '', `updateExpenseCardInDashboard(${i}, this.value); renderTableReadonly();`);
+            tbody.innerHTML += `
+                <tr>
+                    <td>${ex.cat || '-'}</td>
+                    <td>${ex.p || 0} SAR</td>
+                    <td>${ex.a || 0} SAR</td>
+                    <td>${cardSelect}</td>
+                    <td class="${rem < 0 ? 'text-red' : 'text-green'}">${Math.abs(rem)} SAR</td>
+                </tr>`;
+        });
+    }
+
+    function renderTableEdit() {
+        let m = monthsDB[currentMonthId];
+        if (!m) return;
+        let cards = getMonthCards();
+        let tbody = document.getElementById('excel-table-body');
+        tbody.innerHTML = '';
+        m.expenses.forEach((ex, i) => {
+            let rem = (parseFloat(ex.p)||0) - (parseFloat(ex.a)||0);
+            let cardOptions = `<option value="">${translations[currentLang].selectCardDefault}</option>`;
+            cards.forEach(c => {
+                let sel = (ex.cardId === c.id) ? 'selected' : '';
+                cardOptions += `<option value="${c.id}" ${sel}>${c.name}</option>`;
+            });
+
+            tbody.innerHTML += `
+                <tr>
+                    <td><input type="text" id="c_${i}" value="${ex.cat || ''}"></td>
+                    <td><input type="number" id="p_${i}" value="${ex.p}" min="0" oninput="calcEditRow(${i})"></td>
+                    <td><input type="number" id="a_${i}" value="${ex.a}" min="0" oninput="calcEditRow(${i})"></td>
+                    <td><select id="card_${i}" class="table-card-select">${cardOptions}</select></td>
+                    <td id="r_${i}">${rem}</td>
+                    <td><button onclick="deleteRow(${i})" class="action-btn">🗑️</button></td>
+                </tr>`;
+            calcEditRow(i);
+        });
+    }
+
+    function deleteRow(i) { saveDOMtoDB(); monthsDB[currentMonthId].expenses.splice(i, 1); renderTableEdit(); calc(); syncMonthsDB(); }
+    function calcEditRow(i) {
+        let p = parseFloat(document.getElementById(`p_${i}`).value)||0;
+        let a = parseFloat(document.getElementById(`a_${i}`).value)||0;
+        let rem = p - a;
+        let td = document.getElementById(`r_${i}`);
+        td.innerText = Math.abs(rem) + " SAR";
+        td.className = rem < 0 ? 'text-red' : 'text-green';
+    }
+    function addNewRow() { saveDOMtoDB(); monthsDB[currentMonthId].expenses.push({ cat: "", p: '', a: '', cardId: '' }); renderTableEdit(); }
+    
+    function saveDOMtoDB() {
+        let m = monthsDB[currentMonthId], newExp = [];
+        m.expenses.forEach((_, i) => {
+            let cEl = document.getElementById(`c_${i}`);
+            let pEl = document.getElementById(`p_${i}`);
+            let aEl = document.getElementById(`a_${i}`);
+            let cardEl = document.getElementById(`card_${i}`);
+            if(!cEl) return;
+            let c = cEl.value.trim();
+            let p = pEl.value;
+            let a = aEl.value;
+            let cardId = cardEl ? cardEl.value : '';
+            if(c !== '' || p !== '' || a !== '') {
+                newExp.push({ cat: c, p: p === '' ? '' : parseFloat(p), a: a === '' ? '' : parseFloat(a), cardId: cardId });
+            }
+        });
+        m.expenses = newExp;
+    }
+
+    function saveMonthData() {
+        saveDOMtoDB();
+        cardsLocked = true;
+        applyCardsLockUI();
+        syncMonthsDB();
+        calcCumulative();
+        navigate('dashboard');
+    }
+
+    function calcCumulative() {
+        let cum = 0;
+        for (let id in monthsDB) { let m = monthsDB[id]; if (m.userId === currentUser && !m.isDeleted) m.expenses.forEach(ex => cum += ((parseFloat(ex.p)||0) - (parseFloat(ex.a)||0))); }
+        document.getElementById('bento-cumulative').innerText = cum.toLocaleString() + " SAR";
+    }
+
+    function renderBudgetConsumption(m) {
+        let container = document.getElementById('progress-bars-container');
+        if (!container) return;
+        let validItems = m.expenses.filter(ex => ex.cat || (parseFloat(ex.p)||0) > 0 || (parseFloat(ex.a)||0) > 0);
+        if (validItems.length === 0) {
+            container.innerHTML = `<p style="font-size:13px; color:var(--text-muted); margin:0;">${translations[currentLang].noProgressData}</p>`;
+            return;
+        }
+        container.innerHTML = validItems.map((ex, idx) => {
+            let label = ex.cat || `Item ${idx + 1}`;
+            let p = parseFloat(ex.p) || 0;
+            let a = parseFloat(ex.a) || 0;
+            let pct = p > 0 ? Math.round((a / p) * 100) : (a > 0 ? 100 : 0);
+            let barPct = Math.min(100, Math.max(0, pct));
+            let barColor = getBudgetConsumptionColor(pct);
+            let textColor = pct > 100 ? 'var(--danger)' : (pct === 100 ? 'var(--success)' : 'var(--text-muted)');
+            return `
+                <div class="progress-item">
+                    <div class="progress-cat-title">${label}</div>
+                    <div class="progress-val-sub" style="color:${textColor};">${a.toLocaleString()} / ${p.toLocaleString()} SAR (${pct}%)</div>
+                    <div class="progress-track">
+                        <div class="progress-fill" style="width:${barPct}%; background:${barColor};"></div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function renderSpendingInsights(m, ta) {
+        let container = document.getElementById('spending-insights-container');
+        if (!container) return;
+        let cards = getMonthCards();
+        let activeItems = m.expenses.filter(ex => ex.cat || (parseFloat(ex.p)||0) > 0 || (parseFloat(ex.a)||0) > 0);
+
+        let highestItem = { name: '-', val: 0 };
+        let onTrackCount = 0;
+        let overBudgetCount = 0;
+        let unassignedSpend = 0;
+
+        activeItems.forEach((ex, idx) => {
+            let p = parseFloat(ex.p) || 0;
+            let a = parseFloat(ex.a) || 0;
+            let name = ex.cat || `Item ${idx + 1}`;
+            if (a > highestItem.val) highestItem = { name, val: a };
+            if (p > 0 && a > p) overBudgetCount++;
+            else onTrackCount++;
+
+            let hasValidCard = cards.some(c => c.id === ex.cardId);
+            if (!hasValidCard) unassignedSpend += a;
+        });
+
+        let avgSpend = activeItems.length > 0 ? Math.round(ta / activeItems.length) : 0;
+
+        container.innerHTML = `
+            <div class="stat-mini-box">
+                <span style="color:var(--text-muted);">${translations[currentLang].highestCatLabel}</span>
+                <span>${highestItem.name} (${highestItem.val.toLocaleString()} SAR)</span>
+            </div>
+            <div class="stat-mini-box">
+                <span style="color:var(--text-muted);">${translations[currentLang].avgItemLabel}</span>
+                <span>${avgSpend.toLocaleString()} SAR</span>
+            </div>
+            <div class="stat-mini-box">
+                <span style="color:var(--text-muted);">${translations[currentLang].onTrackCatsLabel} / ${translations[currentLang].overBudgetCatsLabel}</span>
+                <span><strong class="text-green">${onTrackCount}</strong> / <strong class="text-red">${overBudgetCount}</strong></span>
+            </div>
+            <div class="stat-mini-box" style="margin-bottom:0;">
+                <span style="color:var(--text-muted);">${translations[currentLang].unassignedSpendLabel}</span>
+                <span>${unassignedSpend.toLocaleString()} SAR</span>
+            </div>
+        `;
+    }
+
+    function calc() {
+        let m = monthsDB[currentMonthId];
+        if (!m) return;
+        let tp = 0, ta = 0, cats = [], aData = [], pData = [];
+        m.expenses.forEach((ex, i) => {
+            let p = parseFloat(ex.p) || 0, a = parseFloat(ex.a) || 0;
+            tp += p; ta += a; cats.push(ex.cat || `Item ${i+1}`); aData.push(a); pData.push(p);
+        });
+        document.getElementById('bento-planned').innerText = tp.toLocaleString() + " SAR";
+
+        let totalInc = users[currentUser].customIncome > 0 ? users[currentUser].customIncome : (tp > 0 ? tp * 1.2 : 5000);
+        document.getElementById('kpi-income').innerText = totalInc.toLocaleString() + " SAR";
+        document.getElementById('kpi-expenses').innerText = ta.toLocaleString() + " SAR";
+        let net = totalInc - ta;
+        document.getElementById('kpi-net').innerText = net.toLocaleString() + " SAR";
+        document.getElementById('kpi-savings-rate').innerText = (totalInc > 0 ? Math.max(0, Math.round((net/totalInc)*100)) : 0) + "%";
+
+        let remPlanned = totalInc - tp;
+        let remPlannedEl = document.getElementById('bento-remaining-planned');
+        remPlannedEl.innerText = remPlanned.toLocaleString() + " SAR";
+        remPlannedEl.className = remPlanned < 0 ? 'text-red' : 'text-green';
+
+        let utilPct = tp > 0 ? Math.round((ta / tp) * 100) : 0;
+        let utilEl = document.getElementById('bento-budget-utilization');
+        utilEl.innerText = utilPct + "%";
+        utilEl.className = utilPct > 100 ? 'text-red' : 'text-green';
+
+        let cards = getMonthCards();
+        let cardsGrid = document.getElementById('cards-widgets-grid');
+        let cardChartLabels = [];
+        let cardChartValues = [];
+        let cardChartColors = [];
+
+        if (cards.length > 0) {
+            cardsGrid.innerHTML = '';
+            cards.forEach(c => {
+                let fullAmount = parseFloat(c.limit) || 0;
+                let spentOnCard = 0;
+                m.expenses.forEach(ex => { if (ex.cardId === c.id) spentOnCard += (parseFloat(ex.a) || 0); });
+                let remCard = fullAmount - spentOnCard;
+                let colorClass = remCard < 0 ? 'text-red' : 'text-green';
+                cardsGrid.innerHTML += `
+                    <div class="kpi-card" style="border-top: 4px solid ${c.color};">
+                        <p style="display:flex; align-items:center; justify-content:space-between; gap:6px;">
+                            <span>${translations[currentLang].cardRemainingSuffix}</span>
+                            <span class="card-colored-badge" style="background:${c.color}; padding:2px 8px; font-size:11px;">${c.name}</span>
+                        </p>
+                        <h3 class="${colorClass}">${remCard.toLocaleString()} SAR</h3>
+                        <div class="card-details-list">
+                            <div class="card-detail-row">
+                                <span>${translations[currentLang].cardFullAmountLabel}</span>
+                                <span>${fullAmount.toLocaleString()} SAR</span>
+                            </div>
+                            <div class="card-detail-row">
+                                <span>${translations[currentLang].cardSpentLabel}</span>
+                                <span class="text-red">${spentOnCard.toLocaleString()} SAR</span>
+                            </div>
+                            <div class="card-detail-row">
+                                <span>${translations[currentLang].cardLeftLabel}</span>
+                                <span class="${colorClass}">${remCard.toLocaleString()} SAR</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                cardChartLabels.push(c.name);
+                cardChartValues.push(spentOnCard);
+                cardChartColors.push(c.color);
+            });
+        } else {
+            cardsGrid.innerHTML = '';
+        }
+
+        let alertsUl = document.getElementById('alerts-list');
+        alertsUl.innerHTML = '';
+        let hasAlert = false;
+        m.expenses.forEach(ex => {
+            let p = parseFloat(ex.p)||0; let a = parseFloat(ex.a)||0;
+            if(a > p && p > 0) {
+                alertsUl.innerHTML += `<li style="color:var(--danger)">Category <strong>${ex.cat}</strong> has exceeded the planned budget!</li>`;
+                hasAlert = true;
+            } else if(a >= p * 0.85 && p > 0) {
+                alertsUl.innerHTML += `<li style="color:var(--warning)">Category <strong>${ex.cat}</strong> is approaching its budget limit.</li>`;
+                hasAlert = true;
+            }
+        });
+        if(!hasAlert) alertsUl.innerHTML = `<li>${translations[currentLang].defaultAlert}</li>`;
+
+        let uData = users[currentUser];
+        let targetSavings = (uData && uData.customGoal !== undefined) ? uData.customGoal : 1000;
+        let minRemainingForGoal = Math.min(net, remPlanned);
+        let achievedPct = 0;
+        if (targetSavings === 0) achievedPct = minRemainingForGoal >= 0 ? 100 : 0;
+        else achievedPct = minRemainingForGoal >= targetSavings ? 100 : Math.min(100, Math.max(0, Math.round((minRemainingForGoal / targetSavings) * 100)));
+
+        document.getElementById('goal-target-text').innerText = targetSavings.toLocaleString() + " SAR";
+        let goalBar = document.getElementById('goal-progress-bar');
+        goalBar.style.width = achievedPct + "%";
+        goalBar.style.background = achievedPct >= 100 ? 'var(--success)' : 'var(--brand-blue)';
+
+        let goalStatusEl = document.getElementById('goal-status-text');
+        if (goalStatusEl) {
+            let minSourceName = net <= remPlanned ? translations[currentLang].kpiNet : translations[currentLang].remainingFromPlanned;
+            goalStatusEl.innerText = currentLang === 'ar'
+                ? `المعتمد (أقلهما - ${minSourceName}): ${minRemainingForGoal.toLocaleString()} SAR (${achievedPct}%)`
+                : `Counted (Min - ${minSourceName}): ${minRemainingForGoal.toLocaleString()} SAR (${achievedPct}%)`;
+            goalStatusEl.className = achievedPct >= 100 ? 'text-green' : '';
+        }
+
+        renderBudgetConsumption(m);
+        renderSpendingInsights(m, ta);
+        updateCharts(tp, ta, cats, pData, aData, { labels: cardChartLabels, values: cardChartValues, colors: cardChartColors }, remPlanned);
+    }
+
+    function updateCharts(tp, ta, cats, pData, aData, cardChartData = { labels: [], values: [], colors: [] }, remPlanned = 0) {
+        if(donutChart) donutChart.destroy();
+        donutChart = new Chart(document.getElementById('donutChart').getContext('2d'), { type: 'doughnut', data: { labels: cats, datasets: [{ data: (tp===0&&ta===0)?[1]:aData, backgroundColor: ['#008CFF', '#EC4899', '#10B981', '#F59E0B', '#6366F1'] }] }, options: { responsive: true, maintainAspectRatio: false } });
+        
+        if(barChart) barChart.destroy();
+        barChart = new Chart(document.getElementById('barChart').getContext('2d'), { type: 'bar', data: { labels: cats, datasets: [{ label: translations[currentLang].thPlanned, data: pData, backgroundColor: '#008CFF' }, { label: translations[currentLang].thActual, data: aData, backgroundColor: '#EC4899' }] }, options: { responsive: true, maintainAspectRatio: false } });
+        
+        if(lineDaily) lineDaily.destroy();
+        lineDaily = new Chart(document.getElementById('lineChartDaily').getContext('2d'), { type: 'line', data: { labels: ['W1', 'W2', 'W3', 'W4'], datasets: [{ label: translations[currentLang].kpiExpenses, data: [ta*0.2, ta*0.4, ta*0.7, ta], borderColor: '#10B981', fill: false }] }, options: { responsive: true, maintainAspectRatio: false } });
+        
+        if(lineHistory) lineHistory.destroy();
+        let compSeries = getMonthlyComparisonSeries(currentMonthId, remPlanned);
+        lineHistory = new Chart(document.getElementById('lineChartHistory').getContext('2d'), {
+            type: 'line',
+            data: { labels: compSeries.labels, datasets: [{ label: translations[currentLang].remainingFromPlanned, data: compSeries.values, borderColor: '#008CFF', backgroundColor: 'rgba(0, 140, 255, 0.16)', fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: '#008CFF' }] },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
+        
+        if(gaugeChart) gaugeChart.destroy();
+        gaugeChart = new Chart(document.getElementById('gaugeChart').getContext('2d'), { type: 'doughnut', data: { labels: [translations[currentLang].actualSpending, translations[currentLang].remainingFromPlanned], datasets: [{ data: (tp===0&&ta===0)?[0,1]:[ta, Math.max(0, tp-ta)], backgroundColor: ['#EF4444', '#E5E7EB'] }] }, options: { responsive: true, maintainAspectRatio: false, rotation: -90, circumference: 180, cutout: '80%' } });
+
+        if(cardSpendingChart) cardSpendingChart.destroy();
+        let hasCardValues = cardChartData.labels.length > 0;
+        cardSpendingChart = new Chart(document.getElementById('cardSpendingChart').getContext('2d'), {
+            type: 'bar',
+            data: { labels: hasCardValues ? cardChartData.labels : [translations[currentLang].thCard], datasets: [{ label: translations[currentLang].actualSpending, data: hasCardValues ? cardChartData.values : [0], backgroundColor: hasCardValues ? cardChartData.colors : ['#D1D5DB'], borderRadius: 6 }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+        
+        if(efficiencyChart) efficiencyChart.destroy();
+        let effData = pData.map((p, idx) => p > 0 ? Math.min(100, Math.max(0, Math.round((aData[idx] / p) * 100))) : 0);
+        efficiencyChart = new Chart(document.getElementById('efficiencyChart').getContext('2d'), {
+            type: 'radar',
+            data: { labels: cats, datasets: [{ label: translations[currentLang].chartConsumptionRate, data: effData, backgroundColor: 'rgba(0, 140, 255, 0.2)', borderColor: '#008CFF', pointBackgroundColor: '#EC4899', pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: '#008CFF' }] },
+            options: { responsive: true, maintainAspectRatio: false, scales: { r: { beginAtZero: true, max: 100 } } }
+        });
+    }
+</script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithPopup,
+    signOut,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+  import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDUc87fDlu4E7TWE3l8ZSUzZC1xjVQctrE",
+    authDomain: "riyalba-fda5a.firebaseapp.com",
+    projectId: "riyalba-fda5a",
+    storageBucket: "riyalba-fda5a.firebasestorage.app",
+    messagingSenderId: "663659685584",
+    appId: "1:663659685584:web:3f1b8634110fc7cf1a20d5",
+    measurementId: "G-PMQLFG3ZX4"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const provider = new GoogleAuthProvider();
+
+  async function loginWithGmail() {
+    const result = await signInWithPopup(auth, provider);
+    return result.user;
+  }
+
+  async function logoutGmail() {
+    await signOut(auth);
+  }
+
+  async function saveRiyalBAData(uid, data) {
+    if (!uid) return;
+    await setDoc(doc(db, "users", uid), {
+      ...data,
+      updatedAt: new Date().toISOString()
+    }, { merge: true });
+  }
+
+  async function loadRiyalBAData(uid) {
+    if (!uid) return null;
+    const snap = await getDoc(doc(db, "users", uid));
+    return snap.exists() ? snap.data() : null;
+  }
+
+  window.riyalbaAuth = {
+    loginWithGmail,
+    logoutGmail,
+    saveRiyalBAData,
+    loadRiyalBAData
+  };
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const cloudData = await loadRiyalBAData(user.uid);
+      await saveRiyalBAData(user.uid, {
+        email: user.email,
+        name: user.displayName || user.email
+      });
+      window.dispatchEvent(new CustomEvent("riyalba:ready", {
+        detail: { user, cloudData }
+      }));
+    } else {
+      window.dispatchEvent(new CustomEvent("riyalba:signed-out"));
+    }
+  });
+</script>
+</body>
+</html>
