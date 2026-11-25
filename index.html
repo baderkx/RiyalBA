@@ -205,7 +205,6 @@
         .btn-delete-month { background: #FEE2E2; color: var(--danger); border: 1px solid #FCA5A5; width: auto; padding: 8px 14px; margin: 0; font-size: 13px; }
         .btn-delete-month:hover { background: var(--danger); color: #FFFFFF; }
 
-        /* صندوق إعدادات الواتساب في الملف الشخصي */
         .whatsapp-setting-box {
             background: #F0FDF4;
             border: 1px solid #86EFAC;
@@ -246,22 +245,24 @@
             background: #FFFFFF;
             width: 1122px;
             height: 793px;
-            padding: 10px 16px;
+            padding: 10px 18px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            gap: 4px;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 6px;
             overflow: hidden;
             font-family: 'Inter', 'Cairo', sans-serif;
         }
         .pdf-top-header {
+            width: 100%;
             display: grid;
             grid-template-columns: auto 1fr auto;
             align-items: center;
-            margin-top: 6px;
+            margin-top: 2px;
             border-bottom: 2px solid #00B0F0;
-            padding-bottom: 8px;
+            padding-bottom: 5px;
             gap: 14px;
             flex-shrink: 0;
         }
@@ -285,24 +286,70 @@
         }
         .pdf-user-name-only { justify-self: end; font-size: 14.5px; font-weight: 800; color: #111827; white-space: nowrap; }
         .pdf-center-title { text-align: center; }
-        .pdf-center-title h2 { margin: 0; font-size: 17px; font-weight: 900; color: #111827; line-height: 1.25; }
-        .pdf-center-title p { margin: 3px 0 0; font-size: 11px; font-weight: 600; color: #4B5563; line-height: 1.2; }
+        .pdf-center-title h2 { margin: 0; font-size: 17px; font-weight: 900; color: #111827; line-height: 1.2; }
+        .pdf-center-title p { margin: 2px 0 0; font-size: 11px; font-weight: 600; color: #4B5563; line-height: 1.2; }
 
-        .pdf-row-1 { display: grid; grid-template-columns: 1.45fr 1fr; gap: 5px; flex-shrink: 0; }
-        .pdf-kpi-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3px; }
-        .pdf-kpi-card { border: 1px solid #CBD5E1; background: #F8FAFC; border-radius: 7px; padding: 3px 8px; display: flex; flex-direction: column; justify-content: center; gap: 0; }
-        .pdf-kpi-card small { font-size: 8px; font-weight: 700; color: #6B7280; text-transform: uppercase; line-height: 1.1; }
-        .pdf-kpi-card strong { font-size: 13.5px; font-weight: 800; color: #111827; line-height: 1.15; }
-        .pdf-goals-card { border: 1px solid #CBD5E1; background: #F8FAFC; border-radius: 7px; padding: 4px 9px; display: flex; flex-direction: column; justify-content: center; gap: 2px; min-width: 0; }
-        .pdf-goals-card h4 { margin: 0; font-size: 11.5px; font-weight: 800; color: #111827; line-height: 1.15; }
+        .pdf-row-1 {
+            width: 94%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.55fr 1fr;
+            gap: 10px;
+            align-items: stretch;
+            flex-shrink: 0;
+        }
+        .pdf-kpi-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+        .pdf-kpi-card {
+            border: 1px solid #CBD5E1;
+            background: #F8FAFC;
+            border-radius: 8px;
+            padding: 8px 16px;
+            min-height: 52px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 3px;
+        }
+        .pdf-kpi-card small { width: 100%; font-size: 10px; font-weight: 700; color: #6B7280; text-transform: uppercase; line-height: 1.15; text-align: center; }
+        .pdf-kpi-card strong { width: 100%; font-size: 17px; font-weight: 800; color: #111827; line-height: 1.2; text-align: center; }
+        .pdf-goals-card {
+            border: 1px solid #CBD5E1;
+            background: #F8FAFC;
+            border-radius: 8px;
+            padding: 10px 18px;
+            min-height: 110px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: stretch;
+            gap: 6px;
+            min-width: 0;
+        }
+        .pdf-goals-card h4 { width: 100%; margin: 0; font-size: 14px; font-weight: 800; color: #111827; line-height: 1.2; text-align: center; }
+        .pdf-goals-aligned-line { width: 100%; display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; font-weight: 700; box-sizing: border-box; }
+        .pdf-goals-aligned-sub { width: 100%; font-size: 10.5px; font-weight: 700; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; box-sizing: border-box; }
 
-        .pdf-row-2 { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 7px; flex-shrink: 0; }
-        .pdf-row-3 { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; flex-shrink: 0; }
+        .pdf-row-2 { width: 100%; display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 7px; flex-shrink: 0; }
+        .pdf-row-3 { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 7px; flex-shrink: 0; }
         .pdf-panel { border: 1px solid #CBD5E1; border-radius: 8px; padding: 6px 10px; background: #FFFFFF; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
         .pdf-panel h5 { margin: 0; font-size: 11px; font-weight: 800; color: #111827; line-height: 1.2; }
-        .pdf-canvas-mid { position: relative; height: 194px; width: 100%; }
-        .pdf-canvas-bot { position: relative; height: 174px; width: 100%; }
-        .pdf-footer-bar { display: flex; justify-content: center; align-items: center; border-top: 1px solid #E2E8F0; padding-top: 4px; font-size: 9.5px; font-weight: 600; color: #6B7280; flex-shrink: 0; }
+        .pdf-canvas-mid { position: relative; height: 184px; width: 100%; }
+        .pdf-canvas-bot { position: relative; height: 168px; width: 100%; }
+        .pdf-footer-bar {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-top: 1px solid #E2E8F0;
+            padding-top: 4px;
+            margin-top: auto;
+            font-size: 9.5px;
+            font-weight: 600;
+            color: #6B7280;
+            flex-shrink: 0;
+        }
 
         footer { background: var(--brand-dark); color: white; padding: 25px 20px 15px; margin-top: auto; width: 100%; box-sizing: border-box; }
         .footer-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 15px; flex-wrap: wrap; gap: 15px; }
@@ -638,14 +685,13 @@
                             <input type="tel" id="edit-prof-phone" placeholder="9665XXXXXXXX" dir="ltr">
                         </div>
 
-                        <!-- إعدادات إرسال التقرير الشهري على الواتساب -->
                         <div class="whatsapp-setting-box">
                             <label class="whatsapp-toggle-row" for="edit-prof-wa-auto">
                                 <div>
                                     <strong style="color:#15803D; font-size:14px;" data-i18n="waAutoTitle">Automatic Monthly WhatsApp PDF Report</strong>
-                                    <div style="font-size:12px; color:#166534; margin-top:2px;" data-i18n="waAutoDesc">Receive your monthly PDF financial report on WhatsApp at the end of every month.</div>
+                                    <div style="font-size:12px; color:#166534; margin-top:2px;" data-i18n="waAutoDesc">Stays active every month end until you turn it off.</div>
                                 </div>
-                                <input type="checkbox" id="edit-prof-wa-auto">
+                                <input type="checkbox" id="edit-prof-wa-auto" onchange="handleWhatsAppToggleChange()">
                             </label>
                             <div id="wa-save-status" style="font-size:12px; font-weight:700; color:#15803D; display:none;"></div>
                         </div>
@@ -703,8 +749,8 @@
     </div>
 
 <script>
-    // ضع رابط سيرفر الواتساب الخاص بك هنا عند رفعه (مثال: https://api.riyalba.com/api/whatsapp/send-report)
-    const WHATSAPP_API_ENDPOINT = "";
+    // ضع رابط سيرفر الواتساب هنا عند رفعه (مثال: https://riyalba-api.onrender.com)
+    const BACKEND_BASE_URL = "";
 
     const translations = {
         en: {
@@ -796,8 +842,9 @@
             emailLabel: "Email Address",
             phoneLabel: "Phone Number (WhatsApp)",
             waAutoTitle: "Automatic Monthly WhatsApp PDF Report",
-            waAutoDesc: "Receive your monthly PDF financial report on WhatsApp at the end of every month.",
-            waSavedMsg: "Saved! Monthly WhatsApp PDF report settings updated.",
+            waAutoDesc: "Stays active every month end until you turn it off.",
+            waSavedMsg: "Saved! Monthly WhatsApp PDF report will keep running every month end until disabled.",
+            waDisabledMsg: "Disabled! Automatic monthly WhatsApp PDF report is now turned off.",
             waPhoneRequired: "Please enter a valid WhatsApp number with country code (e.g. 9665XXXXXXXX).",
             saveChangesBtn: "Save Changes",
             logoutBtn: "Logout",
@@ -909,8 +956,9 @@
             emailLabel: "البريد الإلكتروني",
             phoneLabel: "رقم الجوال (واتساب)",
             waAutoTitle: "إرسال تقرير PDF الشهري تلقائياً على الواتساب",
-            waAutoDesc: "استلام التقرير المالي بصيغة PDF على واتسابك في نهاية كل شهر.",
-            waSavedMsg: "تم الحفظ! تم تحديث إعدادات إرسال تقرير الواتساب الشهري.",
+            waAutoDesc: "يبقى مفعلاً ويرسل في نهاية كل شهر بشكل مستمر حتى تقوم بإلغاء تفعيله.",
+            waSavedMsg: "تم الحفظ! سيستمر إرسال تقرير الـ PDF نهاية كل شهر حتى تقوم بإلغاء التفعيل.",
+            waDisabledMsg: "تم إيقاف الإرسال التلقائي لتقرير الـ PDF الشهري على الواتساب.",
             waPhoneRequired: "يرجى إدخال رقم واتساب صحيح مع رمز الدولة (مثال: 9665XXXXXXXX).",
             saveChangesBtn: "حفظ التعديلات",
             logoutBtn: "تسجيل الخروج",
@@ -1019,8 +1067,67 @@
 
     function syncMonthsDB() {
         localStorage.setItem('RiyalBA_months', JSON.stringify(monthsDB));
+        if (currentUser && currentMonthId && monthsDB[currentMonthId] && !monthsDB[currentMonthId].isDeleted) {
+            syncMonthSnapshotToServer(currentMonthId);
+        }
         if (document.getElementById('page-history')?.classList.contains('active')) {
             loadHistory();
+        }
+    }
+
+    async function syncWhatsAppSubscriptionToServer(userId, uData) {
+        if (!BACKEND_BASE_URL || !userId || !uData) return;
+        try {
+            await fetch(`${BACKEND_BASE_URL}/api/whatsapp/subscription`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId,
+                    fullName: `${uData.fname || ''} ${uData.lname || ''}`.trim() || userId,
+                    phone: normalizeWhatsAppPhone(uData.phone || ''),
+                    waAutoReport: Boolean(uData.waAutoReport),
+                    lang: currentLang,
+                    updatedAt: new Date().toISOString()
+                })
+            });
+        } catch (err) {
+            console.error('Failed to sync WhatsApp subscription:', err);
+        }
+    }
+
+    async function syncMonthSnapshotToServer(monthId) {
+        if (!BACKEND_BASE_URL || !currentUser || !monthsDB[monthId]) return;
+        const summary = getMonthSummaryData(monthId);
+        const uData = users[currentUser] || {};
+        try {
+            await fetch(`${BACKEND_BASE_URL}/api/whatsapp/sync-month`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: currentUser,
+                    monthId,
+                    monthName: summary.m.name,
+                    userName: `${uData.fname || ''} ${uData.lname || ''}`.trim() || currentUser,
+                    phone: normalizeWhatsAppPhone(uData.phone || ''),
+                    waAutoReport: Boolean(uData.waAutoReport),
+                    lang: currentLang,
+                    summary: {
+                        totalInc: summary.totalInc,
+                        ta: summary.ta,
+                        net: summary.net,
+                        remPlanned: summary.remPlanned,
+                        savingsRate: summary.savingsRate,
+                        targetSavings: summary.targetSavings,
+                        minForGoal: summary.minForGoal,
+                        goalPct: summary.goalPct,
+                        cats: summary.cats,
+                        pData: summary.pData,
+                        aData: summary.aData
+                    }
+                })
+            });
+        } catch (err) {
+            console.error('Failed to sync month snapshot:', err);
         }
     }
 
@@ -1059,6 +1166,7 @@
             document.getElementById('app-wrapper').classList.remove('hidden');
             loadUserProfile();
             ensureCurrentDashboardMonthAutoSaved();
+            syncWhatsAppSubscriptionToServer(currentUser, users[currentUser]);
             loadHistory();
             openMonth(currentMonthId);
         } else {
@@ -1098,6 +1206,7 @@
             customIncome: 0, customGoal: 1000, photo: null
         };
         localStorage.setItem('RiyalBA_users', JSON.stringify(users));
+        syncWhatsAppSubscriptionToServer(u, users[u]);
         currentUser = u;
         localStorage.setItem('RiyalBA_currentUser', u);
         location.reload();
@@ -1148,6 +1257,15 @@
         document.getElementById('edit-prof-wa-auto').checked = Boolean(uData.waAutoReport);
     }
 
+    function handleWhatsAppToggleChange() {
+        let waAuto = document.getElementById('edit-prof-wa-auto').checked;
+        let statusEl = document.getElementById('wa-save-status');
+        if (!statusEl) return;
+        statusEl.style.display = 'block';
+        statusEl.style.color = waAuto ? '#15803D' : '#6B7280';
+        statusEl.innerText = waAuto ? translations[currentLang].waSavedMsg : translations[currentLang].waDisabledMsg;
+    }
+
     function triggerPhotoUpload() { document.getElementById('profile-photo-input').click(); }
     function updateProfilePhoto(event) {
         let file = event.target.files[0];
@@ -1181,9 +1299,12 @@
         localStorage.setItem('RiyalBA_users', JSON.stringify(users));
         loadUserProfile();
 
+        syncWhatsAppSubscriptionToServer(currentUser, uData);
+        if (currentMonthId) syncMonthSnapshotToServer(currentMonthId);
+
         statusEl.style.display = 'block';
-        statusEl.style.color = '#15803D';
-        statusEl.innerText = translations[currentLang].waSavedMsg;
+        statusEl.style.color = waAuto ? '#15803D' : '#6B7280';
+        statusEl.innerText = waAuto ? translations[currentLang].waSavedMsg : translations[currentLang].waDisabledMsg;
     }
 
     function toggleIncomeEdit() {
@@ -1597,15 +1718,18 @@
 
                 <div class="pdf-goals-card">
                     <h4>${translations[currentLang].finGoals}</h4>
-                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:10.5px; font-weight:700;">
+                    <div class="pdf-goals-aligned-line">
                         <span>${translations[currentLang].monthlyTarget}</span>
                         <span>${data.targetSavings.toLocaleString()} SAR</span>
                     </div>
-                    <div style="background:#E2E8F0; height:6px; border-radius:999px; overflow:hidden;">
+                    <div style="background:#E2E8F0; height:8px; width:100%; border-radius:999px; overflow:hidden;">
                         <div style="background:${data.goalPct >= 100 ? '#10B981' : '#008CFF'}; width:${data.goalPct}%; height:100%;"></div>
                     </div>
-                    <div style="font-size:9.5px; font-weight:700; color:${data.goalPct >= 100 ? '#10B981' : '#4B5563'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${goalStatusLine}</div>
-                    <div style="font-size:9.5px; font-weight:700; color:#6B7280;">${translations[currentLang].remDebts}: <strong class="text-red">0 SAR</strong></div>
+                    <div class="pdf-goals-aligned-sub" style="color:${data.goalPct >= 100 ? '#10B981' : '#4B5563'};">${goalStatusLine}</div>
+                    <div class="pdf-goals-aligned-line" style="color:#6B7280;">
+                        <span>${translations[currentLang].remDebts}</span>
+                        <strong class="text-red">0 SAR</strong>
+                    </div>
                 </div>
             </div>
 
@@ -1728,7 +1852,6 @@
         }
     }
 
-    // إرسال التقرير الشهري عبر API السيرفر إلى واتساب المستخدم (أو فتح واتساب كخيار احتياطي)
     async function sendMonthPdfToWhatsApp(monthId) {
         let uData = users[currentUser] || {};
         let phone = normalizeWhatsAppPhone(uData.phone || '');
@@ -1750,25 +1873,27 @@
             const artifact = await buildMonthPdfArtifact(monthId);
             const summary = getMonthSummaryData(monthId);
 
-            if (WHATSAPP_API_ENDPOINT && artifact) {
+            if (BACKEND_BASE_URL && artifact) {
                 const pdfBase64 = artifact.pdf.output('datauristring').split(',')[1];
-                const response = await fetch(WHATSAPP_API_ENDPOINT, {
+                const response = await fetch(`${BACKEND_BASE_URL}/api/whatsapp/send-report`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        phone: phone,
+                        phone,
+                        userId: currentUser,
                         userName: `${uData.fname || ''} ${uData.lname || ''}`.trim() || currentUser,
                         monthName: artifact.monthTitle,
                         fileName: artifact.safeFileName,
-                        pdfBase64: pdfBase64
+                        lang: currentLang,
+                        pdfBase64
                     })
                 });
                 if (!response.ok) throw new Error('WhatsApp API request failed');
-                alert(currentLang === 'ar' ? 'تم إرسال ملف PDF إلى واتساب بنجاح!' : 'PDF report sent to WhatsApp successfully!');
+                alert(currentLang === 'ar' ? 'تم إرسال ملف الـ PDF إلى واتساب بنجاح!' : 'PDF report sent to WhatsApp successfully!');
             } else {
                 if (artifact) artifact.pdf.save(artifact.safeFileName);
                 let msg = currentLang === 'ar'
-                    ? `مرحباً ${uData.fname || ''}، هذا ملخص تقريرك المالي لشهر ${summary.m.name} من منصة RiyalBA:\n- الدخل: ${summary.totalInc.toLocaleString()} SAR\n- المصروفات: ${summary.ta.toLocaleString()} SAR\n- الصافي: ${summary.net.toLocaleString()} SAR\n(مرفق ملف الـ PDF المحمّل)`
+                    ? `مرحباً ${uData.fname || ''}، هذا ملخص تقريرك المالي لشهر ${summary.m.name} من منصة RiyalBA:\n- الدخل: ${summary.totalInc.toLocaleString()} SAR\n- المصروفات: ${summary.ta.toLocaleString()} SAR\n- الصافي: ${summary.net.toLocaleString()} SAR`
                     : `Hello ${uData.fname || ''}, here is your RiyalBA financial summary for ${summary.m.name}:\n- Income: ${summary.totalInc.toLocaleString()} SAR\n- Expenses: ${summary.ta.toLocaleString()} SAR\n- Net Balance: ${summary.net.toLocaleString()} SAR`;
                 window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
             }
