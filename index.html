@@ -331,7 +331,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 5px;
+            gap: 4px;
             overflow: hidden;
             font-family: 'Inter', 'Cairo', sans-serif;
         }
@@ -339,32 +339,33 @@
             display: grid;
             grid-template-columns: auto 1fr auto;
             align-items: center;
+            margin-top: 6px;
             border-bottom: 2px solid #00B0F0;
-            padding-bottom: 6px;
-            gap: 12px;
+            padding-bottom: 8px;
+            gap: 14px;
             flex-shrink: 0;
         }
         .pdf-symbol-only {
             position: relative;
-            width: 44px;
-            height: 28px;
-            border-radius: 6px;
+            width: 50px;
+            height: 32px;
+            border-radius: 7px;
             background: #D1D5DB;
             flex-shrink: 0;
         }
         .pdf-symbol-only::after {
             content: "";
             position: absolute;
-            left: 5px;
+            left: 6px;
             top: 3px;
-            width: 22px;
-            height: 22px;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             background: #008CFF;
         }
         .pdf-user-name-only {
             justify-self: end;
-            font-size: 13px;
+            font-size: 14.5px;
             font-weight: 800;
             color: #111827;
             white-space: nowrap;
@@ -374,14 +375,14 @@
         }
         .pdf-center-title h2 {
             margin: 0;
-            font-size: 15.5px;
+            font-size: 17px;
             font-weight: 900;
             color: #111827;
-            line-height: 1.2;
+            line-height: 1.25;
         }
         .pdf-center-title p {
-            margin: 2px 0 0;
-            font-size: 10.5px;
+            margin: 3px 0 0;
+            font-size: 11px;
             font-weight: 600;
             color: #4B5563;
             line-height: 1.2;
@@ -390,54 +391,54 @@
         .pdf-row-1 {
             display: grid;
             grid-template-columns: 1.45fr 1fr;
-            gap: 6px;
+            gap: 5px;
             flex-shrink: 0;
         }
         .pdf-kpi-2x2 {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 4px;
+            gap: 3px;
         }
         .pdf-kpi-card {
             border: 1px solid #CBD5E1;
             background: #F8FAFC;
-            border-radius: 8px;
-            padding: 4px 9px;
+            border-radius: 7px;
+            padding: 3px 8px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 1px;
+            gap: 0;
         }
         .pdf-kpi-card small {
-            font-size: 8.5px;
+            font-size: 8px;
             font-weight: 700;
             color: #6B7280;
             text-transform: uppercase;
             line-height: 1.1;
         }
         .pdf-kpi-card strong {
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 800;
             color: #111827;
-            line-height: 1.2;
+            line-height: 1.15;
         }
         .pdf-goals-card {
             border: 1px solid #CBD5E1;
             background: #F8FAFC;
-            border-radius: 8px;
-            padding: 5px 10px;
+            border-radius: 7px;
+            padding: 4px 9px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 2.5px;
+            gap: 2px;
             min-width: 0;
         }
         .pdf-goals-card h4 {
             margin: 0;
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 800;
             color: #111827;
-            line-height: 1.2;
+            line-height: 1.15;
         }
 
         .pdf-row-2 {
@@ -455,7 +456,7 @@
         .pdf-panel {
             border: 1px solid #CBD5E1;
             border-radius: 8px;
-            padding: 7px 11px;
+            padding: 6px 10px;
             background: #FFFFFF;
             display: flex;
             flex-direction: column;
@@ -471,12 +472,12 @@
         }
         .pdf-canvas-mid {
             position: relative;
-            height: 196px;
+            height: 194px;
             width: 100%;
         }
         .pdf-canvas-bot {
             position: relative;
-            height: 178px;
+            height: 174px;
             width: 100%;
         }
         .pdf-footer-bar {
@@ -1722,7 +1723,7 @@
             <div class="pdf-top-header">
                 <div class="pdf-symbol-only"></div>
                 <div class="pdf-center-title">
-                    <h2>${monthTitle}</h2>
+                    <h2>RiyalBA. - ${monthTitle}</h2>
                     <p>${translations[currentLang].aboutSub}</p>
                 </div>
                 <div class="pdf-user-name-only">${fullName}</div>
@@ -1750,15 +1751,15 @@
 
                 <div class="pdf-goals-card">
                     <h4>${translations[currentLang].finGoals}</h4>
-                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; font-weight:700;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:10.5px; font-weight:700;">
                         <span>${translations[currentLang].monthlyTarget}</span>
                         <span>${data.targetSavings.toLocaleString()} SAR</span>
                     </div>
-                    <div style="background:#E2E8F0; height:7px; border-radius:999px; overflow:hidden;">
+                    <div style="background:#E2E8F0; height:6px; border-radius:999px; overflow:hidden;">
                         <div style="background:${data.goalPct >= 100 ? '#10B981' : '#008CFF'}; width:${data.goalPct}%; height:100%;"></div>
                     </div>
-                    <div style="font-size:10px; font-weight:700; color:${data.goalPct >= 100 ? '#10B981' : '#4B5563'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${goalStatusLine}</div>
-                    <div style="font-size:10px; font-weight:700; color:#6B7280;">${translations[currentLang].remDebts}: <strong class="text-red">0 SAR</strong></div>
+                    <div style="font-size:9.5px; font-weight:700; color:${data.goalPct >= 100 ? '#10B981' : '#4B5563'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${goalStatusLine}</div>
+                    <div style="font-size:9.5px; font-weight:700; color:#6B7280;">${translations[currentLang].remDebts}: <strong class="text-red">0 SAR</strong></div>
                 </div>
             </div>
 
