@@ -348,8 +348,8 @@
 </head>
 <body class="lang-en" id="body">
 
-    <!-- Auth Container (Google Sign-In Only + First-Time Profile Setup) -->
-    <div id="auth-wrapper" class="auth-container hidden">
+    <!-- Google Sign-In Only & First-Time Age/Gender Setup -->
+    <div id="auth-wrapper" class="auth-container">
         <!-- Google Login Card -->
         <div id="login-form" class="auth-card">
             <div class="auth-logo-box" style="margin-bottom: 18px;">
@@ -377,7 +377,7 @@
             <div style="margin-top: 22px;"><button onclick="switchLanguage()" class="lang-toggle-btn" id="auth-lang-btn">عربي / English</button></div>
         </div>
 
-        <!-- First-Time Onboarding Card (Age & Gender after Google Login) -->
+        <!-- Onboarding Card (Asks Age & Gender once after Google Login) -->
         <div id="onboarding-form" class="auth-card hidden">
             <div class="auth-logo-box" style="margin-bottom: 14px;">
                 <div class="brand-logo-auth">
@@ -389,7 +389,7 @@
                 </div>
             </div>
             <h3 style="margin: 0 0 6px; font-size: 19px;" data-i18n="onboardingTitle">Complete Your Profile</h3>
-            <p style="color: var(--text-muted); margin: 0 0 18px; font-size: 13px;" data-i18n="onboardingSub">Google provides your name & email. Please select your age and gender once to personalize your account.</p>
+            <p style="color: var(--text-muted); margin: 0 0 18px; font-size: 13px;" data-i18n="onboardingSub">Please enter your age and gender once to personalize your RiyalBA account.</p>
 
             <div class="grid-2">
                 <div class="input-group"><input type="text" id="onb-fname" data-i18n-placeholder="fnamePlaceholder"></div>
@@ -437,7 +437,6 @@
         <div class="main-content">
             <!-- Dashboard -->
             <div id="page-dashboard" class="page active">
-                
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
                     <h2 id="dash-month-title" style="font-size: 22px; margin: 0;">Overview: Current Month</h2>
                     <div id="dashboard-date-badge" class="date-badge">Loading date...</div>
@@ -565,7 +564,6 @@
                         <tbody id="readonly-table-body"></tbody>
                     </table>
                 </div>
-
             </div>
 
             <!-- Edit Month -->
@@ -697,7 +695,6 @@
         </footer>
     </div>
 
-    <!-- حاوية توليد ملف PDF صفحة واحدة بالعرض (A4 Landscape: 1122x793px) -->
     <div id="pdf-export-stage" class="pdf-export-stage">
         <div id="pdf-report-sheet" class="pdf-landscape-sheet"></div>
     </div>
@@ -707,11 +704,10 @@
 
     const translations = {
         en: {
-            splashSub: "Smart Money Management",
             loginDesc: "Sign in with your Google account to sync your budget across mobile and laptop.",
             googleSignInBtn: "Continue with Google",
             onboardingTitle: "Complete Your Profile",
-            onboardingSub: "Google provides your name & email. Please select your age and gender once to personalize your account.",
+            onboardingSub: "Please enter your age and gender once to personalize your RiyalBA account.",
             onboardingError: "Please select your age and gender",
             startUsingBtn: "Save & Continue",
             fnamePlaceholder: "First Name",
@@ -749,7 +745,6 @@
             updateCardBtn: "Save",
             thCard: "Card",
             selectCardDefault: "Select Card",
-            noCardSelected: "-",
             chartDist: "Category Distribution",
             chartBar: "Planned vs Actual",
             chartDaily: "Daily Expenses Trend",
@@ -814,11 +809,10 @@
             footerSub: "Smart Money Management"
         },
         ar: {
-            splashSub: "إدارة الأموال بذكاء",
             loginDesc: "سجّل الدخول بحسابك في Google لمزامنة بياناتك بين الجوال واللابتوب.",
             googleSignInBtn: "المتابعة عبر حساب Google",
             onboardingTitle: "إكمال بيانات الملف الشخصي",
-            onboardingSub: "جلبنا اسمك وبريدك من Google تلقائياً. اختر العمر والجنس لمرة واحدة فقط لتخصيص حسابك.",
+            onboardingSub: "يرجى إدخال العمر والجنس لمرة واحدة فقط لتخصيص حسابك في RiyalBA.",
             onboardingError: "يرجى اختيار العمر والجنس للمتابعة",
             startUsingBtn: "حفظ والمتابعة",
             fnamePlaceholder: "الاسم الأول",
@@ -856,7 +850,6 @@
             updateCardBtn: "حفظ",
             thCard: "البطاقة",
             selectCardDefault: "اختر البطاقة",
-            noCardSelected: "-",
             chartDist: "توزيع الفئات",
             chartBar: "المخطط مقابل الفعلي",
             chartDaily: "المصروفات اليومية",
@@ -931,7 +924,7 @@
     let currentLang = localStorage.getItem('RiyalBA_lang') || 'en';
     let users = JSON.parse(localStorage.getItem('RiyalBA_users')) || {};
     let monthsDB = JSON.parse(localStorage.getItem('RiyalBA_months')) || {};
-    let currentUser = localStorage.getItem('RiyalBA_currentUser');
+    let currentUser = null;
     let firebaseUid = null;
     let pendingGoogleUser = null;
     let currentMonthId = null;
@@ -975,6 +968,10 @@
         }
     }
 
+    function hasValidDemographics(prof) {
+        return Boolean(prof && prof.age && String(prof.age).trim() !== '' && (prof.gender === 'male' || prof.gender === 'female'));
+    }
+
     window.addEventListener('riyalba:ready', function(e) {
         const { user, cloudData } = e.detail || {};
         if (!user) return;
@@ -993,17 +990,18 @@
             localStorage.setItem('RiyalBA_months', JSON.stringify(monthsDB));
         }
 
-        if (cloudData && cloudData.profile && cloudData.profile.profileCompleted) {
-            users[currentUser] = {
-                ...cloudData.profile,
-                email: user.email || cloudData.profile.email || '',
-                photo: cloudData.profile.photo || user.photoURL || null
-            };
-            localStorage.setItem('RiyalBA_users', JSON.stringify(users));
-            initApp();
-        } else if (users[currentUser] && users[currentUser].profileCompleted) {
-            users[currentUser].email = user.email || users[currentUser].email || '';
-            if (!users[currentUser].photo && user.photoURL) users[currentUser].photo = user.photoURL;
+        const cloudProf = (cloudData && cloudData.profile) ? cloudData.profile : null;
+        const localProf = users[currentUser] || null;
+        const mergedProf = {
+            ...(localProf || {}),
+            ...(cloudProf || {}),
+            email: user.email || (cloudProf && cloudProf.email) || (localProf && localProf.email) || '',
+            photo: (cloudProf && cloudProf.photo) || (localProf && localProf.photo) || user.photoURL || null
+        };
+
+        if (hasValidDemographics(mergedProf)) {
+            mergedProf.profileCompleted = true;
+            users[currentUser] = mergedProf;
             localStorage.setItem('RiyalBA_users', JSON.stringify(users));
             pushStateToCloud();
             initApp();
@@ -1011,16 +1009,17 @@
             pendingGoogleUser = {
                 uid: user.uid,
                 email: user.email || '',
-                fname: defaultFname,
-                lname: defaultLname,
-                photo: user.photoURL || null
+                fname: mergedProf.fname || defaultFname,
+                lname: mergedProf.lname || defaultLname,
+                photo: mergedProf.photo || user.photoURL || null
             };
-            document.getElementById('auth-wrapper').classList.remove('hidden');
+            populateAgeDropdowns();
             document.getElementById('app-wrapper').classList.add('hidden');
+            document.getElementById('auth-wrapper').classList.remove('hidden');
             document.getElementById('login-form').classList.add('hidden');
             document.getElementById('onboarding-form').classList.remove('hidden');
-            document.getElementById('onb-fname').value = defaultFname;
-            document.getElementById('onb-lname').value = defaultLname;
+            document.getElementById('onb-fname').value = pendingGoogleUser.fname;
+            document.getElementById('onb-lname').value = pendingGoogleUser.lname;
         }
     });
 
@@ -1089,7 +1088,9 @@
         applyLanguage(currentLang);
         populateAgeDropdowns();
         updateDashboardDate();
-        initApp();
+        // إبقاء شاشة الدخول ظاهرة حتى يكتمل التحقق من حساب Google من Firebase
+        document.getElementById('auth-wrapper').classList.remove('hidden');
+        document.getElementById('app-wrapper').classList.add('hidden');
     };
 
     function switchLanguage() {
@@ -1178,7 +1179,7 @@
 
     function initApp() {
         cardsLocked = true;
-        if (currentUser && users[currentUser] && users[currentUser].profileCompleted) {
+        if (currentUser && users[currentUser] && hasValidDemographics(users[currentUser])) {
             document.getElementById('auth-wrapper').classList.add('hidden');
             document.getElementById('app-wrapper').classList.remove('hidden');
             loadUserProfile();
@@ -1605,11 +1606,8 @@
         if (userMonths.length >= 2) {
             let labels = userMonths.map(([_, m]) => m.name || '-');
             let values = userMonths.map(([id, m]) => {
-                let mTp = 0, mTa = 0;
-                (m.expenses || []).forEach(ex => {
-                    mTp += (parseFloat(ex.p) || 0);
-                    mTa += (parseFloat(ex.a) || 0);
-                });
+                let mTp = 0;
+                (m.expenses || []).forEach(ex => { mTp += (parseFloat(ex.p) || 0); });
                 let inc = users[currentUser]?.customIncome > 0 ? users[currentUser].customIncome : (mTp > 0 ? mTp * 1.2 : 5000);
                 return Math.round(inc - mTp);
             });
