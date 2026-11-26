@@ -317,6 +317,7 @@
             gap: 10px;
             font-family: 'Inter', 'Cairo', sans-serif;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
             text-rendering: geometricPrecision;
             overflow: hidden;
         }
@@ -372,7 +373,7 @@
             gap: 5px;
         }
         .pdf-kpi-card {
-            border: 1.25px solid #CBD5E1;
+            border: 1.5px solid #94A3B8;
             background: #F8FAFC;
             border-radius: 9px;
             padding: 6px 11px;
@@ -381,11 +382,11 @@
             align-items: center;
             gap: 8px;
         }
-        .pdf-kpi-card small { font-size: 9px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.3px; }
+        .pdf-kpi-card small { font-size: 9px; font-weight: 800; color: #334155; text-transform: uppercase; letter-spacing: 0.3px; }
         .pdf-kpi-card strong { font-size: 13px; font-weight: 800; color: #0F172A; }
 
         .pdf-side-card {
-            border: 1.25px solid #CBD5E1;
+            border: 1.5px solid #94A3B8;
             background: #F8FAFC;
             border-radius: 11px;
             padding: 9px 12px;
@@ -409,13 +410,13 @@
             align-items: center;
             gap: 8px;
             background: #FFFFFF;
-            border: 1px solid #E2E8F0;
+            border: 1px solid #CBD5E1;
             border-radius: 7px;
             padding: 4px 8px;
             font-size: 10px;
             font-weight: 700;
         }
-        .pdf-insight-row span:first-child { color: #475569; white-space: nowrap; }
+        .pdf-insight-row span:first-child { color: #334155; white-space: nowrap; }
         .pdf-insight-row span:last-child { color: #0F172A; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
         /* شبكة الرسوم البيانية داخل نفس الصفحة */
@@ -427,7 +428,7 @@
             min-height: 0;
         }
         .pdf-panel {
-            border: 1.25px solid #CBD5E1;
+            border: 1.5px solid #94A3B8;
             border-radius: 11px;
             padding: 9px 11px;
             background: #FFFFFF;
@@ -435,7 +436,7 @@
             flex-direction: column;
             justify-content: space-between;
             gap: 4px;
-            box-shadow: 0 2px 5px rgba(15, 23, 42, 0.03);
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
             min-height: 0;
         }
         .pdf-panel h5 {
@@ -2251,11 +2252,14 @@
             ? `المعتمد (${minSourceName}): ${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)`
             : `Counted (${minSourceName}): ${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)`;
 
+        // الترتيب المطلوب في شبكة الـ 6 مخططات:
+        // الصف 1: Category Distribution | Spending Efficiency Index | Daily Expenses Trend
+        // الصف 2: Monthly Comparison | Spending by Card | Planned vs Actual
         sheet.innerHTML = `
             <div class="pdf-top-header">
                 <div class="pdf-logo-3-left">
                     <svg viewBox="0 0 100 100" style="width: 30px; height: 30px;">
-                        <g transform="translate(50,50) rotate(-45) translate(-50,-50)" fill="none" stroke="#000000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                        <g transform="translate(50,50) rotate(-45) translate(-50,-50)" fill="none" stroke="#000000" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="44" y="10" width="12" height="78"/>
                             <path d="M 44 10 L 16 10 L 22 19 L 44 19 Z"/>
                             <path d="M 56 10 L 72 10 L 66 17 L 56 17 Z"/>
@@ -2341,20 +2345,20 @@
                     <div class="pdf-canvas-box"><canvas id="pdfEfficiencyCanvas"></canvas></div>
                 </div>
                 <div class="pdf-panel">
-                    <h5>${translations[currentLang].chartByCard}</h5>
-                    <div class="pdf-canvas-box"><canvas id="pdfCardSpendCanvas"></canvas></div>
-                </div>
-                <div class="pdf-panel">
-                    <h5>${translations[currentLang].chartBar}</h5>
-                    <div class="pdf-canvas-box"><canvas id="pdfBarCanvas"></canvas></div>
-                </div>
-                <div class="pdf-panel">
                     <h5>${translations[currentLang].chartDaily}</h5>
                     <div class="pdf-canvas-box"><canvas id="pdfDailyCanvas"></canvas></div>
                 </div>
                 <div class="pdf-panel">
                     <h5>${translations[currentLang].chartHistory}</h5>
                     <div class="pdf-canvas-box"><canvas id="pdfHistoryCanvas"></canvas></div>
+                </div>
+                <div class="pdf-panel">
+                    <h5>${translations[currentLang].chartByCard}</h5>
+                    <div class="pdf-canvas-box"><canvas id="pdfCardSpendCanvas"></canvas></div>
+                </div>
+                <div class="pdf-panel">
+                    <h5>${translations[currentLang].chartBar}</h5>
+                    <div class="pdf-canvas-box"><canvas id="pdfBarCanvas"></canvas></div>
                 </div>
             </div>
 
@@ -2364,13 +2368,13 @@
         `;
 
         let comp = getMonthlyComparisonSeries(monthId, data.remPlanned);
-        let highDpr = 3;
+        let highDpr = 4;
         let baseLegendOpts = {
             responsive: true,
             maintainAspectRatio: false,
             devicePixelRatio: highDpr,
             animation: false,
-            plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 9, padding: 6, color: '#0F172A', font: { size: 9.5, weight: 'bold' } } } }
+            plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 10, padding: 6, color: '#0F172A', font: { size: 9.5, weight: 'bold' } } } }
         };
 
         let donutLabels = (data.tp === 0 && data.ta === 0) ? ['No Data'] : data.cats;
@@ -2378,8 +2382,8 @@
 
         pdfChartsInstances.push(new Chart(document.getElementById('pdfDonutCanvas').getContext('2d'), {
             type: 'doughnut',
-            data: { labels: donutLabels, datasets: [{ data: donutValues, backgroundColor: getDistinctPalette(donutValues.length, 0), borderColor: '#FFFFFF', borderWidth: 2 }] },
-            options: { responsive: true, maintainAspectRatio: false, devicePixelRatio: highDpr, animation: false, plugins: { legend: { display: true, position: 'right', labels: { boxWidth: 9, padding: 5, color: '#0F172A', font: { size: 9, weight: 'bold' } } } } }
+            data: { labels: donutLabels, datasets: [{ data: donutValues, backgroundColor: getDistinctPalette(donutValues.length, 0), borderColor: '#FFFFFF', borderWidth: 2.2 }] },
+            options: { responsive: true, maintainAspectRatio: false, devicePixelRatio: highDpr, animation: false, plugins: { legend: { display: true, position: 'right', labels: { boxWidth: 10, padding: 5, color: '#0F172A', font: { size: 9, weight: 'bold' } } } } }
         }));
 
         let effData = data.pData.map((p, idx) => p > 0 ? Math.min(100, Math.max(0, Math.round((data.aData[idx] / p) * 100))) : 0);
@@ -2390,13 +2394,13 @@
                 datasets: [{
                     label: translations[currentLang].chartConsumptionRate,
                     data: effData,
-                    backgroundColor: 'rgba(20, 184, 166, 0.22)',
-                    borderColor: '#14B8A6',
-                    borderWidth: 2,
+                    backgroundColor: 'rgba(20, 184, 166, 0.24)',
+                    borderColor: '#0D9488',
+                    borderWidth: 2.4,
                     pointBackgroundColor: getDistinctPalette(effData.length, 13),
                     pointBorderColor: '#FFFFFF',
-                    pointBorderWidth: 1.5,
-                    pointRadius: 3.5
+                    pointBorderWidth: 1.8,
+                    pointRadius: 4
                 }]
             },
             options: {
@@ -2404,18 +2408,30 @@
                 maintainAspectRatio: false,
                 devicePixelRatio: highDpr,
                 animation: false,
-                plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 9, padding: 5, color: '#0F172A', font: { size: 9, weight: 'bold' } } } },
+                plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 10, padding: 5, color: '#0F172A', font: { size: 9, weight: 'bold' } } } },
                 scales: {
                     r: {
                         beginAtZero: true,
                         max: 100,
                         ticks: { stepSize: 25, display: false },
-                        grid: { color: '#CBD5E1' },
-                        angleLines: { color: '#E2E8F0' },
-                        pointLabels: { color: '#0F172A', font: { size: 8.5, weight: 'bold' } }
+                        grid: { color: '#94A3B8', lineWidth: 1 },
+                        angleLines: { color: '#CBD5E1', lineWidth: 1 },
+                        pointLabels: { color: '#0F172A', font: { size: 9, weight: 'bold' } }
                     }
                 }
             }
+        }));
+
+        pdfChartsInstances.push(new Chart(document.getElementById('pdfDailyCanvas').getContext('2d'), {
+            type: 'line',
+            data: { labels: ['W1', 'W2', 'W3', 'W4'], datasets: [{ label: translations[currentLang].kpiExpenses, data: [data.ta * 0.2, data.ta * 0.4, data.ta * 0.7, data.ta], borderColor: '#059669', borderWidth: 3.2, backgroundColor: 'rgba(16, 185, 129, 0.18)', fill: true, tension: 0.35, pointRadius: 4.5, pointBorderColor: '#FFFFFF', pointBorderWidth: 1.8, pointBackgroundColor: getDistinctPalette(4, 7) }] },
+            options: { ...baseLegendOpts, scales: { x: { grid: { display: false }, ticks: { color: '#0F172A', font: { size: 9.5, weight: 'bold' } } }, y: { beginAtZero: true, grid: { color: '#CBD5E1' }, ticks: { color: '#1E293B', font: { size: 9.5, weight: 'bold' } } } } }
+        }));
+
+        pdfChartsInstances.push(new Chart(document.getElementById('pdfHistoryCanvas').getContext('2d'), {
+            type: 'line',
+            data: { labels: comp.labels, datasets: [{ label: translations[currentLang].remainingFromPlanned, data: comp.values, borderColor: '#C026D3', borderWidth: 3.2, backgroundColor: 'rgba(217, 70, 239, 0.18)', fill: true, tension: 0.35, pointRadius: 4.5, pointBorderColor: '#FFFFFF', pointBorderWidth: 1.8, pointBackgroundColor: getDistinctPalette(comp.values.length, 11) }] },
+            options: { ...baseLegendOpts, scales: { x: { grid: { display: false }, ticks: { color: '#0F172A', font: { size: 9.5, weight: 'bold' } } }, y: { beginAtZero: true, grid: { color: '#CBD5E1' }, ticks: { color: '#1E293B', font: { size: 9.5, weight: 'bold' } } } } }
         }));
 
         let hasCardValues = data.cardSpendLabels.length > 0;
@@ -2428,28 +2444,16 @@
                     data: hasCardValues ? data.cardSpendValues : [0],
                     backgroundColor: hasCardValues ? data.cardSpendColors : ['#6366F1'],
                     borderRadius: 6,
-                    maxBarThickness: 40
+                    maxBarThickness: 42
                 }]
             },
-            options: { responsive: true, maintainAspectRatio: false, devicePixelRatio: highDpr, animation: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { color: '#0F172A', font: { size: 9, weight: 'bold' } } }, y: { beginAtZero: true, grid: { color: '#E2E8F0' }, ticks: { color: '#334155', font: { size: 9, weight: 'bold' } } } } }
+            options: { responsive: true, maintainAspectRatio: false, devicePixelRatio: highDpr, animation: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { color: '#0F172A', font: { size: 9.5, weight: 'bold' } } }, y: { beginAtZero: true, grid: { color: '#CBD5E1' }, ticks: { color: '#1E293B', font: { size: 9.5, weight: 'bold' } } } } }
         }));
 
         pdfChartsInstances.push(new Chart(document.getElementById('pdfBarCanvas').getContext('2d'), {
             type: 'bar',
-            data: { labels: data.cats, datasets: [{ label: translations[currentLang].thPlanned, data: data.pData, backgroundColor: '#0EA5E9', borderRadius: 4 }, { label: translations[currentLang].thActual, data: data.aData, backgroundColor: '#F97316', borderRadius: 4 }] },
-            options: { ...baseLegendOpts, scales: { x: { grid: { display: false }, ticks: { color: '#0F172A', font: { size: 8.5, weight: 'bold' }, maxRotation: 25, minRotation: 0 } }, y: { beginAtZero: true, grid: { color: '#E2E8F0' }, ticks: { color: '#334155', font: { size: 9, weight: 'bold' } } } } }
-        }));
-
-        pdfChartsInstances.push(new Chart(document.getElementById('pdfDailyCanvas').getContext('2d'), {
-            type: 'line',
-            data: { labels: ['W1', 'W2', 'W3', 'W4'], datasets: [{ label: translations[currentLang].kpiExpenses, data: [data.ta * 0.2, data.ta * 0.4, data.ta * 0.7, data.ta], borderColor: '#14B8A6', borderWidth: 3, backgroundColor: 'rgba(20, 184, 166, 0.16)', fill: true, tension: 0.35, pointRadius: 4, pointBorderColor: '#FFFFFF', pointBorderWidth: 1.5, pointBackgroundColor: getDistinctPalette(4, 7) }] },
-            options: { ...baseLegendOpts, scales: { x: { grid: { display: false }, ticks: { color: '#0F172A', font: { size: 9, weight: 'bold' } } }, y: { beginAtZero: true, grid: { color: '#E2E8F0' }, ticks: { color: '#334155', font: { size: 9, weight: 'bold' } } } } }
-        }));
-
-        pdfChartsInstances.push(new Chart(document.getElementById('pdfHistoryCanvas').getContext('2d'), {
-            type: 'line',
-            data: { labels: comp.labels, datasets: [{ label: translations[currentLang].remainingFromPlanned, data: comp.values, borderColor: '#D946EF', borderWidth: 3, backgroundColor: 'rgba(217, 70, 239, 0.16)', fill: true, tension: 0.35, pointRadius: 4, pointBorderColor: '#FFFFFF', pointBorderWidth: 1.5, pointBackgroundColor: getDistinctPalette(comp.values.length, 11) }] },
-            options: { ...baseLegendOpts, scales: { x: { grid: { display: false }, ticks: { color: '#0F172A', font: { size: 9, weight: 'bold' } } }, y: { beginAtZero: true, grid: { color: '#E2E8F0' }, ticks: { color: '#334155', font: { size: 9, weight: 'bold' } } } } }
+            data: { labels: data.cats, datasets: [{ label: translations[currentLang].thPlanned, data: data.pData, backgroundColor: '#0284C7', borderRadius: 4 }, { label: translations[currentLang].thActual, data: data.aData, backgroundColor: '#EA580C', borderRadius: 4 }] },
+            options: { ...baseLegendOpts, scales: { x: { grid: { display: false }, ticks: { color: '#0F172A', font: { size: 9, weight: 'bold' }, maxRotation: 25, minRotation: 0 } }, y: { beginAtZero: true, grid: { color: '#CBD5E1' }, ticks: { color: '#1E293B', font: { size: 9.5, weight: 'bold' } } } } }
         }));
 
         return { sheet, monthTitle };
@@ -2461,13 +2465,13 @@
 
         if (document.fonts && document.fonts.ready) await document.fonts.ready;
         await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-        await new Promise(resolve => setTimeout(resolve, 220));
+        await new Promise(resolve => setTimeout(resolve, 250));
 
         const sheetWidth = 1122;
         const sheetHeight = 793;
 
         const canvas = await html2canvas(rendered.sheet, {
-            scale: 2.5,
+            scale: 3,
             width: sheetWidth,
             height: sheetHeight,
             windowWidth: sheetWidth,
@@ -2475,12 +2479,14 @@
             useCORS: true,
             allowTaint: true,
             backgroundColor: '#FFFFFF',
+            imageSmoothingEnabled: true,
+            imageSmoothingQuality: 'high',
             logging: false
         });
 
         const imgData = canvas.toDataURL('image/png', 1.0);
         const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+        const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4', compress: false });
         const pageW = pdf.internal.pageSize.getWidth();
         const pageH = pdf.internal.pageSize.getHeight();
 
