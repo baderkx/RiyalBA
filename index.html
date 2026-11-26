@@ -2620,36 +2620,7 @@
         }
     }
 
-    async function dispatchMonthPdfToWhatsApp(monthId, phone) {
-        const artifact = await buildMonthPdfArtifact(monthId);
-        if (!artifact) throw new Error('Failed to generate PDF');
-
-        const pdfBase64 = artifact.pdf.output('datauristring').split(',')[1];
-        const caption = currentLang === 'ar'
-            ? `تقريرك المالي لشهر ${artifact.monthTitle} من منصة Oikonomia`
-            : `Your Oikonomia financial report for ${artifact.monthTitle}`;
-
-        const response = await fetch(WHATSAPP_API_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                phone: phone,
-                uid: firebaseUid || currentUser || 'anonymous',
-                fileName: artifact.safeFileName,
-                caption: caption,
-                pdfBase64: pdfBase64
-            })
-        });
-
-        const rawText = await response.text();
-        let resData = null;
-        try { resData = JSON.parse(rawText); } catch (_) { resData = { rawText }; }
-
-        if (!response.ok || !resData || resData.ok === false) {
-            throw new Error(JSON.stringify(resData));
-        }
-        return resData;
-    }
+   
 
     async function sendMonthPdfToWhatsApp(monthId) {
         let uData = users[currentUser] || {};
