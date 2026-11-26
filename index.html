@@ -255,6 +255,27 @@
             accent-color: #16A34A;
             cursor: pointer;
         }
+        .wa-schedule-box {
+            background: #FFFFFF;
+            border: 1px solid #BBF7D0;
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .wa-schedule-box label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #166534;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .wa-schedule-box select,
+        .wa-schedule-box input[type="time"] {
+            padding: 9px 10px;
+            font-size: 13px;
+        }
         .otp-verify-box {
             background: #FFFFFF;
             border: 1px dashed #22C55E;
@@ -838,10 +859,24 @@
                             <label class="whatsapp-toggle-row" for="edit-prof-wa-auto">
                                 <div>
                                     <strong style="color:#15803D; font-size:14px;" data-i18n="waAutoTitle">Automatic Monthly WhatsApp PDF Report</strong>
-                                    <div style="font-size:12px; color:#166534; margin-top:2px;" data-i18n="waAutoDesc">Receive your monthly PDF financial report on WhatsApp at the end of every month.</div>
+                                    <div style="font-size:12px; color:#166534; margin-top:2px;" data-i18n="waAutoDesc">Choose the monthly day and time to automatically receive your PDF report on WhatsApp.</div>
                                 </div>
-                                <input type="checkbox" id="edit-prof-wa-auto" disabled>
+                                <input type="checkbox" id="edit-prof-wa-auto" disabled onchange="toggleWaScheduleFields()">
                             </label>
+
+                            <div id="wa-schedule-box" class="wa-schedule-box">
+                                <div class="grid-2">
+                                    <div>
+                                        <label for="edit-prof-wa-day" data-i18n="waScheduleDayLabel">Monthly Send Day</label>
+                                        <select id="edit-prof-wa-day" disabled></select>
+                                    </div>
+                                    <div>
+                                        <label for="edit-prof-wa-time" data-i18n="waScheduleTimeLabel">Send Time</label>
+                                        <input type="time" id="edit-prof-wa-time" value="20:00" dir="ltr" disabled>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div id="wa-save-status" style="font-size:12px; font-weight:700; color:#15803D; display:none;"></div>
                         </div>
                     </div>
@@ -1044,7 +1079,11 @@
             waOtpInvalidMsg: "Invalid or expired verification code. Please check and try again.",
             waVerifyBeforeSaveMsg: "Please send and verify the WhatsApp code first before linking this number.",
             waAutoTitle: "Automatic Monthly WhatsApp PDF Report",
-            waAutoDesc: "Receive your monthly PDF financial report on WhatsApp at the end of every month.",
+            waAutoDesc: "Choose the monthly day and time to automatically receive your PDF report on WhatsApp.",
+            waScheduleDayLabel: "Monthly Send Day",
+            waScheduleTimeLabel: "Send Time",
+            waLastDayOption: "Last day of the month",
+            waDayPrefix: "Day",
             waSavedMsg: "Saved & locked! Settings synced to your Google account.",
             waPhoneRequired: "Please enter a valid WhatsApp number with country code (e.g. 9665XXXXXXXX).",
             saveChangesBtn: "Save Changes",
@@ -1163,7 +1202,11 @@
             waOtpInvalidMsg: "رمز التحقق غير صحيح أو منتهي الصلاحية، يرجى المحاولة مرة أخرى.",
             waVerifyBeforeSaveMsg: "يرجى إرسال رمز التحقق على الواتساب وتأكيده أولاً قبل حفظ وربط الرقم.",
             waAutoTitle: "إرسال تقرير PDF الشهري تلقائياً على الواتساب",
-            waAutoDesc: "استلام التقرير المالي بصيغة PDF على واتسابك في نهاية كل شهر.",
+            waAutoDesc: "حدد اليوم والوقت من كل شهر لاستلام تقريرك المالي PDF تلقائياً على الواتساب.",
+            waScheduleDayLabel: "يوم الإرسال الشهري",
+            waScheduleTimeLabel: "وقت الإرسال",
+            waLastDayOption: "آخر يوم في الشهر",
+            waDayPrefix: "يوم",
             waSavedMsg: "تم الحفظ وقفل التعديل ومزامنة البيانات مع حسابك في Google!",
             waPhoneRequired: "يرجى إدخال رقم واتساب صحيح مع رمز الدولة (مثال: 9665XXXXXXXX).",
             saveChangesBtn: "حفظ التعديلات",
@@ -1211,7 +1254,9 @@
         return list;
     }
 
-    const AUTO_LOGOUT_GRACE_MS = 5 * 60 * 1000;
+    // مدة الخمول التلقائي: 8 دقائق بالضبط (480,000 مللي ثانية)
+    const AUTO_LOGOUT_IDLE_MS = 8 * 60 * 1000;
+    const LAST_ACTIVE_STORAGE_KEY = 'RiyalBA_lastActiveAt';
 
     let currentLang = localStorage.getItem('RiyalBA_lang') || 'en';
     let users = {};
@@ -1224,8 +1269,11 @@
     let profileLocked = true;
     let pendingWaPhone = "";
     let isSigningInWithPopup = false;
-    let autoLoggedOutOnLeave = false;
-    let leaveLogoutTimer = null;
+    let autoLoggedOutOnIdle = false;
+    let idleLogoutTimer = null;
+    let lastActivityWriteTs = 0;
+    let autoReportCheckInterval = null;
+    let isSendingAutoWaReport = false;
     let donutChart = null, barChart = null, lineDaily = null, lineHistory = null, gaugeChart = null, cardSpendingChart = null, efficiencyChart = null;
     let pdfChartsInstances = [];
 
@@ -1242,6 +1290,7 @@
             localStorage.setItem('RiyalBA_users', JSON.stringify(cachedUsers));
             localStorage.setItem('RiyalBA_months', JSON.stringify(cachedMonths));
             localStorage.removeItem('RiyalBA_currentUser');
+            localStorage.removeItem(LAST_ACTIVE_STORAGE_KEY);
         } catch (e) {}
         users = {};
         monthsDB = {};
@@ -1268,8 +1317,8 @@
         if (errEl) errEl.style.display = 'none';
         if (!window.riyalbaAuth) return;
         isSigningInWithPopup = true;
-        autoLoggedOutOnLeave = false;
-        cancelLeaveAutoLogoutTimer();
+        autoLoggedOutOnIdle = false;
+        localStorage.setItem(LAST_ACTIVE_STORAGE_KEY, String(Date.now()));
         try {
             if (btn) btn.disabled = true;
             await window.riyalbaAuth.loginWithGmail();
@@ -1287,39 +1336,75 @@
         }
     }
 
-    function executeDelayedSecurityLogout() {
+    function stopIdleSecurityMonitor() {
+        if (idleLogoutTimer) {
+            clearTimeout(idleLogoutTimer);
+            idleLogoutTimer = null;
+        }
+        if (autoReportCheckInterval) {
+            clearInterval(autoReportCheckInterval);
+            autoReportCheckInterval = null;
+        }
+    }
+
+    async function executeIdleSecurityLogout() {
+        if (isSigningInWithPopup || autoLoggedOutOnIdle) return;
         if (!currentUser && !firebaseUid) return;
-        if (isSigningInWithPopup || autoLoggedOutOnLeave) return;
-        autoLoggedOutOnLeave = true;
+        autoLoggedOutOnIdle = true;
+        stopIdleSecurityMonitor();
         clearUserLocalCache(currentUser);
         currentUser = null;
         firebaseUid = null;
+        pendingGoogleUser = null;
+
+        document.getElementById('app-wrapper').classList.add('hidden');
+        document.getElementById('auth-wrapper').classList.remove('hidden');
+        document.getElementById('login-form').classList.remove('hidden');
+        document.getElementById('onboarding-form').classList.add('hidden');
+
         if (window.riyalbaAuth && typeof window.riyalbaAuth.logoutGmail === 'function') {
-            window.riyalbaAuth.logoutGmail().catch(() => {});
+            try { await window.riyalbaAuth.logoutGmail(); } catch (_) {}
         }
     }
 
-    function startLeaveAutoLogoutTimer() {
+    function resetIdleLogoutTimer(forceWrite = false) {
         if (!currentUser && !firebaseUid) return;
-        if (isSigningInWithPopup || autoLoggedOutOnLeave) return;
-        cancelLeaveAutoLogoutTimer();
-        leaveLogoutTimer = setTimeout(() => {
-            executeDelayedSecurityLogout();
-        }, AUTO_LOGOUT_GRACE_MS);
+        if (isSigningInWithPopup || autoLoggedOutOnIdle) return;
+
+        const now = Date.now();
+        const savedLast = Number(localStorage.getItem(LAST_ACTIVE_STORAGE_KEY) || 0);
+        if (savedLast > 0 && (now - savedLast) >= AUTO_LOGOUT_IDLE_MS) {
+            executeIdleSecurityLogout();
+            return;
+        }
+
+        if (forceWrite || (now - lastActivityWriteTs) >= 5000) {
+            localStorage.setItem(LAST_ACTIVE_STORAGE_KEY, String(now));
+            lastActivityWriteTs = now;
+        }
+
+        if (idleLogoutTimer) clearTimeout(idleLogoutTimer);
+        idleLogoutTimer = setTimeout(() => {
+            executeIdleSecurityLogout();
+        }, AUTO_LOGOUT_IDLE_MS);
     }
 
-    function cancelLeaveAutoLogoutTimer() {
-        if (leaveLogoutTimer) {
-            clearTimeout(leaveLogoutTimer);
-            leaveLogoutTimer = null;
-        }
-    }
+    ['mousemove', 'mousedown', 'keydown', 'touchstart', 'scroll', 'click'].forEach(evtName => {
+        window.addEventListener(evtName, () => {
+            if (currentUser || firebaseUid) resetIdleLogoutTimer(false);
+        }, { passive: true });
+    });
 
     document.addEventListener('visibilitychange', function() {
-        if (document.visibilityState === 'hidden') {
-            startLeaveAutoLogoutTimer();
-        } else if (document.visibilityState === 'visible') {
-            cancelLeaveAutoLogoutTimer();
+        if (!currentUser && !firebaseUid) return;
+        if (document.visibilityState === 'visible') {
+            const savedLast = Number(localStorage.getItem(LAST_ACTIVE_STORAGE_KEY) || 0);
+            if (savedLast > 0 && (Date.now() - savedLast) >= AUTO_LOGOUT_IDLE_MS) {
+                executeIdleSecurityLogout();
+            } else {
+                resetIdleLogoutTimer(true);
+                checkAndRunScheduledWhatsAppReport();
+            }
         }
     });
 
@@ -1327,12 +1412,25 @@
         return Boolean(prof && prof.age && String(prof.age).trim() !== '' && (prof.gender === 'male' || prof.gender === 'female'));
     }
 
-    window.addEventListener('riyalba:ready', function(e) {
-        if (autoLoggedOutOnLeave) return;
+    window.addEventListener('riyalba:ready', async function(e) {
+        if (autoLoggedOutOnIdle) return;
         const { user, cloudData } = e.detail || {};
         if (!user) return;
+
+        // فحص إذا كان آخر نشاط للمستخدم قبل أكثر من 8 دقائق (مثلاً أغلق المتصفح ورجع)
+        const savedLast = Number(localStorage.getItem(LAST_ACTIVE_STORAGE_KEY) || 0);
+        if (savedLast > 0 && (Date.now() - savedLast) >= AUTO_LOGOUT_IDLE_MS) {
+            autoLoggedOutOnIdle = true;
+            clearUserLocalCache(user.email || user.uid);
+            if (window.riyalbaAuth && typeof window.riyalbaAuth.logoutGmail === 'function') {
+                try { await window.riyalbaAuth.logoutGmail(); } catch (_) {}
+            }
+            return;
+        }
+
         firebaseUid = user.uid;
         currentUser = user.email || user.uid;
+        resetIdleLogoutTimer(true);
 
         let nameParts = (user.displayName || '').trim().split(/\s+/);
         let defaultFname = nameParts[0] || (user.email ? user.email.split('@')[0] : 'User');
@@ -1342,6 +1440,7 @@
 
         if (!cloudData || !hasValidDemographics(cloudProf)) {
             clearUserLocalCache(currentUser);
+            resetIdleLogoutTimer(true);
             pendingGoogleUser = {
                 uid: user.uid,
                 email: user.email || '',
@@ -1373,6 +1472,10 @@
             phone: normalizedPhone,
             waPhoneVerified: Boolean(normalizedPhone && cloudProf.waPhoneVerified && cloudProf.verifiedPhone === normalizedPhone),
             verifiedPhone: normalizedPhone && cloudProf.waPhoneVerified ? normalizedPhone : '',
+            waAutoReport: Boolean(cloudProf.waAutoReport),
+            waAutoDay: cloudProf.waAutoDay || 'last_day',
+            waAutoTime: cloudProf.waAutoTime || '20:00',
+            waLastAutoSentMonth: cloudProf.waLastAutoSentMonth || '',
             email: user.email || cloudProf.email || '',
             photo: cloudProf.photo || user.photoURL || null,
             profileCompleted: true
@@ -1385,7 +1488,7 @@
     });
 
     window.addEventListener('riyalba:signed-out', function() {
-        cancelLeaveAutoLogoutTimer();
+        stopIdleSecurityMonitor();
         clearUserLocalCache(currentUser);
         firebaseUid = null;
         pendingGoogleUser = null;
@@ -1414,6 +1517,7 @@
         let photo = pendingGoogleUser ? pendingGoogleUser.photo : null;
         currentUser = email || currentUser;
         localStorage.setItem('RiyalBA_currentUser', currentUser);
+        resetIdleLogoutTimer(true);
 
         users = {
             [currentUser]: {
@@ -1426,6 +1530,9 @@
                 verifiedPhone: '',
                 waPhoneVerified: false,
                 waAutoReport: false,
+                waAutoDay: 'last_day',
+                waAutoTime: '20:00',
+                waLastAutoSentMonth: '',
                 customIncome: 0,
                 customGoal: 1000,
                 photo,
@@ -1445,6 +1552,26 @@
         if (digits.startsWith('00')) digits = digits.slice(2);
         if (digits.startsWith('05') && digits.length === 10) digits = '966' + digits.slice(1);
         return digits;
+    }
+
+    function populateWaScheduleDayDropdown() {
+        const daySel = document.getElementById('edit-prof-wa-day');
+        if (!daySel) return;
+        const prevVal = daySel.value || (users[currentUser]?.waAutoDay) || 'last_day';
+        daySel.innerHTML = `<option value="last_day">${translations[currentLang].waLastDayOption}</option>`;
+        for (let d = 1; d <= 28; d++) {
+            daySel.innerHTML += `<option value="${d}">${translations[currentLang].waDayPrefix} ${d}</option>`;
+        }
+        daySel.value = prevVal;
+    }
+
+    function toggleWaScheduleFields() {
+        const autoChecked = Boolean(document.getElementById('edit-prof-wa-auto')?.checked);
+        const daySel = document.getElementById('edit-prof-wa-day');
+        const timeInp = document.getElementById('edit-prof-wa-time');
+        const disableInputs = profileLocked || !autoChecked;
+        if (daySel) daySel.disabled = disableInputs;
+        if (timeInp) timeInp.disabled = disableInputs;
     }
 
     function updateWhatsAppVerificationBadge(isVerified) {
@@ -1587,6 +1714,7 @@
         document.title = 'Oikonomia';
         applyLanguage(currentLang);
         populateAgeDropdowns();
+        populateWaScheduleDayDropdown();
         updateDashboardDate();
         document.getElementById('auth-wrapper').classList.remove('hidden');
         document.getElementById('app-wrapper').classList.add('hidden');
@@ -1597,6 +1725,7 @@
         localStorage.setItem('RiyalBA_lang', currentLang);
         applyLanguage(currentLang);
         populateAgeDropdowns();
+        populateWaScheduleDayDropdown();
         applyProfileLockUI();
         if (currentUser && users[currentUser]) {
             const p = normalizeWhatsAppPhone(document.getElementById('edit-prof-phone')?.value || users[currentUser].phone || '');
@@ -1692,6 +1821,11 @@
             ensureCurrentDashboardMonthAutoSaved();
             loadHistory();
             openMonth(currentMonthId);
+
+            resetIdleLogoutTimer(true);
+            checkAndRunScheduledWhatsAppReport();
+            if (autoReportCheckInterval) clearInterval(autoReportCheckInterval);
+            autoReportCheckInterval = setInterval(checkAndRunScheduledWhatsAppReport, 60 * 1000);
         } else {
             document.getElementById('auth-wrapper').classList.remove('hidden');
             document.getElementById('app-wrapper').classList.add('hidden');
@@ -1699,8 +1833,8 @@
     }
 
     async function logout() {
-        cancelLeaveAutoLogoutTimer();
-        autoLoggedOutOnLeave = true;
+        stopIdleSecurityMonitor();
+        autoLoggedOutOnIdle = true;
         clearUserLocalCache(currentUser);
         try {
             if (window.riyalbaAuth) await window.riyalbaAuth.logoutGmail();
@@ -1723,6 +1857,8 @@
             const el = document.getElementById(id);
             if (el) el.disabled = profileLocked;
         });
+
+        toggleWaScheduleFields();
 
         const sendOtpBtn = document.getElementById('send-wa-otp-btn');
         if (sendOtpBtn) sendOtpBtn.disabled = profileLocked;
@@ -1753,7 +1889,23 @@
     }
 
     function loadUserProfile() {
-        let uData = users[currentUser] || { fname: currentUser, lname: '', gender: 'male', age: '25', email: currentUser, phone: '', verifiedPhone: '', waPhoneVerified: false, waAutoReport: false, customIncome: 0, customGoal: 1000, photo: null };
+        populateWaScheduleDayDropdown();
+        let uData = users[currentUser] || {
+            fname: currentUser,
+            lname: '',
+            gender: 'male',
+            age: '25',
+            email: currentUser,
+            phone: '',
+            verifiedPhone: '',
+            waPhoneVerified: false,
+            waAutoReport: false,
+            waAutoDay: 'last_day',
+            waAutoTime: '20:00',
+            customIncome: 0,
+            customGoal: 1000,
+            photo: null
+        };
         let fullName = (uData.fname + ' ' + uData.lname).trim() || currentUser;
         document.getElementById('user-display').innerText = fullName;
         document.getElementById('mobile-user-display').innerText = fullName;
@@ -1777,6 +1929,8 @@
         document.getElementById('edit-prof-email').value = uData.email || currentUser;
         document.getElementById('edit-prof-phone').value = uData.phone || '';
         document.getElementById('edit-prof-wa-auto').checked = Boolean(uData.waAutoReport);
+        document.getElementById('edit-prof-wa-day').value = uData.waAutoDay || 'last_day';
+        document.getElementById('edit-prof-wa-time').value = uData.waAutoTime || '20:00';
         const normalized = normalizeWhatsAppPhone(uData.phone || '');
         updateWhatsAppVerificationBadge(Boolean(normalized && uData.waPhoneVerified && uData.verifiedPhone === normalized));
         applyProfileLockUI();
@@ -1802,6 +1956,8 @@
         let uData = users[currentUser];
         let phoneNormalized = normalizeWhatsAppPhone(document.getElementById('edit-prof-phone').value.trim());
         let waAuto = document.getElementById('edit-prof-wa-auto').checked;
+        let waDay = document.getElementById('edit-prof-wa-day').value || 'last_day';
+        let waTime = document.getElementById('edit-prof-wa-time').value || '20:00';
         let statusEl = document.getElementById('wa-save-status');
 
         if (phoneNormalized) {
@@ -1839,6 +1995,9 @@
         uData.gender = document.getElementById('edit-prof-gender').value;
         uData.phone = phoneNormalized;
         uData.waAutoReport = waAuto;
+        uData.waAutoDay = waDay;
+        uData.waAutoTime = waTime;
+        uData.waTimezoneOffset = new Date().getTimezoneOffset();
         uData.profileCompleted = true;
         localStorage.setItem('RiyalBA_users', JSON.stringify(users));
         pushStateToCloud();
@@ -1849,6 +2008,7 @@
         statusEl.style.display = 'block';
         statusEl.style.color = '#15803D';
         statusEl.innerText = translations[currentLang].waSavedMsg;
+        checkAndRunScheduledWhatsAppReport();
     }
 
     function toggleIncomeEdit() {
@@ -2252,9 +2412,6 @@
             ? `المعتمد (${minSourceName}): ${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)`
             : `Counted (${minSourceName}): ${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)`;
 
-        // الترتيب المطلوب في شبكة الـ 6 مخططات:
-        // الصف 1: Category Distribution | Spending Efficiency Index | Daily Expenses Trend
-        // الصف 2: Monthly Comparison | Spending by Card | Planned vs Actual
         sheet.innerHTML = `
             <div class="pdf-top-header">
                 <div class="pdf-logo-3-left">
@@ -2520,6 +2677,37 @@
         }
     }
 
+    async function dispatchMonthPdfToWhatsApp(monthId, phone) {
+        const artifact = await buildMonthPdfArtifact(monthId);
+        if (!artifact) throw new Error('Failed to generate PDF');
+
+        const pdfBase64 = artifact.pdf.output('datauristring').split(',')[1];
+        const caption = currentLang === 'ar'
+            ? `تقريرك المالي لشهر ${artifact.monthTitle} من منصة Oikonomia`
+            : `Your Oikonomia financial report for ${artifact.monthTitle}`;
+
+        const response = await fetch(WHATSAPP_API_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                phone: phone,
+                uid: firebaseUid || currentUser || 'anonymous',
+                fileName: artifact.safeFileName,
+                caption: caption,
+                pdfBase64: pdfBase64
+            })
+        });
+
+        const rawText = await response.text();
+        let resData = null;
+        try { resData = JSON.parse(rawText); } catch (_) { resData = { rawText }; }
+
+        if (!response.ok || !resData || resData.ok === false) {
+            throw new Error(JSON.stringify(resData));
+        }
+        return resData;
+    }
+
     async function sendMonthPdfToWhatsApp(monthId) {
         let uData = users[currentUser] || {};
         let phone = normalizeWhatsAppPhone(uData.phone || '');
@@ -2539,36 +2727,54 @@
         };
 
         try {
-            const artifact = await buildMonthPdfArtifact(monthId);
-            if (!artifact) throw new Error('Failed to generate PDF');
-
-            const pdfBase64 = artifact.pdf.output('datauristring').split(',')[1];
-            const caption = currentLang === 'ar'
-                ? `تقريرك المالي لشهر ${artifact.monthTitle} من منصة Oikonomia`
-                : `Your Oikonomia financial report for ${artifact.monthTitle}`;
-
-            const response = await fetch(WHATSAPP_API_ENDPOINT, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    phone: phone,
-                    uid: firebaseUid || currentUser || 'anonymous',
-                    fileName: artifact.safeFileName,
-                    caption: caption,
-                    pdfBase64: pdfBase64
-                })
-            });
-
-            const resData = await response.json();
-            if (!response.ok || !resData.ok) {
-                throw new Error('WhatsApp API request failed');
-            }
+            await dispatchMonthPdfToWhatsApp(monthId, phone);
             alert(currentLang === 'ar' ? 'تم إرسال ملف PDF إلى واتساب بنجاح!' : 'PDF report sent to WhatsApp successfully!');
         } catch (err) {
-            console.error('WhatsApp Report Send Error:', err);
+            console.error('WhatsApp Report Send Error:', err.message || err);
             alert(currentLang === 'ar' ? 'تعذّر إرسال التقرير عبر الواتساب، تأكد من اتصال السيرفر.' : 'Failed to send PDF report via WhatsApp.');
         } finally {
             resetBtn();
+        }
+    }
+
+    async function checkAndRunScheduledWhatsAppReport() {
+        if (isSendingAutoWaReport || !currentUser || !users[currentUser]) return;
+        const uData = users[currentUser];
+        const phone = normalizeWhatsAppPhone(uData.phone || '');
+        if (!uData.waAutoReport || phone.length < 10 || !uData.waPhoneVerified) return;
+
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth(); // 0..11
+        const monthKey = `${year}-${String(month + 1).padStart(2, '0')}`;
+        if (uData.waLastAutoSentMonth === monthKey) return;
+
+        const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
+        const targetDay = (uData.waAutoDay && uData.waAutoDay !== 'last_day')
+            ? Math.min(lastDayOfMonth, Math.max(1, parseInt(uData.waAutoDay, 10) || lastDayOfMonth))
+            : lastDayOfMonth;
+
+        const [targetHourStr, targetMinStr] = String(uData.waAutoTime || '20:00').split(':');
+        const targetHour = parseInt(targetHourStr, 10) || 20;
+        const targetMin = parseInt(targetMinStr, 10) || 0;
+
+        const scheduledDate = new Date(year, month, targetDay, targetHour, targetMin, 0, 0);
+        if (now < scheduledDate) return;
+
+        ensureCurrentDashboardMonthAutoSaved();
+        if (!currentMonthId) return;
+
+        isSendingAutoWaReport = true;
+        try {
+            await dispatchMonthPdfToWhatsApp(currentMonthId, phone);
+            uData.waLastAutoSentMonth = monthKey;
+            localStorage.setItem('RiyalBA_users', JSON.stringify(users));
+            pushStateToCloud();
+        } catch (err) {
+            console.error('Scheduled Monthly WhatsApp Report Error:', err.message || err);
+        } finally {
+            destroyPdfCharts();
+            isSendingAutoWaReport = false;
         }
     }
 
