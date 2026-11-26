@@ -1590,64 +1590,7 @@
         updateWhatsAppVerificationBadge(isCurrentVerified);
     }
 
-    async function sendWhatsAppVerificationCode() {
-        if (profileLocked) return;
-        const statusEl = document.getElementById('wa-save-status');
-        const sendBtn = document.getElementById('send-wa-otp-btn');
-        const rawPhone = document.getElementById('edit-prof-phone').value.trim();
-        const phone = normalizeWhatsAppPhone(rawPhone);
-
-        if (phone.length < 10) {
-            statusEl.style.display = 'block';
-            statusEl.style.color = 'var(--danger)';
-            statusEl.innerText = translations[currentLang].waPhoneRequired;
-            return;
-        }
-
-        if (sendBtn) sendBtn.disabled = true;
-        statusEl.style.display = 'block';
-        statusEl.style.color = 'var(--text-muted)';
-        statusEl.innerText = currentLang === 'ar' ? 'جاري إرسال رمز التحقق...' : 'Sending verification code...';
-
-        try {
-            const response = await fetch(WHATSAPP_OTP_ENDPOINT, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    phone: phone,
-                    uid: firebaseUid || currentUser || 'anonymous'
-                })
-            });
-
-            const rawText = await response.text();
-            let data = null;
-            try {
-                data = JSON.parse(rawText);
-            } catch (_) {
-                data = { rawText };
-            }
-
-            if (!response.ok || !data || data.ok === false) {
-                throw new Error(JSON.stringify(data));
-            }
-
-            pendingWaPhone = phone;
-            const otpBox = document.getElementById('wa-otp-input-box');
-            if (otpBox) otpBox.classList.remove('hidden');
-            const codeInput = document.getElementById('wa-otp-code-input');
-            if (codeInput) { codeInput.value = ''; codeInput.focus(); }
-
-            statusEl.style.color = '#15803D';
-            statusEl.innerText = translations[currentLang].waOtpSentMsg;
-        } catch (err) {
-            console.error('Send OTP Full Error:', err.message || err);
-            statusEl.style.color = 'var(--danger)';
-            statusEl.innerText = translations[currentLang].waOtpSendFailedMsg;
-        } finally {
-            if (sendBtn) sendBtn.disabled = false;
-        }
-    }
-
+    
     async function verifyWhatsAppCode() {
         if (profileLocked) return;
         const statusEl = document.getElementById('wa-save-status');
