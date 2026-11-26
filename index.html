@@ -33,7 +33,6 @@
         .auth-container { background: url('pexels-brett-sayles-6937714.jpg') center/cover fixed; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 15px;}
         .auth-card { background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px); padding: 32px 30px; border-radius: 20px; width: 100%; max-width: 430px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center; max-height: 95vh; overflow-y: auto;}
         
-        /* تنسيقات الشعارات الجديدة Oikonomia */
         .oikonomia-logo-1 {
             display: inline-flex;
             align-items: center;
@@ -318,17 +317,16 @@
             overflow: hidden;
             font-family: 'Inter', 'Cairo', sans-serif;
         }
+        /* تمت إزالة الخط السفلي/العلوي الفاصل من رأس تقرير PDF */
         .pdf-top-header {
             display: grid;
             grid-template-columns: auto 1fr auto;
             align-items: center;
             margin-top: 6px;
-            border-bottom: 2px solid #00B0F0;
             padding-bottom: 8px;
             gap: 14px;
             flex-shrink: 0;
         }
-        /* سادساً: شعار 3 أقصى يسار تقرير PDF */
         .pdf-logo-3-left {
             width: 38px;
             height: 38px;
@@ -338,7 +336,6 @@
             flex-shrink: 0;
         }
         .pdf-user-name-only { justify-self: end; font-size: 14.5px; font-weight: 800; color: #111827; white-space: nowrap; }
-        /* سابعاً: شعار 2 في وسط تقرير PDF */
         .pdf-center-title { text-align: center; }
         .pdf-center-title h2 { margin: 0; font-size: 19px; font-weight: 600; color: #111827; line-height: 1.25; }
         .pdf-center-title p { margin: 3px 0 0; font-size: 11px; font-weight: 600; color: #4B5563; line-height: 1.2; }
@@ -407,7 +404,6 @@
     <!-- Google Sign-In Only & First-Time Age/Gender Setup -->
     <div id="auth-wrapper" class="auth-container">
         <div id="login-form" class="auth-card">
-            <!-- ثانياً: شعار 1 في صفحة الدخول -->
             <div class="auth-logo-box" style="margin-bottom: 18px;">
                 <div class="oikonomia-logo-1" style="color: #000000;">
                     <svg viewBox="0 0 100 100" aria-hidden="true">
@@ -493,7 +489,6 @@
     <div id="app-wrapper" class="hidden" style="display: flex; flex-direction: column; min-height: 100vh;">
         <header>
             <div style="display: flex; align-items: center; gap: 12px;">
-                <!-- ثالثاً: الهيدينق (Header) شعار 2 -->
                 <div class="oikonomia-logo-2">Oikonomia</div>
                 <div class="mobile-header-user">
                     <div id="mobile-profile-pic-container"><div class="profile-pic" id="mobile-profile-initial" style="width: 30px; height: 30px; font-size: 12px;">U</div></div>
@@ -769,7 +764,6 @@
             <!-- About -->
             <div id="page-about" class="page">
                 <div class="card" style="padding: 30px 20px; max-width: 900px; margin: 0 auto;">
-                    <!-- خامساً: داخل About us شعار 1 -->
                     <div style="text-align: center; margin-bottom: 30px;">
                         <div class="oikonomia-logo-1" style="color: #000000;">
                             <svg viewBox="0 0 100 100" style="width: 38px; height: 38px;" aria-hidden="true">
@@ -794,12 +788,12 @@
                     <hr style="border: 0; border-top: 1px solid var(--brand-gray); margin: 25px 0;">
                     <div style="margin-bottom: 30px;">
                         <h3 style="font-size: 18px; color: var(--brand-dark); margin-bottom: 15px;" data-i18n="overviewTitle">Platform Overview</h3>
-                        <p style="color: var(--text-muted); font-size: 14px; line-height: 1.7;" data-i18n="overviewDesc">Oikonomia is designed to empower individuals to take complete control of their financial life through smart tracking and advanced analytics.</p>
+                        <p style="color: var(--text-muted); font-size: 14px; line-height: 1.85;" data-i18n="overviewDesc">Oikonomia is designed to empower individuals to take complete control of their financial life through structured monthly planning, real-time expense tracking, multi-card balance monitoring, savings goal progress, smart budget alerts, and visual analytics with downloadable PDF reports.</p>
                     </div>
                     <hr style="border: 0; border-top: 1px solid var(--brand-gray); margin: 25px 0;">
                     <div style="text-align: center;">
                         <h3 style="font-size: 18px; color: var(--brand-dark); margin-bottom: 15px;" data-i18n="devTitle">Created & Developed By</h3>
-                        <p style="font-size: 18px; font-weight: 700; color: var(--brand-dark); margin-bottom: 5px;">Bader Khalid Saad Almalki</p>
+                        <p style="font-size: 18px; font-weight: 700; color: var(--brand-dark); margin-bottom: 5px;" data-i18n="devName">Bader Khalid Almalki</p>
                         <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 25px;">Bader is an Industrial Engineering student at Taif University, Saudi Arabia</p>
                         <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
                             <a href="mailto:bader.ie@gmail.com" class="btn btn-primary" style="width: 220px; padding: 12px 20px; text-decoration: none; display: inline-block;">📧 bader.ie@gmail.com</a>
@@ -810,7 +804,6 @@
             </div>
         </div>
 
-        <!-- رابعاً: الذيل (Footer) شعار 1 + عبارة Monthly Financial Control -->
         <footer>
             <div class="footer-content">
                 <div>
@@ -963,8 +956,9 @@
             openBtn: "Open",
             aboutSub: "Your ultimate intelligent partner for personal budgeting and analytics.",
             overviewTitle: "Platform Overview",
-            overviewDesc: "Oikonomia is designed to empower individuals to take complete control of their financial life through smart tracking and advanced analytics.",
+            overviewDesc: "Oikonomia is a comprehensive personal finance platform built to give you clear monthly visibility and disciplined control over your money. It combines income and net-balance tracking, planned-versus-actual category budgeting, multi-card balance and spending monitoring, monthly savings goal tracking, smart overspending alerts, historical month archiving, and one-click landscape PDF reports with cloud sync.",
             devTitle: "Created & Developed By",
+            devName: "Bader Khalid Almalki",
             linkedinBtn: "🔗 LinkedIn Profile",
             footerSub: "Monthly Financial Control"
         },
@@ -1080,18 +1074,36 @@
             openBtn: "فتح",
             aboutSub: "شريكك الذكي لإدارة ومراقبة ميزانيتك الشخصية بكل سهولة واحترافية.",
             overviewTitle: "فكرة المنصة والهدف",
-            overviewDesc: "صُممت منصة Oikonomia لمساعدة الأفراد على التحكم الكامل بحياتهم المالية عبر تحليل المصروفات، متابعة أهداف الادخار، وتقديم تقارير دقيقة.",
+            overviewDesc: "صُممت منصة Oikonomia لتمنحك رؤية مالية شهرية واضحة وتحكماً دقيقاً في ميزانيتك الشخصية؛ فهي تجمع بين متابعة الدخل والصافي، ومقارنة المخطط بالفعلي لكل فئة، وإدارة أرصدة البطاقات ومصروفاتها، وقياس التقدم نحو هدف الادخار الشهري، وتقديم تنبيهات استباقية عند الاقتراب من الحد أو تجاوزه، مع حفظ سجل الأشهر ومزامنته سحابياً وتصدير تقارير PDF متكاملة.",
             devTitle: "تم التطوير بواسطة",
+            devName: "Bader Khalid Almalki",
             linkedinBtn: "🔗 حساب لينكد إن",
             footerSub: "Monthly Financial Control"
         }
     };
+
+    const DASHBOARD_DISTINCT_COLORS = [
+        '#008CFF', '#EC4899', '#10B981', '#8B5CF6',
+        '#F59E0B', '#06B6D4', '#EF4444', '#6366F1',
+        '#14B8A6', '#D946EF', '#F97316', '#84CC16',
+        '#0EA5E9', '#E11D48', '#22C55E', '#A855F7',
+        '#EAB308', '#14B8A6', '#F43F5E', '#3B82F6'
+    ];
 
     const CARD_COLOR_PALETTE = [
         '#008CFF', '#EC4899', '#10B981', '#8B5CF6',
         '#F59E0B', '#06B6D4', '#EF4444', '#6366F1',
         '#14B8A6', '#D946EF', '#F97316', '#3B82F6'
     ];
+
+    function getDistinctPalette(count, offset = 0) {
+        const list = [];
+        for (let i = 0; i < count; i++) {
+            const idx = (i * 3 + offset) % DASHBOARD_DISTINCT_COLORS.length;
+            list.push(DASHBOARD_DISTINCT_COLORS[idx]);
+        }
+        return list;
+    }
 
     const AUTO_LOGOUT_GRACE_MS = 5 * 60 * 1000;
 
@@ -1344,6 +1356,7 @@
         pendingWaPhone = '';
         updateWhatsAppVerificationBadge(isCurrentVerified);
     }
+
     async function sendWhatsAppVerificationCode() {
         if (profileLocked) return;
         const statusEl = document.getElementById('wa-save-status');
@@ -2107,7 +2120,6 @@
 
         sheet.innerHTML = `
             <div class="pdf-top-header">
-                <!-- سادساً: أقصى اليسار شعار 3 -->
                 <div class="pdf-logo-3-left">
                     <svg viewBox="0 0 100 100" style="width: 36px; height: 36px;">
                         <g transform="translate(50,50) rotate(-45) translate(-50,-50)" fill="none" stroke="#000000" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
@@ -2125,7 +2137,6 @@
                         </g>
                     </svg>
                 </div>
-                <!-- سابعاً: في الوسط شعار 2 -->
                 <div class="pdf-center-title">
                     <h2 style="font-family: 'Inter', sans-serif; font-weight: 500; letter-spacing: -0.4px;">Oikonomia <span style="font-size:15px; font-weight:700; color:#4B5563;">— ${monthTitle}</span></h2>
                     <p>${translations[currentLang].aboutSub}</p>
@@ -2207,33 +2218,36 @@
             plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 9, padding: 6, font: { size: 9, weight: 'bold' } } } }
         };
 
+        let donutLabels = (data.tp === 0 && data.ta === 0) ? ['No Data'] : data.cats;
+        let donutValues = (data.tp === 0 && data.ta === 0) ? [1] : data.aData;
+
         pdfChartsInstances.push(new Chart(document.getElementById('pdfDonutCanvas').getContext('2d'), {
             type: 'doughnut',
-            data: { labels: data.cats, datasets: [{ data: (data.tp === 0 && data.ta === 0) ? [1] : data.aData, backgroundColor: ['#008CFF', '#EC4899', '#10B981', '#F59E0B', '#6366F1', '#8B5CF6', '#14B8A6'] }] },
+            data: { labels: donutLabels, datasets: [{ data: donutValues, backgroundColor: getDistinctPalette(donutValues.length, 0) }] },
             options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { display: true, position: 'right', labels: { boxWidth: 8, padding: 5, font: { size: 8.5, weight: 'bold' } } } } }
         }));
 
         pdfChartsInstances.push(new Chart(document.getElementById('pdfRadarCanvas').getContext('2d'), {
             type: 'radar',
-            data: { labels: data.cats, datasets: [{ label: translations[currentLang].chartConsumptionRate, data: effData, backgroundColor: 'rgba(0, 140, 255, 0.2)', borderColor: '#008CFF', pointBackgroundColor: '#EC4899', pointBorderColor: '#fff', pointRadius: 2.5 }] },
+            data: { labels: data.cats, datasets: [{ label: translations[currentLang].chartConsumptionRate, data: effData, backgroundColor: 'rgba(139, 92, 246, 0.2)', borderColor: '#8B5CF6', pointBackgroundColor: getDistinctPalette(effData.length, 4), pointBorderColor: '#fff', pointRadius: 2.5 }] },
             options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { display: false } }, scales: { r: { beginAtZero: true, max: 100, ticks: { stepSize: 25, font: { size: 7.5 }, backdropPadding: 1 }, pointLabels: { font: { size: 8, weight: 'bold' } } } } }
         }));
 
         pdfChartsInstances.push(new Chart(document.getElementById('pdfBarCanvas').getContext('2d'), {
             type: 'bar',
-            data: { labels: data.cats, datasets: [{ label: translations[currentLang].thPlanned, data: data.pData, backgroundColor: '#008CFF', borderRadius: 3 }, { label: translations[currentLang].thActual, data: data.aData, backgroundColor: '#EC4899', borderRadius: 3 }] },
+            data: { labels: data.cats, datasets: [{ label: translations[currentLang].thPlanned, data: data.pData, backgroundColor: '#0EA5E9', borderRadius: 3 }, { label: translations[currentLang].thActual, data: data.aData, backgroundColor: '#F97316', borderRadius: 3 }] },
             options: { ...baseLegendOpts, scales: { x: { ticks: { font: { size: 8 }, maxRotation: 35, minRotation: 0 } }, y: { beginAtZero: true, ticks: { font: { size: 8.5 } } } } }
         }));
 
         pdfChartsInstances.push(new Chart(document.getElementById('pdfDailyCanvas').getContext('2d'), {
             type: 'line',
-            data: { labels: ['W1', 'W2', 'W3', 'W4'], datasets: [{ label: translations[currentLang].kpiExpenses, data: [data.ta * 0.2, data.ta * 0.4, data.ta * 0.7, data.ta], borderColor: '#10B981', backgroundColor: 'rgba(16, 185, 129, 0.14)', fill: true, tension: 0.3, pointRadius: 3, pointBackgroundColor: '#10B981' }] },
+            data: { labels: ['W1', 'W2', 'W3', 'W4'], datasets: [{ label: translations[currentLang].kpiExpenses, data: [data.ta * 0.2, data.ta * 0.4, data.ta * 0.7, data.ta], borderColor: '#14B8A6', backgroundColor: 'rgba(20, 184, 166, 0.14)', fill: true, tension: 0.3, pointRadius: 3, pointBackgroundColor: getDistinctPalette(4, 7) }] },
             options: { ...baseLegendOpts, scales: { x: { ticks: { font: { size: 9 } } }, y: { beginAtZero: true, ticks: { font: { size: 9 } } } } }
         }));
 
         pdfChartsInstances.push(new Chart(document.getElementById('pdfHistoryCanvas').getContext('2d'), {
             type: 'line',
-            data: { labels: comp.labels, datasets: [{ label: translations[currentLang].remainingFromPlanned, data: comp.values, borderColor: '#008CFF', backgroundColor: 'rgba(0, 140, 255, 0.16)', fill: true, tension: 0.3, pointRadius: 3, pointBackgroundColor: '#008CFF' }] },
+            data: { labels: comp.labels, datasets: [{ label: translations[currentLang].remainingFromPlanned, data: comp.values, borderColor: '#D946EF', backgroundColor: 'rgba(217, 70, 239, 0.14)', fill: true, tension: 0.3, pointRadius: 3, pointBackgroundColor: getDistinctPalette(comp.values.length, 11) }] },
             options: { ...baseLegendOpts, scales: { x: { ticks: { font: { size: 9 } } }, y: { beginAtZero: true, ticks: { font: { size: 9 } } } } }
         }));
 
@@ -2646,31 +2660,93 @@
     }
 
     function updateCharts(tp, ta, cats, pData, aData, cardChartData = { labels: [], values: [], colors: [] }, remPlanned = 0) {
+        let donutLabels = (tp === 0 && ta === 0) ? ['No Data'] : cats;
+        let donutValues = (tp === 0 && ta === 0) ? [1] : aData;
+
         if(donutChart) donutChart.destroy();
-        donutChart = new Chart(document.getElementById('donutChart').getContext('2d'), { type: 'doughnut', data: { labels: cats, datasets: [{ data: (tp===0&&ta===0)?[1]:aData, backgroundColor: ['#008CFF', '#EC4899', '#10B981', '#F59E0B', '#6366F1'] }] }, options: { responsive: true, maintainAspectRatio: false } });
+        donutChart = new Chart(document.getElementById('donutChart').getContext('2d'), {
+            type: 'doughnut',
+            data: { labels: donutLabels, datasets: [{ data: donutValues, backgroundColor: getDistinctPalette(donutValues.length, 0) }] },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
         
         if(barChart) barChart.destroy();
-        barChart = new Chart(document.getElementById('barChart').getContext('2d'), { type: 'bar', data: { labels: cats, datasets: [{ label: translations[currentLang].thPlanned, data: pData, backgroundColor: '#008CFF' }, { label: translations[currentLang].thActual, data: aData, backgroundColor: '#EC4899' }] }, options: { responsive: true, maintainAspectRatio: false } });
+        barChart = new Chart(document.getElementById('barChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: cats,
+                datasets: [
+                    { label: translations[currentLang].thPlanned, data: pData, backgroundColor: '#008CFF', borderRadius: 4 },
+                    { label: translations[currentLang].thActual, data: aData, backgroundColor: '#F59E0B', borderRadius: 4 }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
         
         if(lineDaily) lineDaily.destroy();
-        lineDaily = new Chart(document.getElementById('lineChartDaily').getContext('2d'), { type: 'line', data: { labels: ['W1', 'W2', 'W3', 'W4'], datasets: [{ label: translations[currentLang].kpiExpenses, data: [ta*0.2, ta*0.4, ta*0.7, ta], borderColor: '#10B981', fill: false }] }, options: { responsive: true, maintainAspectRatio: false } });
+        lineDaily = new Chart(document.getElementById('lineChartDaily').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['W1', 'W2', 'W3', 'W4'],
+                datasets: [{
+                    label: translations[currentLang].kpiExpenses,
+                    data: [ta*0.2, ta*0.4, ta*0.7, ta],
+                    borderColor: '#10B981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.14)',
+                    pointBackgroundColor: getDistinctPalette(4, 5),
+                    pointRadius: 4,
+                    fill: true
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false }
+        });
         
         if(lineHistory) lineHistory.destroy();
         let compSeries = getMonthlyComparisonSeries(currentMonthId, remPlanned);
         lineHistory = new Chart(document.getElementById('lineChartHistory').getContext('2d'), {
             type: 'line',
-            data: { labels: compSeries.labels, datasets: [{ label: translations[currentLang].remainingFromPlanned, data: compSeries.values, borderColor: '#008CFF', backgroundColor: 'rgba(0, 140, 255, 0.16)', fill: true, tension: 0.3, pointRadius: 4, pointBackgroundColor: '#008CFF' }] },
+            data: {
+                labels: compSeries.labels,
+                datasets: [{
+                    label: translations[currentLang].remainingFromPlanned,
+                    data: compSeries.values,
+                    borderColor: '#8B5CF6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.14)',
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 4,
+                    pointBackgroundColor: getDistinctPalette(compSeries.values.length, 9)
+                }]
+            },
             options: { responsive: true, maintainAspectRatio: false }
         });
         
         if(gaugeChart) gaugeChart.destroy();
-        gaugeChart = new Chart(document.getElementById('gaugeChart').getContext('2d'), { type: 'doughnut', data: { labels: [translations[currentLang].actualSpending, translations[currentLang].remainingFromPlanned], datasets: [{ data: (tp===0&&ta===0)?[0,1]:[ta, Math.max(0, tp-ta)], backgroundColor: ['#EF4444', '#E5E7EB'] }] }, options: { responsive: true, maintainAspectRatio: false, rotation: -90, circumference: 180, cutout: '80%' } });
+        gaugeChart = new Chart(document.getElementById('gaugeChart').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: [translations[currentLang].actualSpending, translations[currentLang].remainingFromPlanned],
+                datasets: [{
+                    data: (tp===0&&ta===0)?[0,1]:[ta, Math.max(0, tp-ta)],
+                    backgroundColor: ['#EF4444', '#06B6D4']
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, rotation: -90, circumference: 180, cutout: '80%' }
+        });
 
         if(cardSpendingChart) cardSpendingChart.destroy();
         let hasCardValues = cardChartData.labels.length > 0;
         cardSpendingChart = new Chart(document.getElementById('cardSpendingChart').getContext('2d'), {
             type: 'bar',
-            data: { labels: hasCardValues ? cardChartData.labels : [translations[currentLang].thCard], datasets: [{ label: translations[currentLang].actualSpending, data: hasCardValues ? cardChartData.values : [0], backgroundColor: hasCardValues ? cardChartData.colors : ['#D1D5DB'], borderRadius: 6 }] },
+            data: {
+                labels: hasCardValues ? cardChartData.labels : [translations[currentLang].thCard],
+                datasets: [{
+                    label: translations[currentLang].actualSpending,
+                    data: hasCardValues ? cardChartData.values : [0],
+                    backgroundColor: hasCardValues ? cardChartData.colors : ['#6366F1'],
+                    borderRadius: 6
+                }]
+            },
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
         });
         
@@ -2678,7 +2754,19 @@
         let effData = pData.map((p, idx) => p > 0 ? Math.min(100, Math.max(0, Math.round((aData[idx] / p) * 100))) : 0);
         efficiencyChart = new Chart(document.getElementById('efficiencyChart').getContext('2d'), {
             type: 'radar',
-            data: { labels: cats, datasets: [{ label: translations[currentLang].chartConsumptionRate, data: effData, backgroundColor: 'rgba(0, 140, 255, 0.2)', borderColor: '#008CFF', pointBackgroundColor: '#EC4899', pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: '#008CFF' }] },
+            data: {
+                labels: cats,
+                datasets: [{
+                    label: translations[currentLang].chartConsumptionRate,
+                    data: effData,
+                    backgroundColor: 'rgba(20, 184, 166, 0.2)',
+                    borderColor: '#14B8A6',
+                    pointBackgroundColor: getDistinctPalette(effData.length, 13),
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#14B8A6'
+                }]
+            },
             options: { responsive: true, maintainAspectRatio: false, scales: { r: { beginAtZero: true, max: 100 } } }
         });
     }
