@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RiyalBA - Money Management</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 50'%3E%3Crect width='80' height='50' rx='8' fill='%23D1D5DB'/%3E%3Ccircle cx='30' cy='25' r='20' fill='%23008CFF'/%3E%3C/svg%3E">
+    <title>Oikonomia - Monthly Financial Control</title>
+    <!-- 1. شعار 3 في التبويب العلوي -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg transform='translate(50,50) rotate(-45) translate(-50,-50)' fill='none' stroke='%23000000' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M 44 12 L 56 12 L 56 88 L 44 88 Z' fill='%23FFFFFF'/%3E%3Cpath d='M 44 12 L 16 12 L 22 21 L 44 21 Z' fill='%23FFFFFF'/%3E%3Cpath d='M 56 12 L 72 12 L 66 19 L 56 19 Z' fill='%23FFFFFF'/%3E%3Crect x='40' y='28' width='20' height='22' rx='2' fill='%23FFFFFF'/%3E%3Crect x='45' y='32' width='10' height='14' rx='1' fill='%23FFFFFF'/%3E%3Cpath d='M 40 31 L 16 31 L 22 24 L 40 24 Z' fill='%23FFFFFF'/%3E%3Cpath d='M 60 31 L 72 31 L 66 25 L 60 25 Z' fill='%23FFFFFF'/%3E%3Cline x1='48' y1='88' x2='48' y2='96'/%3E%3C/g%3E%3C/svg%3E">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -32,14 +33,39 @@
         .auth-container { background: url('pexels-brett-sayles-6937714.jpg') center/cover fixed; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 15px;}
         .auth-card { background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px); padding: 32px 30px; border-radius: 20px; width: 100%; max-width: 430px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center; max-height: 95vh; overflow-y: auto;}
         
-        .brand-logo-auth { display: inline-flex; align-items: center; gap: 12px; direction: ltr !important; unicode-bidi: isolate; justify-content: center; }
-        .brand-text-wrap { display: flex; flex-direction: column; align-items: flex-end; line-height: 1; }
-        .brand-subtitle { font-size: 9px; font-weight: 600; color: var(--text-main); margin-bottom: 3px; letter-spacing: 0.2px; }
-        .brand-title { font-size: 26px; font-weight: 800; color: var(--brand-dark); letter-spacing: -0.5px; }
-        .brand-dot { color: var(--brand-blue); }
-        .brand-icon-box { position: relative; width: 55px; height: 35px; flex-shrink: 0; }
-        .brand-gray-card { position: absolute; inset: 0; background: var(--brand-gray); border-radius: 6px; }
-        .brand-blue-circle { position: absolute; left: 6px; top: 4px; width: 27px; height: 27px; background: var(--brand-blue); border-radius: 50%; }
+        /* تنسيقات الشعارات الجديدة Oikonomia */
+        .oikonomia-logo-1 {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            direction: ltr !important;
+            unicode-bidi: isolate;
+            justify-content: center;
+        }
+        .oikonomia-logo-1 svg {
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+        }
+        .oikonomia-logo-1 span {
+            font-family: 'Inter', sans-serif;
+            font-size: 28px;
+            font-weight: 500;
+            letter-spacing: -0.5px;
+            line-height: 1;
+        }
+        .oikonomia-logo-2 {
+            display: inline-flex;
+            align-items: center;
+            direction: ltr !important;
+            unicode-bidi: isolate;
+            font-family: 'Inter', sans-serif;
+            font-size: 24px;
+            font-weight: 500;
+            color: var(--brand-dark);
+            letter-spacing: -0.4px;
+            line-height: 1;
+        }
 
         .input-group { margin-bottom: 12px; }
         body.lang-ar .input-group { text-align: right; }
@@ -302,27 +328,19 @@
             gap: 14px;
             flex-shrink: 0;
         }
-        .pdf-symbol-only {
-            position: relative;
-            width: 50px;
-            height: 32px;
-            border-radius: 7px;
-            background: #D1D5DB;
+        /* سادساً: شعار 3 أقصى يسار تقرير PDF */
+        .pdf-logo-3-left {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             flex-shrink: 0;
         }
-        .pdf-symbol-only::after {
-            content: "";
-            position: absolute;
-            left: 6px;
-            top: 3px;
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            background: #008CFF;
-        }
         .pdf-user-name-only { justify-self: end; font-size: 14.5px; font-weight: 800; color: #111827; white-space: nowrap; }
+        /* سابعاً: شعار 2 في وسط تقرير PDF */
         .pdf-center-title { text-align: center; }
-        .pdf-center-title h2 { margin: 0; font-size: 17px; font-weight: 900; color: #111827; line-height: 1.25; }
+        .pdf-center-title h2 { margin: 0; font-size: 19px; font-weight: 600; color: #111827; line-height: 1.25; }
         .pdf-center-title p { margin: 3px 0 0; font-size: 11px; font-weight: 600; color: #4B5563; line-height: 1.2; }
 
         .pdf-row-1 { display: grid; grid-template-columns: 1.45fr 1fr; gap: 5px; flex-shrink: 0; }
@@ -389,13 +407,25 @@
     <!-- Google Sign-In Only & First-Time Age/Gender Setup -->
     <div id="auth-wrapper" class="auth-container">
         <div id="login-form" class="auth-card">
+            <!-- ثانياً: شعار 1 في صفحة الدخول -->
             <div class="auth-logo-box" style="margin-bottom: 18px;">
-                <div class="brand-logo-auth">
-                    <div class="brand-text-wrap">
-                        <span class="brand-subtitle">Money Management</span>
-                        <span class="brand-title">RiyalBA<span class="brand-dot">.</span></span>
-                    </div>
-                    <div class="brand-icon-box"><div class="brand-gray-card"></div><div class="brand-blue-circle"></div></div>
+                <div class="oikonomia-logo-1" style="color: #000000;">
+                    <svg viewBox="0 0 100 100" aria-hidden="true">
+                        <g transform="translate(50,50) rotate(-45) translate(-50,-50)" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="44" y="10" width="12" height="78"/>
+                            <path d="M 44 10 L 16 10 L 22 19 L 44 19 Z"/>
+                            <path d="M 56 10 L 72 10 L 66 17 L 56 17 Z"/>
+                            <rect x="40" y="27" width="20" height="23" rx="2" fill="#FFFFFF"/>
+                            <rect x="45" y="31" width="10" height="15" rx="1"/>
+                            <path d="M 40 30 L 16 30 L 22 23 L 40 23 Z"/>
+                            <path d="M 60 30 L 72 30 L 66 24 L 60 24 Z"/>
+                            <line x1="48" y1="60" x2="54" y2="60"/>
+                            <line x1="48" y1="68" x2="54" y2="68"/>
+                            <line x1="48" y1="76" x2="54" y2="76"/>
+                            <line x1="49" y1="88" x2="49" y2="96"/>
+                        </g>
+                    </svg>
+                    <span>Oikonomia</span>
                 </div>
             </div>
             <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px; line-height: 1.6;" data-i18n="loginDesc">Sign in with your Google account to sync your budget across mobile and laptop.</p>
@@ -417,16 +447,27 @@
         <!-- Onboarding Card (Asks Age & Gender once after Google Login) -->
         <div id="onboarding-form" class="auth-card hidden">
             <div class="auth-logo-box" style="margin-bottom: 14px;">
-                <div class="brand-logo-auth">
-                    <div class="brand-text-wrap">
-                        <span class="brand-subtitle">Money Management</span>
-                        <span class="brand-title">RiyalBA<span class="brand-dot">.</span></span>
-                    </div>
-                    <div class="brand-icon-box"><div class="brand-gray-card"></div><div class="brand-blue-circle"></div></div>
+                <div class="oikonomia-logo-1" style="color: #000000;">
+                    <svg viewBox="0 0 100 100" aria-hidden="true">
+                        <g transform="translate(50,50) rotate(-45) translate(-50,-50)" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="44" y="10" width="12" height="78"/>
+                            <path d="M 44 10 L 16 10 L 22 19 L 44 19 Z"/>
+                            <path d="M 56 10 L 72 10 L 66 17 L 56 17 Z"/>
+                            <rect x="40" y="27" width="20" height="23" rx="2" fill="#FFFFFF"/>
+                            <rect x="45" y="31" width="10" height="15" rx="1"/>
+                            <path d="M 40 30 L 16 30 L 22 23 L 40 23 Z"/>
+                            <path d="M 60 30 L 72 30 L 66 24 L 60 24 Z"/>
+                            <line x1="48" y1="60" x2="54" y2="60"/>
+                            <line x1="48" y1="68" x2="54" y2="68"/>
+                            <line x1="48" y1="76" x2="54" y2="76"/>
+                            <line x1="49" y1="88" x2="49" y2="96"/>
+                        </g>
+                    </svg>
+                    <span>Oikonomia</span>
                 </div>
             </div>
             <h3 style="margin: 0 0 6px; font-size: 19px;" data-i18n="onboardingTitle">Complete Your Profile</h3>
-            <p style="color: var(--text-muted); margin: 0 0 18px; font-size: 13px;" data-i18n="onboardingSub">Please enter your age and gender once to personalize your RiyalBA account.</p>
+            <p style="color: var(--text-muted); margin: 0 0 18px; font-size: 13px;" data-i18n="onboardingSub">Please enter your age and gender once to personalize your Oikonomia account.</p>
 
             <div class="grid-2">
                 <div class="input-group"><input type="text" id="onb-fname" data-i18n-placeholder="fnamePlaceholder"></div>
@@ -452,7 +493,8 @@
     <div id="app-wrapper" class="hidden" style="display: flex; flex-direction: column; min-height: 100vh;">
         <header>
             <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="font-weight:900; font-size:22px;">RiyalBA<span style="color:var(--brand-blue);">.</span></div>
+                <!-- ثالثاً: الهيدينق (Header) شعار 2 -->
+                <div class="oikonomia-logo-2">Oikonomia</div>
                 <div class="mobile-header-user">
                     <div id="mobile-profile-pic-container"><div class="profile-pic" id="mobile-profile-initial" style="width: 30px; height: 30px; font-size: 12px;">U</div></div>
                     <span id="mobile-user-display" style="font-weight: 600; font-size: 13px;">User</span>
@@ -727,11 +769,32 @@
             <!-- About -->
             <div id="page-about" class="page">
                 <div class="card" style="padding: 30px 20px; max-width: 900px; margin: 0 auto;">
-                    <div style="text-align: center; margin-bottom: 30px;"><h1 style="color: var(--brand-dark); margin: 0; font-size: 32px;">RiyalBA<span style="color:var(--brand-blue);">.</span></h1><p style="color: var(--text-muted); font-size: 15px; margin-top:10px;" data-i18n="aboutSub">Your ultimate intelligent partner for personal budgeting and analytics.</p></div>
+                    <!-- خامساً: داخل About us شعار 1 -->
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <div class="oikonomia-logo-1" style="color: #000000;">
+                            <svg viewBox="0 0 100 100" style="width: 38px; height: 38px;" aria-hidden="true">
+                                <g transform="translate(50,50) rotate(-45) translate(-50,-50)" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="44" y="10" width="12" height="78"/>
+                                    <path d="M 44 10 L 16 10 L 22 19 L 44 19 Z"/>
+                                    <path d="M 56 10 L 72 10 L 66 17 L 56 17 Z"/>
+                                    <rect x="40" y="27" width="20" height="23" rx="2" fill="#FFFFFF"/>
+                                    <rect x="45" y="31" width="10" height="15" rx="1"/>
+                                    <path d="M 40 30 L 16 30 L 22 23 L 40 23 Z"/>
+                                    <path d="M 60 30 L 72 30 L 66 24 L 60 24 Z"/>
+                                    <line x1="48" y1="60" x2="54" y2="60"/>
+                                    <line x1="48" y1="68" x2="54" y2="68"/>
+                                    <line x1="48" y1="76" x2="54" y2="76"/>
+                                    <line x1="49" y1="88" x2="49" y2="96"/>
+                                </g>
+                            </svg>
+                            <span style="font-size: 32px;">Oikonomia</span>
+                        </div>
+                        <p style="color: var(--text-muted); font-size: 15px; margin-top:10px;" data-i18n="aboutSub">Your ultimate intelligent partner for personal budgeting and analytics.</p>
+                    </div>
                     <hr style="border: 0; border-top: 1px solid var(--brand-gray); margin: 25px 0;">
                     <div style="margin-bottom: 30px;">
                         <h3 style="font-size: 18px; color: var(--brand-dark); margin-bottom: 15px;" data-i18n="overviewTitle">Platform Overview</h3>
-                        <p style="color: var(--text-muted); font-size: 14px; line-height: 1.7;" data-i18n="overviewDesc">RiyalBA is designed to empower individuals to take complete control of their financial life through smart tracking and advanced analytics.</p>
+                        <p style="color: var(--text-muted); font-size: 14px; line-height: 1.7;" data-i18n="overviewDesc">Oikonomia is designed to empower individuals to take complete control of their financial life through smart tracking and advanced analytics.</p>
                     </div>
                     <hr style="border: 0; border-top: 1px solid var(--brand-gray); margin: 25px 0;">
                     <div style="text-align: center;">
@@ -747,12 +810,33 @@
             </div>
         </div>
 
+        <!-- رابعاً: الذيل (Footer) شعار 1 + عبارة Monthly Financial Control -->
         <footer>
             <div class="footer-content">
-                <div><div style="font-size: 20px; font-weight: 800;">RiyalBA<span style="color:var(--brand-blue);">.</span></div><p style="color: #9ca3af; font-size: 13px; margin-top: 6px;" data-i18n="footerSub">Smart Money Management</p></div>
+                <div>
+                    <div class="oikonomia-logo-1" style="color: #FFFFFF;">
+                        <svg viewBox="0 0 100 100" style="width: 26px; height: 26px;" aria-hidden="true">
+                            <g transform="translate(50,50) rotate(-45) translate(-50,-50)" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="44" y="10" width="12" height="78"/>
+                                <path d="M 44 10 L 16 10 L 22 19 L 44 19 Z"/>
+                                <path d="M 56 10 L 72 10 L 66 17 L 56 17 Z"/>
+                                <rect x="40" y="27" width="20" height="23" rx="2" fill="#000000"/>
+                                <rect x="45" y="31" width="10" height="15" rx="1"/>
+                                <path d="M 40 30 L 16 30 L 22 23 L 40 23 Z"/>
+                                <path d="M 60 30 L 72 30 L 66 24 L 60 24 Z"/>
+                                <line x1="48" y1="60" x2="54" y2="60"/>
+                                <line x1="48" y1="68" x2="54" y2="68"/>
+                                <line x1="48" y1="76" x2="54" y2="76"/>
+                                <line x1="49" y1="88" x2="49" y2="96"/>
+                            </g>
+                        </svg>
+                        <span style="font-size: 22px;">Oikonomia</span>
+                    </div>
+                    <p style="color: #9ca3af; font-size: 13px; margin-top: 6px;" data-i18n="footerSub">Monthly Financial Control</p>
+                </div>
                 <div class="footer-links"><a onclick="navigate('dashboard')" data-i18n="navDash">Dashboard</a><a onclick="navigate('history')" data-i18n="navHistory">History</a><a onclick="navigate('profile')" data-i18n="navProfile">Profile</a><a onclick="navigate('about')" data-i18n="navAbout">About us</a></div>
             </div>
-            <div style="text-align: center; color: #6b7280; font-size: 12px;">&copy; 2026 RiyalBA. All Rights Reserved.</div>
+            <div style="text-align: center; color: #6b7280; font-size: 12px;">&copy; 2026 Oikonomia. All Rights Reserved.</div>
         </footer>
     </div>
 
@@ -771,7 +855,7 @@
             loginDesc: "Sign in with your Google account to sync your budget across mobile and laptop.",
             googleSignInBtn: "Continue with Google",
             onboardingTitle: "Complete Your Profile",
-            onboardingSub: "Please enter your age and gender once to personalize your RiyalBA account.",
+            onboardingSub: "Please enter your age and gender once to personalize your Oikonomia account.",
             onboardingError: "Please select your age and gender",
             startUsingBtn: "Save & Continue",
             fnamePlaceholder: "First Name",
@@ -879,16 +963,16 @@
             openBtn: "Open",
             aboutSub: "Your ultimate intelligent partner for personal budgeting and analytics.",
             overviewTitle: "Platform Overview",
-            overviewDesc: "RiyalBA is designed to empower individuals to take complete control of their financial life through smart tracking and advanced analytics.",
+            overviewDesc: "Oikonomia is designed to empower individuals to take complete control of their financial life through smart tracking and advanced analytics.",
             devTitle: "Created & Developed By",
             linkedinBtn: "🔗 LinkedIn Profile",
-            footerSub: "Smart Money Management"
+            footerSub: "Monthly Financial Control"
         },
         ar: {
             loginDesc: "سجّل الدخول بحسابك في Google لمزامنة بياناتك بين الجوال واللابتوب.",
             googleSignInBtn: "المتابعة عبر حساب Google",
             onboardingTitle: "إكمال بيانات الملف الشخصي",
-            onboardingSub: "يرجى إدخال العمر والجنس لمرة واحدة فقط لتخصيص حسابك في RiyalBA.",
+            onboardingSub: "يرجى إدخال العمر والجنس لمرة واحدة فقط لتخصيص حسابك في Oikonomia.",
             onboardingError: "يرجى اختيار العمر والجنس للمتابعة",
             startUsingBtn: "حفظ والمتابعة",
             fnamePlaceholder: "الاسم الأول",
@@ -996,10 +1080,10 @@
             openBtn: "فتح",
             aboutSub: "شريكك الذكي لإدارة ومراقبة ميزانيتك الشخصية بكل سهولة واحترافية.",
             overviewTitle: "فكرة المنصة والهدف",
-            overviewDesc: "صُممت منصة RiyalBA لمساعدة الأفراد على التحكم الكامل بحياتهم المالية عبر تحليل المصروفات، متابعة أهداف الادخار، وتقديم تقارير دقيقة.",
+            overviewDesc: "صُممت منصة Oikonomia لمساعدة الأفراد على التحكم الكامل بحياتهم المالية عبر تحليل المصروفات، متابعة أهداف الادخار، وتقديم تقارير دقيقة.",
             devTitle: "تم التطوير بواسطة",
             linkedinBtn: "🔗 حساب لينكد إن",
-            footerSub: "إدارة الأموال الذكية"
+            footerSub: "Monthly Financial Control"
         }
     };
 
@@ -1261,66 +1345,62 @@
         updateWhatsAppVerificationBadge(isCurrentVerified);
     }
     async function sendWhatsAppVerificationCode() {
-            if (profileLocked) return;
-            const statusEl = document.getElementById('wa-save-status');
-            const sendBtn = document.getElementById('send-wa-otp-btn');
-            const rawPhone = document.getElementById('edit-prof-phone').value.trim();
-            const phone = normalizeWhatsAppPhone(rawPhone);
-    
-            if (phone.length < 10) {
-                statusEl.style.display = 'block';
-                statusEl.style.color = 'var(--danger)';
-                statusEl.innerText = translations[currentLang].waPhoneRequired;
-                return;
-            }
-    
-            if (sendBtn) sendBtn.disabled = true;
+        if (profileLocked) return;
+        const statusEl = document.getElementById('wa-save-status');
+        const sendBtn = document.getElementById('send-wa-otp-btn');
+        const rawPhone = document.getElementById('edit-prof-phone').value.trim();
+        const phone = normalizeWhatsAppPhone(rawPhone);
+
+        if (phone.length < 10) {
             statusEl.style.display = 'block';
-            statusEl.style.color = 'var(--text-muted)';
-            statusEl.innerText = currentLang === 'ar' ? 'جاري إرسال رمز التحقق...' : 'Sending verification code...';
-    
-            try {
-                const response = await fetch(WHATSAPP_OTP_ENDPOINT, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        phone: phone,
-                        uid: firebaseUid || currentUser || 'anonymous'
-                    })
-                });
-    
-                const rawText = await response.text();
-                let data = null;
-                try {
-                    data = JSON.parse(rawText);
-                } catch (_) {
-                    data = { rawText };
-                }
-    
-                console.log('OTP HTTP Status:', response.status);
-                console.log('OTP Full Server Response:', JSON.stringify(data, null, 2));
-    
-                if (!response.ok || !data || data.ok === false) {
-                    throw new Error(JSON.stringify(data));
-                }
-    
-                pendingWaPhone = phone;
-                const otpBox = document.getElementById('wa-otp-input-box');
-                if (otpBox) otpBox.classList.remove('hidden');
-                const codeInput = document.getElementById('wa-otp-code-input');
-                if (codeInput) { codeInput.value = ''; codeInput.focus(); }
-    
-                statusEl.style.color = '#15803D';
-                statusEl.innerText = translations[currentLang].waOtpSentMsg;
-            } catch (err) {
-                console.error('Send OTP Full Error:', err.message || err);
-                statusEl.style.color = 'var(--danger)';
-                statusEl.innerText = translations[currentLang].waOtpSendFailedMsg;
-            } finally {
-                if (sendBtn) sendBtn.disabled = false;
-            }
+            statusEl.style.color = 'var(--danger)';
+            statusEl.innerText = translations[currentLang].waPhoneRequired;
+            return;
         }
-    
+
+        if (sendBtn) sendBtn.disabled = true;
+        statusEl.style.display = 'block';
+        statusEl.style.color = 'var(--text-muted)';
+        statusEl.innerText = currentLang === 'ar' ? 'جاري إرسال رمز التحقق...' : 'Sending verification code...';
+
+        try {
+            const response = await fetch(WHATSAPP_OTP_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    phone: phone,
+                    uid: firebaseUid || currentUser || 'anonymous'
+                })
+            });
+
+            const rawText = await response.text();
+            let data = null;
+            try {
+                data = JSON.parse(rawText);
+            } catch (_) {
+                data = { rawText };
+            }
+
+            if (!response.ok || !data || data.ok === false) {
+                throw new Error(JSON.stringify(data));
+            }
+
+            pendingWaPhone = phone;
+            const otpBox = document.getElementById('wa-otp-input-box');
+            if (otpBox) otpBox.classList.remove('hidden');
+            const codeInput = document.getElementById('wa-otp-code-input');
+            if (codeInput) { codeInput.value = ''; codeInput.focus(); }
+
+            statusEl.style.color = '#15803D';
+            statusEl.innerText = translations[currentLang].waOtpSentMsg;
+        } catch (err) {
+            console.error('Send OTP Full Error:', err.message || err);
+            statusEl.style.color = 'var(--danger)';
+            statusEl.innerText = translations[currentLang].waOtpSendFailedMsg;
+        } finally {
+            if (sendBtn) sendBtn.disabled = false;
+        }
+    }
 
     async function verifyWhatsAppCode() {
         if (profileLocked) return;
@@ -2027,9 +2107,27 @@
 
         sheet.innerHTML = `
             <div class="pdf-top-header">
-                <div class="pdf-symbol-only"></div>
+                <!-- سادساً: أقصى اليسار شعار 3 -->
+                <div class="pdf-logo-3-left">
+                    <svg viewBox="0 0 100 100" style="width: 36px; height: 36px;">
+                        <g transform="translate(50,50) rotate(-45) translate(-50,-50)" fill="none" stroke="#000000" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="44" y="10" width="12" height="78"/>
+                            <path d="M 44 10 L 16 10 L 22 19 L 44 19 Z"/>
+                            <path d="M 56 10 L 72 10 L 66 17 L 56 17 Z"/>
+                            <rect x="40" y="27" width="20" height="23" rx="2" fill="#FFFFFF"/>
+                            <rect x="45" y="31" width="10" height="15" rx="1"/>
+                            <path d="M 40 30 L 16 30 L 22 23 L 40 23 Z"/>
+                            <path d="M 60 30 L 72 30 L 66 24 L 60 24 Z"/>
+                            <line x1="48" y1="60" x2="54" y2="60"/>
+                            <line x1="48" y1="68" x2="54" y2="68"/>
+                            <line x1="48" y1="76" x2="54" y2="76"/>
+                            <line x1="49" y1="88" x2="49" y2="96"/>
+                        </g>
+                    </svg>
+                </div>
+                <!-- سابعاً: في الوسط شعار 2 -->
                 <div class="pdf-center-title">
-                    <h2>RiyalBA. - ${monthTitle}</h2>
+                    <h2 style="font-family: 'Inter', sans-serif; font-weight: 500; letter-spacing: -0.4px;">Oikonomia <span style="font-size:15px; font-weight:700; color:#4B5563;">— ${monthTitle}</span></h2>
                     <p>${translations[currentLang].aboutSub}</p>
                 </div>
                 <div class="pdf-user-name-only">${fullName}</div>
@@ -2096,7 +2194,7 @@
             </div>
 
             <div class="pdf-footer-bar">
-                <span>&copy; 2026 RiyalBA. All Rights Reserved.</span>
+                <span>&copy; 2026 Oikonomia. All Rights Reserved.</span>
             </div>
         `;
 
@@ -2160,7 +2258,7 @@
         const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
         pdf.addImage(imgData, 'JPEG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), undefined, 'FAST');
 
-        let safeFileName = `RiyalBA-${rendered.monthTitle.replace(/[^\w\u0600-\u06FF-]+/g, '_')}.pdf`;
+        let safeFileName = `Oikonomia-${rendered.monthTitle.replace(/[^\w\u0600-\u06FF-]+/g, '_')}.pdf`;
         return { pdf, safeFileName, monthTitle: rendered.monthTitle };
     }
 
@@ -2212,8 +2310,8 @@
 
             const pdfBase64 = artifact.pdf.output('datauristring').split(',')[1];
             const caption = currentLang === 'ar'
-                ? `تقريرك المالي لشهر ${artifact.monthTitle} من منصة RiyalBA`
-                : `Your RiyalBA financial report for ${artifact.monthTitle}`;
+                ? `تقريرك المالي لشهر ${artifact.monthTitle} من منصة Oikonomia`
+                : `Your Oikonomia financial report for ${artifact.monthTitle}`;
 
             const response = await fetch(WHATSAPP_API_ENDPOINT, {
                 method: 'POST',
