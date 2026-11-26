@@ -1,10 +1,9 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html dir="ltr" lang="en" id="html-root">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oikonomia</title>
-    <!-- 1. شعار 3 في التبويب العلوي -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg transform='translate(50,50) rotate(-45) translate(-50,-50)' fill='none' stroke='%23000000' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M 44 12 L 56 12 L 56 88 L 44 88 Z' fill='%23FFFFFF'/%3E%3Cpath d='M 44 12 L 16 12 L 22 21 L 44 21 Z' fill='%23FFFFFF'/%3E%3Cpath d='M 56 12 L 72 12 L 66 19 L 56 19 Z' fill='%23FFFFFF'/%3E%3Crect x='40' y='28' width='20' height='22' rx='2' fill='%23FFFFFF'/%3E%3Crect x='45' y='32' width='10' height='14' rx='1' fill='%23FFFFFF'/%3E%3Cpath d='M 40 31 L 16 31 L 22 24 L 40 24 Z' fill='%23FFFFFF'/%3E%3Cpath d='M 60 31 L 72 31 L 66 25 L 60 25 Z' fill='%23FFFFFF'/%3E%3Cline x1='48' y1='88' x2='48' y2='96'/%3E%3C/g%3E%3C/svg%3E">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -30,8 +29,8 @@
         body.lang-en { font-family: 'Inter', sans-serif; direction: ltr; text-align: left; }
         .hidden { display: none !important; }
         
-        .auth-container { background: url('pexels-brett-sayles-6937714.jpg') center/cover fixed; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 15px;}
-        .auth-card { background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px); padding: 32px 30px; border-radius: 20px; width: 100%; max-width: 430px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center; max-height: 95vh; overflow-y: auto;}
+        .auth-container { background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0047FF 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 15px;}
+        .auth-card { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(12px); padding: 32px 30px; border-radius: 20px; width: 100%; max-width: 430px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center; max-height: 95vh; overflow-y: auto;}
         
         .oikonomia-logo-1 {
             display: inline-flex;
@@ -202,6 +201,7 @@
         .card-manage-row input[type="color"] { width: 34px; height: 32px; padding: 2px; border: 1px solid var(--brand-gray); border-radius: 6px; cursor: pointer; background: white; }
         .card-manage-row input[type="color"]:disabled { cursor: not-allowed; opacity: 0.6; }
         .table-card-select { padding: 6px 10px; font-size: 13px; border-radius: 8px; border: 1px solid var(--brand-gray); background: var(--bg-light); font-weight: 700; min-width: 135px; cursor: pointer; }
+        .table-card-select:disabled { cursor: not-allowed; opacity: 0.92; }
 
         #progress-bars-container { max-height: 220px; overflow-y: auto; overflow-x: hidden; box-sizing: border-box; width: 100%; padding-inline-end: 4px; }
         .progress-item { margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px dashed #E5E7EB; display: flex; flex-direction: column; gap: 4px; width: 100%; max-width: 100%; box-sizing: border-box; }
@@ -232,6 +232,35 @@
         .btn-whatsapp:hover { background: #15803D; }
         .btn-delete-month { background: #FEE2E2; color: var(--danger); border: 1px solid #FCA5A5; width: auto; padding: 8px 14px; margin: 0; font-size: 13px; }
         .btn-delete-month:hover { background: var(--danger); color: #FFFFFF; }
+
+        .site-toast-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 13px 18px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            border: 1px solid transparent;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .site-toast-success {
+            background: #ECFDF5;
+            border-color: #6EE7B7;
+            color: #065F46;
+        }
+        .site-toast-error {
+            background: #FEF2F2;
+            border-color: #FCA5A5;
+            color: #991B1B;
+        }
+        .site-toast-info {
+            background: #EFF6FF;
+            border-color: #93C5FD;
+            color: #1E40AF;
+        }
 
         .whatsapp-setting-box {
             background: #F0FDF4;
@@ -313,7 +342,6 @@
             margin-bottom: 16px;
         }
 
-        /* لوحة تصدير PDF في صفحة واحدة فقط وعالية الوضوح */
         .pdf-export-stage {
             position: fixed;
             left: -5000px;
@@ -379,7 +407,6 @@
         .pdf-center-title h2 { margin: 0; font-size: 18px; font-weight: 600; color: #0F172A; line-height: 1.2; }
         .pdf-center-title p { margin: 2px 0 0; font-size: 10.5px; font-weight: 600; color: #475569; line-height: 1.2; }
 
-        /* القسم العلوي: 4 مؤشرات تحت بعض + أهداف الادخار + الرؤى السريعة */
         .pdf-hero-grid {
             display: grid;
             grid-template-columns: 0.92fr 1.08fr 1.12fr;
@@ -440,7 +467,6 @@
         .pdf-insight-row span:first-child { color: #334155; white-space: nowrap; }
         .pdf-insight-row span:last-child { color: #0F172A; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-        /* شبكة الرسوم البيانية داخل نفس الصفحة */
         .pdf-charts-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -604,7 +630,7 @@
                     </select>
                 </div>
             </div>
-            <div class="input-group"><input type="tel" id="onb-phone" data-i18n-placeholder="phoneIntlPlaceholder" dir="ltr"></div>
+            <div class="input-group"><input type="tel" id="onb-phone" inputmode="numeric" data-i18n-placeholder="phoneIntlPlaceholder" dir="ltr"></div>
             <div id="onb-error-msg" style="color: var(--danger); font-size: 12px; margin-bottom: 8px; display: none;" data-i18n="onboardingError">Please select your age and gender</div>
             <button onclick="completeGoogleOnboarding()" class="btn btn-primary" data-i18n="startUsingBtn">Save & Continue</button>
         </div>
@@ -651,7 +677,7 @@
                                 </div>
                                 <h3 id="kpi-income" style="color: var(--success);">0 SAR</h3>
                                 <div id="income-edit-box" class="hidden" style="margin-top: 6px;">
-                                    <input type="number" id="income-input-field" data-i18n-placeholder="incomePlaceholder" style="padding: 8px; font-size: 13px;">
+                                    <input type="number" id="income-input-field" inputmode="decimal" min="0" step="any" data-i18n-placeholder="incomePlaceholder" style="padding: 8px; font-size: 13px;">
                                     <button onclick="saveIncomeDirect()" class="btn btn-primary" style="padding:5px; margin-top:4px; font-size:12px;" data-i18n="saveBtn">Save</button>
                                 </div>
                             </div>
@@ -714,7 +740,7 @@
                         </div>
                         <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:700; margin-bottom:6px;"><span data-i18n="monthlyTarget">Monthly Savings Target</span><span id="goal-target-text">1,000 SAR</span></div>
                         <div id="goal-edit-box" class="hidden" style="margin-bottom: 10px;">
-                            <input type="number" id="goal-input-field" placeholder="Enter target">
+                            <input type="number" id="goal-input-field" inputmode="decimal" min="0" step="any" placeholder="Enter target">
                             <button onclick="saveGoalDirect()" class="btn btn-primary" style="padding:4px; font-size:12px; margin-top:4px;" data-i18n="saveBtn">Save</button>
                         </div>
                         <div style="background:var(--bg-light); height:10px; border-radius:5px; overflow:hidden; margin-bottom: 8px;"><div id="goal-progress-bar" style="background:var(--success); width:0%; height:100%; transition: width 0.3s ease;"></div></div>
@@ -743,7 +769,7 @@
                     <div id="add-card-box" style="background: var(--bg-light); padding: 15px; border-radius: 12px; border: 1px solid var(--brand-gray); margin-bottom: 15px;">
                         <div id="add-card-form-row" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
                             <input type="text" id="new-card-name" data-i18n-placeholder="cardNamePlaceholder" style="flex: 2; min-width: 160px; padding: 10px;">
-                            <input type="number" id="new-card-limit" data-i18n-placeholder="cardLimitPlaceholder" min="0" style="flex: 1; min-width: 140px; padding: 10px;">
+                            <input type="number" id="new-card-limit" inputmode="decimal" min="0" step="any" data-i18n-placeholder="cardLimitPlaceholder" style="flex: 1; min-width: 140px; padding: 10px;">
                             <button onclick="addNewCard()" id="save-new-card-btn" class="btn btn-primary" style="width: auto; padding: 10px 20px; margin: 0;" data-i18n="saveCardBtn">Add</button>
                         </div>
                         <div id="cards-locked-note" class="hidden" style="margin-top: 8px; font-size: 12px; font-weight: 700; color: var(--text-muted);" data-i18n="cardsLockedNote">Cards are locked. Click Edit Data to add or edit cards.</div>
@@ -776,7 +802,7 @@
                     <h3 style="margin-top:0; margin-bottom:12px;" data-i18n="manageCardsTitle">Manage Cards</h3>
                     <div id="edit-page-card-form-row" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
                         <input type="text" id="edit-new-card-name" data-i18n-placeholder="cardNamePlaceholder" style="flex: 2; min-width: 160px; padding: 10px;">
-                        <input type="number" id="edit-new-card-limit" data-i18n-placeholder="cardLimitPlaceholder" min="0" style="flex: 1; min-width: 140px; padding: 10px;">
+                        <input type="number" id="edit-new-card-limit" inputmode="decimal" min="0" step="any" data-i18n-placeholder="cardLimitPlaceholder" style="flex: 1; min-width: 140px; padding: 10px;">
                         <button onclick="addNewCardFromEditPage()" class="btn btn-primary" style="width: auto; padding: 10px 20px; margin: 0;" data-i18n="saveCardBtn">Add</button>
                     </div>
                     <div id="edit-cards-manage-list" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px;"></div>
@@ -823,7 +849,7 @@
                     </div>
 
                     <div id="profile-lock-banner" class="profile-lock-banner">
-                        <span data-i18n="profileLockedNotice"> Profile fields are locked. Click Edit Profile to modify.</span>
+                        <span data-i18n="profileLockedNotice">🔒 Profile fields are locked. Click Edit Profile to modify.</span>
                     </div>
 
                     <div style="display: flex; flex-direction: column; gap: 15px; background: var(--bg-light); padding: 20px; border-radius: 12px; margin-bottom: 25px;">
@@ -841,17 +867,17 @@
                             <div>
                                 <strong data-i18n="phoneLabel">Phone Number (WhatsApp)</strong>
                                 <div style="display:flex; gap:8px; margin-top:6px; flex-wrap:wrap;">
-                                    <input type="tel" id="edit-prof-phone" placeholder="9665XXXXXXXX" dir="ltr" disabled style="flex:1; min-width:180px;" oninput="onWhatsAppPhoneInputChange()">
+                                    <input type="tel" id="edit-prof-phone" inputmode="numeric" placeholder="9665XXXXXXXX" dir="ltr" disabled style="flex:1; min-width:180px;" oninput="onWhatsAppPhoneInputChange()">
                                     <button id="send-wa-otp-btn" type="button" onclick="sendWhatsAppVerificationCode()" class="btn btn-whatsapp" style="padding:10px 14px;" disabled data-i18n="sendOtpBtn">Send Code</button>
                                 </div>
                             </div>
 
-                            <div id="wa-otp-status-badge" class="otp-status-badge otp-unverified" data-i18n="waNotVerified">Not Verified</div>
+                            <div id="wa-otp-status-badge" class="otp-status-badge otp-unverified" data-i18n="waNotVerified">⚠️ WhatsApp Number Not Verified</div>
 
                             <div id="wa-otp-input-box" class="otp-verify-box hidden">
                                 <label style="font-size:12px; font-weight:700; color:#166534;" data-i18n="enterOtpLabel">Enter 6-digit WhatsApp verification code:</label>
                                 <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                                    <input type="text" id="wa-otp-code-input" maxlength="6" placeholder="123456" dir="ltr" style="flex:1; min-width:140px; letter-spacing:4px; font-weight:800; text-align:center;">
+                                    <input type="text" id="wa-otp-code-input" inputmode="numeric" maxlength="6" placeholder="123456" dir="ltr" style="flex:1; min-width:140px; letter-spacing:4px; font-weight:800; text-align:center;">
                                     <button id="verify-wa-otp-btn" type="button" onclick="verifyWhatsAppCode()" class="btn btn-primary" style="width:auto; margin:0; padding:10px 16px;" data-i18n="verifyOtpBtn">Verify</button>
                                 </div>
                             </div>
@@ -896,6 +922,10 @@
                         <h2 style="margin: 0;" data-i18n="historyTitle">Monthly History</h2>
                         <p style="margin: 4px 0 0; font-size: 13px; color: var(--text-muted);" data-i18n="autoHistoryHint">Months added or updated in Dashboard are saved here automatically.</p>
                     </div>
+                </div>
+                <div id="history-status-banner" class="site-toast-banner hidden" role="status">
+                    <span id="history-status-text"></span>
+                    <button type="button" onclick="hideHistoryStatusBanner()" class="action-btn" style="font-size:14px; font-weight:800; color:inherit;">✕</button>
                 </div>
                 <div class="card" id="history-container" style="background: transparent; border: none; box-shadow: none; padding: 0;"></div>
             </div>
@@ -1086,6 +1116,9 @@
             waDayPrefix: "Day",
             waSavedMsg: "Saved & locked! Settings synced to your Google account.",
             waPhoneRequired: "Please enter a valid WhatsApp number with country code (e.g. 9665XXXXXXXX).",
+            waReportSentSuccess: "✅ PDF report sent to your WhatsApp successfully!",
+            waReportSentFailed: "❌ Failed to send PDF report via WhatsApp. Please verify your number or server connection.",
+            waReportNeedVerify: "⚠️ Please verify your WhatsApp number in My Profile first before sending reports.",
             saveChangesBtn: "Save Changes",
             logoutBtn: "Logout",
             historyTitle: "Monthly History",
@@ -1209,6 +1242,9 @@
             waDayPrefix: "يوم",
             waSavedMsg: "تم الحفظ وقفل التعديل ومزامنة البيانات مع حسابك في Google!",
             waPhoneRequired: "يرجى إدخال رقم واتساب صحيح مع رمز الدولة (مثال: 9665XXXXXXXX).",
+            waReportSentSuccess: "✅ تم إرسال ملف تقرير PDF إلى الواتساب بنجاح!",
+            waReportSentFailed: "❌ تعذّر إرسال تقرير PDF على الواتساب، تأكد من الرقم واتصال السيرفر.",
+            waReportNeedVerify: "⚠️ يرجى تأكيد رقم الواتساب في الملف الشخصي أولاً قبل إرسال التقرير.",
             saveChangesBtn: "حفظ التعديلات",
             logoutBtn: "تسجيل الخروج",
             historyTitle: "سجل الأشهر",
@@ -1254,7 +1290,6 @@
         return list;
     }
 
-    // مدة الخمول التلقائي: 8 دقائق بالضبط (480,000 مللي ثانية)
     const AUTO_LOGOUT_IDLE_MS = 8 * 60 * 1000;
     const LAST_ACTIVE_STORAGE_KEY = 'RiyalBA_lastActiveAt';
 
@@ -1277,18 +1312,66 @@
     let donutChart = null, barChart = null, lineDaily = null, lineHistory = null, gaugeChart = null, cardSpendingChart = null, efficiencyChart = null;
     let pdfChartsInstances = [];
 
-    function clearUserLocalCache(userKey) {
-        try {
-            let cachedUsers = JSON.parse(localStorage.getItem('RiyalBA_users') || '{}');
-            let cachedMonths = JSON.parse(localStorage.getItem('RiyalBA_months') || '{}');
-            if (userKey && cachedUsers[userKey]) delete cachedUsers[userKey];
-            for (let id in cachedMonths) {
-                if (!userKey || (cachedMonths[id] && cachedMonths[id].userId === userKey)) {
-                    delete cachedMonths[id];
+    function enforceNumericOnlyInputs() {
+        document.addEventListener('keydown', function(e) {
+            const el = e.target;
+            if (!el || el.tagName !== 'INPUT') return;
+            const isNumberInput = el.type === 'number' || el.id === 'wa-otp-code-input' || el.id === 'edit-prof-phone' || el.id === 'onb-phone';
+            if (!isNumberInput) return;
+
+            if (e.ctrlKey || e.metaKey || e.altKey) return;
+            const allowedControlKeys = ['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
+            if (allowedControlKeys.includes(e.key)) return;
+
+            const allowDecimal = el.type === 'number' && el.step === 'any';
+            if (allowDecimal && e.key === '.' && !String(el.value).includes('.')) return;
+
+            if (!/^[0-9]$/.test(e.key)) {
+                e.preventDefault();
+            }
+        });
+
+        document.addEventListener('input', function(e) {
+            const el = e.target;
+            if (!el || el.tagName !== 'INPUT') return;
+            if (el.id === 'wa-otp-code-input' || el.id === 'edit-prof-phone' || el.id === 'onb-phone') {
+                el.value = el.value.replace(/\D/g, '');
+            } else if (el.type === 'number') {
+                const allowDecimal = el.step === 'any';
+                if (allowDecimal) {
+                    let cleaned = el.value.replace(/[^0-9.]/g, '');
+                    const parts = cleaned.split('.');
+                    if (parts.length > 2) cleaned = parts[0] + '.' + parts.slice(1).join('');
+                    if (el.value !== cleaned) el.value = cleaned;
+                } else {
+                    const cleaned = el.value.replace(/\D/g, '');
+                    if (el.value !== cleaned) el.value = cleaned;
                 }
             }
-            localStorage.setItem('RiyalBA_users', JSON.stringify(cachedUsers));
-            localStorage.setItem('RiyalBA_months', JSON.stringify(cachedMonths));
+        });
+    }
+
+    function showHistoryStatusBanner(message, type = 'info') {
+        const banner = document.getElementById('history-status-banner');
+        const textEl = document.getElementById('history-status-text');
+        if (!banner || !textEl) return;
+        banner.className = 'site-toast-banner ' + (
+            type === 'success' ? 'site-toast-success' :
+            type === 'error' ? 'site-toast-error' :
+            'site-toast-info'
+        );
+        textEl.innerText = message;
+    }
+
+    function hideHistoryStatusBanner() {
+        const banner = document.getElementById('history-status-banner');
+        if (banner) banner.classList.add('hidden');
+    }
+
+    function clearUserLocalCache() {
+        try {
+            localStorage.removeItem('RiyalBA_users');
+            localStorage.removeItem('RiyalBA_months');
             localStorage.removeItem('RiyalBA_currentUser');
             localStorage.removeItem(LAST_ACTIVE_STORAGE_KEY);
         } catch (e) {}
@@ -1352,7 +1435,7 @@
         if (!currentUser && !firebaseUid) return;
         autoLoggedOutOnIdle = true;
         stopIdleSecurityMonitor();
-        clearUserLocalCache(currentUser);
+        clearUserLocalCache();
         currentUser = null;
         firebaseUid = null;
         pendingGoogleUser = null;
@@ -1409,7 +1492,11 @@
     });
 
     function hasValidDemographics(prof) {
-        return Boolean(prof && prof.age && String(prof.age).trim() !== '' && (prof.gender === 'male' || prof.gender === 'female'));
+        if (!prof) return false;
+        const ageNum = parseInt(String(prof.age || '').trim(), 10);
+        const validAge = !isNaN(ageNum) && ageNum >= 12 && ageNum <= 80;
+        const validGender = prof.gender === 'male' || prof.gender === 'female';
+        return validAge && validGender;
     }
 
     window.addEventListener('riyalba:ready', async function(e) {
@@ -1417,17 +1504,17 @@
         const { user, cloudData } = e.detail || {};
         if (!user) return;
 
-        // فحص إذا كان آخر نشاط للمستخدم قبل أكثر من 8 دقائق (مثلاً أغلق المتصفح ورجع)
         const savedLast = Number(localStorage.getItem(LAST_ACTIVE_STORAGE_KEY) || 0);
         if (savedLast > 0 && (Date.now() - savedLast) >= AUTO_LOGOUT_IDLE_MS) {
             autoLoggedOutOnIdle = true;
-            clearUserLocalCache(user.email || user.uid);
+            clearUserLocalCache();
             if (window.riyalbaAuth && typeof window.riyalbaAuth.logoutGmail === 'function') {
                 try { await window.riyalbaAuth.logoutGmail(); } catch (_) {}
             }
             return;
         }
 
+        clearUserLocalCache();
         firebaseUid = user.uid;
         currentUser = user.email || user.uid;
         resetIdleLogoutTimer(true);
@@ -1439,8 +1526,6 @@
         const cloudProf = (cloudData && cloudData.profile) ? cloudData.profile : null;
 
         if (!cloudData || !hasValidDemographics(cloudProf)) {
-            clearUserLocalCache(currentUser);
-            resetIdleLogoutTimer(true);
             pendingGoogleUser = {
                 uid: user.uid,
                 email: user.email || '',
@@ -1455,6 +1540,8 @@
             document.getElementById('onboarding-form').classList.remove('hidden');
             document.getElementById('onb-fname').value = pendingGoogleUser.fname;
             document.getElementById('onb-lname').value = pendingGoogleUser.lname;
+            document.getElementById('onb-age').value = '';
+            document.getElementById('onb-gender').value = '';
             return;
         }
 
@@ -1464,7 +1551,6 @@
                 monthsDB[id] = { ...cloudData.months[id], userId: currentUser };
             }
         }
-        localStorage.setItem('RiyalBA_months', JSON.stringify(monthsDB));
 
         const normalizedPhone = normalizeWhatsAppPhone(cloudProf.phone || '');
         const mergedProf = {
@@ -1481,15 +1567,13 @@
             profileCompleted: true
         };
         users = { [currentUser]: mergedProf };
-        localStorage.setItem('RiyalBA_users', JSON.stringify(users));
-        localStorage.setItem('RiyalBA_currentUser', currentUser);
         profileLocked = true;
         initApp();
     });
 
     window.addEventListener('riyalba:signed-out', function() {
         stopIdleSecurityMonitor();
-        clearUserLocalCache(currentUser);
+        clearUserLocalCache();
         firebaseUid = null;
         pendingGoogleUser = null;
         currentUser = null;
@@ -1507,7 +1591,7 @@
         let phone = normalizeWhatsAppPhone(document.getElementById('onb-phone').value.trim());
         let errEl = document.getElementById('onb-error-msg');
 
-        if (!fname || !age || !gender) {
+        if (!fname || !age || (gender !== 'male' && gender !== 'female')) {
             errEl.style.display = 'block';
             return;
         }
@@ -1516,7 +1600,6 @@
         let email = pendingGoogleUser ? pendingGoogleUser.email : currentUser;
         let photo = pendingGoogleUser ? pendingGoogleUser.photo : null;
         currentUser = email || currentUser;
-        localStorage.setItem('RiyalBA_currentUser', currentUser);
         resetIdleLogoutTimer(true);
 
         users = {
@@ -1540,8 +1623,6 @@
             }
         };
         monthsDB = {};
-        localStorage.setItem('RiyalBA_users', JSON.stringify(users));
-        localStorage.setItem('RiyalBA_months', JSON.stringify(monthsDB));
         profileLocked = true;
         pushStateToCloud();
         initApp();
@@ -1581,6 +1662,21 @@
         badge.innerText = isVerified ? translations[currentLang].waVerified : translations[currentLang].waNotVerified;
     }
 
+    function syncSendOtpButtonVisibility() {
+        const sendOtpBtn = document.getElementById('send-wa-otp-btn');
+        if (!sendOtpBtn) return;
+        const uData = users[currentUser] || {};
+        const currentInputPhone = normalizeWhatsAppPhone(document.getElementById('edit-prof-phone')?.value.trim() || uData.phone || '');
+        const isCurrentVerified = Boolean(currentInputPhone && uData.waPhoneVerified && uData.verifiedPhone === currentInputPhone);
+
+        if (isCurrentVerified) {
+            sendOtpBtn.classList.add('hidden');
+        } else {
+            sendOtpBtn.classList.remove('hidden');
+            sendOtpBtn.disabled = profileLocked;
+        }
+    }
+
     function onWhatsAppPhoneInputChange() {
         if (profileLocked) return;
         const uData = users[currentUser] || {};
@@ -1588,9 +1684,9 @@
         const isCurrentVerified = Boolean(currentInputPhone && uData.waPhoneVerified && uData.verifiedPhone === currentInputPhone);
         pendingWaPhone = '';
         updateWhatsAppVerificationBadge(isCurrentVerified);
+        syncSendOtpButtonVisibility();
     }
 
-    
     async function verifyWhatsAppCode() {
         if (profileLocked) return;
         const statusEl = document.getElementById('wa-save-status');
@@ -1628,12 +1724,13 @@
             uData.verifiedPhone = currentPhone;
             uData.waPhoneVerified = true;
             pendingWaPhone = '';
-            localStorage.setItem('RiyalBA_users', JSON.stringify(users));
             pushStateToCloud();
 
             const otpBox = document.getElementById('wa-otp-input-box');
             if (otpBox) otpBox.classList.add('hidden');
             updateWhatsAppVerificationBadge(true);
+            syncSendOtpButtonVisibility();
+
             statusEl.style.display = 'block';
             statusEl.style.color = '#15803D';
             statusEl.innerText = translations[currentLang].waVerified;
@@ -1655,6 +1752,8 @@
 
     window.onload = function() {
         document.title = 'Oikonomia';
+        clearUserLocalCache();
+        enforceNumericOnlyInputs();
         applyLanguage(currentLang);
         populateAgeDropdowns();
         populateWaScheduleDayDropdown();
@@ -1673,6 +1772,7 @@
         if (currentUser && users[currentUser]) {
             const p = normalizeWhatsAppPhone(document.getElementById('edit-prof-phone')?.value || users[currentUser].phone || '');
             updateWhatsAppVerificationBadge(Boolean(p && users[currentUser].waPhoneVerified && users[currentUser].verifiedPhone === p));
+            syncSendOtpButtonVisibility();
         }
         updateDashboardDate();
         loadHistory();
@@ -1719,7 +1819,6 @@
     }
 
     function syncMonthsDB() {
-        localStorage.setItem('RiyalBA_months', JSON.stringify(monthsDB));
         pushStateToCloud();
         if (document.getElementById('page-history')?.classList.contains('active')) {
             loadHistory();
@@ -1778,7 +1877,7 @@
     async function logout() {
         stopIdleSecurityMonitor();
         autoLoggedOutOnIdle = true;
-        clearUserLocalCache(currentUser);
+        clearUserLocalCache();
         try {
             if (window.riyalbaAuth) await window.riyalbaAuth.logoutGmail();
         } catch (err) {
@@ -1802,9 +1901,7 @@
         });
 
         toggleWaScheduleFields();
-
-        const sendOtpBtn = document.getElementById('send-wa-otp-btn');
-        if (sendOtpBtn) sendOtpBtn.disabled = profileLocked;
+        syncSendOtpButtonVisibility();
 
         const otpBox = document.getElementById('wa-otp-input-box');
         if (otpBox && profileLocked) otpBox.classList.add('hidden');
@@ -1886,7 +1983,6 @@
             let reader = new FileReader();
             reader.onload = function(e) {
                 users[currentUser].photo = e.target.result;
-                localStorage.setItem('RiyalBA_users', JSON.stringify(users));
                 pushStateToCloud();
                 loadUserProfile();
             };
@@ -1942,7 +2038,6 @@
         uData.waAutoTime = waTime;
         uData.waTimezoneOffset = new Date().getTimezoneOffset();
         uData.profileCompleted = true;
-        localStorage.setItem('RiyalBA_users', JSON.stringify(users));
         pushStateToCloud();
 
         profileLocked = true;
@@ -1964,7 +2059,6 @@
         let val = parseFloat(document.getElementById('income-input-field').value);
         if(isNaN(val) || val <= 0) return;
         users[currentUser].customIncome = val;
-        localStorage.setItem('RiyalBA_users', JSON.stringify(users));
         document.getElementById('income-edit-box').classList.add('hidden');
         calc();
         syncMonthsDB();
@@ -1983,7 +2077,6 @@
         let val = parseFloat(document.getElementById('goal-input-field').value);
         if(isNaN(val) || val < 0) return;
         users[currentUser].customGoal = val;
-        localStorage.setItem('RiyalBA_users', JSON.stringify(users));
         document.getElementById('goal-edit-box').classList.add('hidden');
         calc();
         syncMonthsDB();
@@ -2003,6 +2096,7 @@
         if (editPageFormRow) editPageFormRow.classList.toggle('hidden', cardsLocked);
         if (lockedNote) lockedNote.classList.toggle('hidden', !cardsLocked);
         renderCardsManageList();
+        renderTableReadonly();
     }
 
     function unlockCardsAndEditData() {
@@ -2023,17 +2117,14 @@
         let m = monthsDB[monthId];
         if (!m) return [];
         if (!m.cards) m.cards = [];
-        let changed = false;
         let used = m.cards.map(c => c.color).filter(Boolean);
         m.cards.forEach(c => {
             if (!c.color) {
                 let col = getRandomCardColor(used);
                 c.color = col;
                 used.push(col);
-                changed = true;
             }
         });
-        if (changed) localStorage.setItem('RiyalBA_months', JSON.stringify(monthsDB));
         return m.cards;
     }
 
@@ -2127,7 +2218,7 @@
                 <div class="card-manage-row" style="border-inline-start: 4px solid ${c.color};">
                     <input type="color" id="${colorId}" value="${c.color}" title="Color" ${disabledAttr}>
                     <input type="text" id="${nameId}" value="${c.name}" ${disabledAttr}>
-                    <input type="number" id="${limitId}" value="${c.limit}" min="0" ${disabledAttr}>
+                    <input type="number" id="${limitId}" inputmode="decimal" step="any" value="${c.limit}" min="0" ${disabledAttr}>
                     ${actionButtons}
                 </div>
             `;
@@ -2142,6 +2233,7 @@
     }
 
     function updateExpenseCardInDashboard(expIndex, cardId) {
+        if (cardsLocked) return;
         let m = monthsDB[currentMonthId];
         if (m.expenses[expIndex]) {
             m.expenses[expIndex].cardId = cardId;
@@ -2166,6 +2258,7 @@
             applyCardsLockUI();
             renderTableEdit();
         } else if (pageId === 'history') {
+            hideHistoryStatusBanner();
             ensureCurrentDashboardMonthAutoSaved();
             loadHistory();
         } else if (pageId === 'profile') {
@@ -2620,20 +2713,24 @@
         }
     }
 
-   
-
     async function sendMonthPdfToWhatsApp(monthId) {
         let uData = users[currentUser] || {};
         let phone = normalizeWhatsAppPhone(uData.phone || '');
         if (phone.length < 10) {
-            alert(translations[currentLang].waPhoneRequired);
-            navigate('profile');
-            unlockProfileEditing();
+            showHistoryStatusBanner(translations[currentLang].waPhoneRequired, 'error');
+            return;
+        }
+        if (!uData.waPhoneVerified || uData.verifiedPhone !== phone) {
+            showHistoryStatusBanner(translations[currentLang].waReportNeedVerify, 'error');
             return;
         }
 
         let btn = document.getElementById(`wa-btn-${monthId}`);
         if (btn) { btn.disabled = true; btn.innerText = translations[currentLang].waSending; }
+        showHistoryStatusBanner(
+            currentLang === 'ar' ? 'جاري تجهيز وإرسال تقرير PDF إلى واتساب...' : 'Generating and sending PDF report to WhatsApp...',
+            'info'
+        );
 
         const resetBtn = () => {
             destroyPdfCharts();
@@ -2642,10 +2739,14 @@
 
         try {
             await dispatchMonthPdfToWhatsApp(monthId, phone);
-            alert(currentLang === 'ar' ? 'تم إرسال ملف PDF إلى واتساب بنجاح!' : 'PDF report sent to WhatsApp successfully!');
+            showHistoryStatusBanner(translations[currentLang].waReportSentSuccess, 'success');
         } catch (err) {
-            console.error('WhatsApp Report Send Error:', err.message || err);
-            alert(currentLang === 'ar' ? 'تعذّر إرسال التقرير عبر الواتساب، تأكد من اتصال السيرفر.' : 'Failed to send PDF report via WhatsApp.');
+            const detail = err?.message || '';
+            console.error('WhatsApp Report Send Error:', detail);
+            showHistoryStatusBanner(
+                detail ? `${translations[currentLang].waReportSentFailed} (${detail})` : translations[currentLang].waReportSentFailed,
+                'error'
+            );
         } finally {
             resetBtn();
         }
@@ -2655,7 +2756,7 @@
         if (profileLocked) return;
         const statusEl = document.getElementById('wa-save-status');
         const sendBtn = document.getElementById('send-wa-otp-btn');
-        const rawPhone = document.getElementById('edit-prof-phone').value.trim();
+        const rawPhone = document.getElementById('edit-prof-phone')?.value.trim() || '';
         const phone = normalizeWhatsAppPhone(rawPhone);
 
         if (phone.length < 10) {
@@ -2685,8 +2786,9 @@
             try { data = JSON.parse(rawText); } catch (_) { data = { rawText }; }
 
             if (!response.ok || !data || data.ok !== true) {
+                const serverMsg = data?.error || data?.message || data?.rawText || `HTTP ${response.status}`;
                 console.error('OTP Server Rejected:', response.status, data);
-                throw new Error(JSON.stringify(data));
+                throw new Error(typeof serverMsg === 'string' ? serverMsg : JSON.stringify(serverMsg));
             }
 
             pendingWaPhone = phone;
@@ -2698,9 +2800,10 @@
             statusEl.style.color = '#15803D';
             statusEl.innerText = translations[currentLang].waOtpSentMsg;
         } catch (err) {
-            console.error('Send OTP Error Detail:', err.message || err);
+            const detail = err?.message || String(err);
+            console.error('Send OTP Error Detail:', detail);
             statusEl.style.color = 'var(--danger)';
-            statusEl.innerText = translations[currentLang].waOtpSendFailedMsg;
+            statusEl.innerText = `${translations[currentLang].waOtpSendFailedMsg} (${detail})`;
         } finally {
             if (sendBtn) sendBtn.disabled = false;
         }
@@ -2708,9 +2811,12 @@
 
     async function dispatchMonthPdfToWhatsApp(monthId, phone) {
         const artifact = await buildMonthPdfArtifact(monthId);
-        if (!artifact) throw new Error('Failed to generate PDF');
+        if (!artifact || !artifact.pdf) throw new Error('Failed to generate PDF');
 
-        const pdfBase64 = artifact.pdf.output('datauristring').split(',')[1];
+        const dataUri = artifact.pdf.output('datauristring');
+        const pdfBase64 = typeof dataUri === 'string' && dataUri.includes(',') ? dataUri.split(',')[1] : '';
+        if (!pdfBase64) throw new Error('Empty PDF data');
+
         const caption = currentLang === 'ar'
             ? `تقريرك المالي لشهر ${artifact.monthTitle} من منصة Oikonomia`
             : `Your Oikonomia financial report for ${artifact.monthTitle}`;
@@ -2719,7 +2825,7 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                phone: phone,
+                phone: normalizeWhatsAppPhone(phone),
                 uid: firebaseUid || currentUser || 'anonymous',
                 fileName: artifact.safeFileName,
                 caption: caption,
@@ -2732,8 +2838,9 @@
         try { resData = JSON.parse(rawText); } catch (_) { resData = { rawText }; }
 
         if (!response.ok || !resData || resData.ok !== true) {
+            const serverMsg = resData?.error || resData?.message || resData?.rawText || `HTTP ${response.status}`;
             console.error('WhatsApp Report Rejected:', response.status, resData);
-            throw new Error(JSON.stringify(resData));
+            throw new Error(typeof serverMsg === 'string' ? serverMsg : JSON.stringify(serverMsg));
         }
         return resData;
     }
@@ -2769,10 +2876,9 @@
         try {
             await dispatchMonthPdfToWhatsApp(currentMonthId, phone);
             uData.waLastAutoSentMonth = monthKey;
-            localStorage.setItem('RiyalBA_users', JSON.stringify(users));
             pushStateToCloud();
         } catch (err) {
-            console.error('Scheduled Monthly WhatsApp Report Error:', err.message || err);
+            console.error('Scheduled Monthly WhatsApp Report Error:', err?.message || err);
         } finally {
             destroyPdfCharts();
             isSendingAutoWaReport = false;
@@ -2796,16 +2902,17 @@
         navigate('dashboard');
     }
 
-    function buildCardSelectHTML(selectedCardId, onchangeHandler) {
+    function buildCardSelectHTML(selectedCardId, onchangeHandler, isDisabled = false) {
         let cards = getMonthCards();
         let selectedCard = cards.find(c => c.id === selectedCardId);
         let styleAttr = selectedCard ? `background:${selectedCard.color}; color:#FFFFFF; border-color:${selectedCard.color};` : '';
+        let disabledAttr = isDisabled ? 'disabled' : '';
         let options = `<option value="" style="background:#FFFFFF; color:#111827;">${translations[currentLang].selectCardDefault}</option>`;
         cards.forEach(c => {
             let sel = (selectedCardId === c.id) ? 'selected' : '';
             options += `<option value="${c.id}" ${sel} style="background:#FFFFFF; color:#111827;">${c.name}</option>`;
         });
-        return `<select class="table-card-select" style="${styleAttr}" onchange="${onchangeHandler}">${options}</select>`;
+        return `<select class="table-card-select" style="${styleAttr}" ${disabledAttr} onchange="${onchangeHandler}">${options}</select>`;
     }
 
     function renderTableReadonly() {
@@ -2816,7 +2923,7 @@
         m.expenses.forEach((ex, i) => {
             if(!ex.cat && ex.p === '' && ex.a === '') return;
             let rem = (parseFloat(ex.p)||0) - (parseFloat(ex.a)||0);
-            let cardSelect = buildCardSelectHTML(ex.cardId || '', `updateExpenseCardInDashboard(${i}, this.value); renderTableReadonly();`);
+            let cardSelect = buildCardSelectHTML(ex.cardId || '', `updateExpenseCardInDashboard(${i}, this.value); renderTableReadonly();`, cardsLocked);
             tbody.innerHTML += `
                 <tr>
                     <td>${ex.cat || '-'}</td>
@@ -2845,8 +2952,8 @@
             tbody.innerHTML += `
                 <tr>
                     <td><input type="text" id="c_${i}" value="${ex.cat || ''}"></td>
-                    <td><input type="number" id="p_${i}" value="${ex.p}" min="0" oninput="calcEditRow(${i})"></td>
-                    <td><input type="number" id="a_${i}" value="${ex.a}" min="0" oninput="calcEditRow(${i})"></td>
+                    <td><input type="number" id="p_${i}" inputmode="decimal" step="any" value="${ex.p}" min="0" oninput="calcEditRow(${i})"></td>
+                    <td><input type="number" id="a_${i}" inputmode="decimal" step="any" value="${ex.a}" min="0" oninput="calcEditRow(${i})"></td>
                     <td><select id="card_${i}" class="table-card-select">${cardOptions}</select></td>
                     <td id="r_${i}">${rem}</td>
                     <td><button onclick="deleteRow(${i})" class="action-btn">🗑️</button></td>
