@@ -2337,8 +2337,8 @@
                     <div class="pdf-canvas-box"><canvas id="pdfDonutCanvas"></canvas></div>
                 </div>
                 <div class="pdf-panel">
-                    <h5>${translations[currentLang].chartGauge}</h5>
-                    <div class="pdf-canvas-box"><canvas id="pdfGaugeCanvas"></canvas></div>
+                    <h5>${translations[currentLang].chartEfficiency}</h5>
+                    <div class="pdf-canvas-box"><canvas id="pdfEfficiencyCanvas"></canvas></div>
                 </div>
                 <div class="pdf-panel">
                     <h5>${translations[currentLang].chartByCard}</h5>
@@ -2382,18 +2382,40 @@
             options: { responsive: true, maintainAspectRatio: false, devicePixelRatio: highDpr, animation: false, plugins: { legend: { display: true, position: 'right', labels: { boxWidth: 9, padding: 5, color: '#0F172A', font: { size: 9, weight: 'bold' } } } } }
         }));
 
-        pdfChartsInstances.push(new Chart(document.getElementById('pdfGaugeCanvas').getContext('2d'), {
-            type: 'doughnut',
+        let effData = data.pData.map((p, idx) => p > 0 ? Math.min(100, Math.max(0, Math.round((data.aData[idx] / p) * 100))) : 0);
+        pdfChartsInstances.push(new Chart(document.getElementById('pdfEfficiencyCanvas').getContext('2d'), {
+            type: 'radar',
             data: {
-                labels: [translations[currentLang].actualSpending, translations[currentLang].remainingFromPlanned],
+                labels: data.cats,
                 datasets: [{
-                    data: (data.tp === 0 && data.ta === 0) ? [0, 1] : [data.ta, Math.max(0, data.tp - data.ta)],
-                    backgroundColor: ['#EF4444', '#06B6D4'],
-                    borderColor: '#FFFFFF',
-                    borderWidth: 2
+                    label: translations[currentLang].chartConsumptionRate,
+                    data: effData,
+                    backgroundColor: 'rgba(20, 184, 166, 0.22)',
+                    borderColor: '#14B8A6',
+                    borderWidth: 2,
+                    pointBackgroundColor: getDistinctPalette(effData.length, 13),
+                    pointBorderColor: '#FFFFFF',
+                    pointBorderWidth: 1.5,
+                    pointRadius: 3.5
                 }]
             },
-            options: { responsive: true, maintainAspectRatio: false, devicePixelRatio: highDpr, animation: false, rotation: -90, circumference: 180, cutout: '76%', plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth: 9, padding: 5, color: '#0F172A', font: { size: 9, weight: 'bold' } } } } }
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                devicePixelRatio: highDpr,
+                animation: false,
+                plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 9, padding: 5, color: '#0F172A', font: { size: 9, weight: 'bold' } } } },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { stepSize: 25, display: false },
+                        grid: { color: '#CBD5E1' },
+                        angleLines: { color: '#E2E8F0' },
+                        pointLabels: { color: '#0F172A', font: { size: 8.5, weight: 'bold' } }
+                    }
+                }
+            }
         }));
 
         let hasCardValues = data.cardSpendLabels.length > 0;
