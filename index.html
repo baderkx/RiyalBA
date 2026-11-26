@@ -308,53 +308,67 @@
             background: #FFFFFF;
             width: 1122px;
             height: 793px;
-            padding: 10px 16px;
+            padding: 9px 14px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 4px;
+            gap: 5px;
             overflow: hidden;
             font-family: 'Inter', 'Cairo', sans-serif;
         }
-        /* تمت إزالة الخط السفلي/العلوي الفاصل من رأس تقرير PDF */
         .pdf-top-header {
             display: grid;
             grid-template-columns: auto 1fr auto;
             align-items: center;
-            margin-top: 6px;
-            padding-bottom: 8px;
-            gap: 14px;
+            margin-top: 2px;
+            padding-bottom: 4px;
+            gap: 12px;
             flex-shrink: 0;
         }
         .pdf-logo-3-left {
-            width: 38px;
-            height: 38px;
+            width: 34px;
+            height: 34px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
         }
-        .pdf-user-name-only { justify-self: end; font-size: 14.5px; font-weight: 800; color: #111827; white-space: nowrap; }
+        .pdf-user-name-only { justify-self: end; font-size: 13.5px; font-weight: 800; color: #111827; white-space: nowrap; }
         .pdf-center-title { text-align: center; }
-        .pdf-center-title h2 { margin: 0; font-size: 19px; font-weight: 600; color: #111827; line-height: 1.25; }
-        .pdf-center-title p { margin: 3px 0 0; font-size: 11px; font-weight: 600; color: #4B5563; line-height: 1.2; }
+        .pdf-center-title h2 { margin: 0; font-size: 17.5px; font-weight: 600; color: #111827; line-height: 1.2; }
+        .pdf-center-title p { margin: 2px 0 0; font-size: 10.5px; font-weight: 600; color: #4B5563; line-height: 1.15; }
 
-        .pdf-row-1 { display: grid; grid-template-columns: 1.45fr 1fr; gap: 5px; flex-shrink: 0; }
-        .pdf-kpi-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3px; }
-        .pdf-kpi-card { border: 1px solid #CBD5E1; background: #F8FAFC; border-radius: 7px; padding: 3px 8px; display: flex; flex-direction: column; justify-content: center; gap: 0; }
+        .pdf-row-1 { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 6px; flex-shrink: 0; }
+        .pdf-kpi-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; }
+        .pdf-kpi-card { border: 1px solid #CBD5E1; background: #F8FAFC; border-radius: 7px; padding: 4px 8px; display: flex; flex-direction: column; justify-content: center; gap: 1px; }
         .pdf-kpi-card small { font-size: 8px; font-weight: 700; color: #6B7280; text-transform: uppercase; line-height: 1.1; }
-        .pdf-kpi-card strong { font-size: 13.5px; font-weight: 800; color: #111827; line-height: 1.15; }
-        .pdf-goals-card { border: 1px solid #CBD5E1; background: #F8FAFC; border-radius: 7px; padding: 4px 9px; display: flex; flex-direction: column; justify-content: center; gap: 2px; min-width: 0; }
-        .pdf-goals-card h4 { margin: 0; font-size: 11.5px; font-weight: 800; color: #111827; line-height: 1.15; }
+        .pdf-kpi-card strong { font-size: 13px; font-weight: 800; color: #111827; line-height: 1.15; }
 
-        .pdf-row-2 { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 7px; flex-shrink: 0; }
-        .pdf-row-3 { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; flex-shrink: 0; }
-        .pdf-panel { border: 1px solid #CBD5E1; border-radius: 8px; padding: 6px 10px; background: #FFFFFF; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-        .pdf-panel h5 { margin: 0; font-size: 11px; font-weight: 800; color: #111827; line-height: 1.2; }
-        .pdf-canvas-mid { position: relative; height: 194px; width: 100%; }
-        .pdf-canvas-bot { position: relative; height: 174px; width: 100%; }
-        .pdf-footer-bar { display: flex; justify-content: center; align-items: center; border-top: 1px solid #E2E8F0; padding-top: 4px; font-size: 9.5px; font-weight: 600; color: #6B7280; flex-shrink: 0; }
+        .pdf-goals-card { border: 1px solid #CBD5E1; background: #F8FAFC; border-radius: 7px; padding: 6px 9px; display: flex; flex-direction: column; justify-content: space-between; gap: 3px; min-width: 0; }
+        .pdf-goals-card h4 { margin: 0; font-size: 11px; font-weight: 800; color: #111827; line-height: 1.15; }
+
+        .pdf-insights-card { border: 1px solid #CBD5E1; background: #F8FAFC; border-radius: 7px; padding: 6px 9px; display: flex; flex-direction: column; justify-content: space-between; gap: 3px; min-width: 0; }
+        .pdf-insights-card h4 { margin: 0; font-size: 11px; font-weight: 800; color: #111827; line-height: 1.15; }
+        .pdf-insight-row { display: flex; justify-content: space-between; align-items: center; gap: 6px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 5px; padding: 2.5px 6px; font-size: 9px; font-weight: 700; }
+        .pdf-insight-row span:first-child { color: #6B7280; white-space: nowrap; }
+        .pdf-insight-row span:last-child { color: #111827; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        .pdf-row-2 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; flex-shrink: 0; }
+        .pdf-row-3 { display: grid; grid-template-columns: 1fr 1fr 1.15fr; gap: 6px; flex-shrink: 0; }
+        .pdf-panel { border: 1px solid #CBD5E1; border-radius: 8px; padding: 5px 8px; background: #FFFFFF; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+        .pdf-panel h5 { margin: 0; font-size: 10.5px; font-weight: 800; color: #111827; line-height: 1.15; }
+        .pdf-canvas-mid { position: relative; height: 162px; width: 100%; }
+        .pdf-canvas-bot { position: relative; height: 178px; width: 100%; }
+
+        .pdf-tx-table-wrap { height: 178px; overflow: hidden; border: 1px solid #E2E8F0; border-radius: 6px; background: #F8FAFC; }
+        .pdf-tx-table { width: 100%; min-width: 0; border-collapse: collapse; font-size: 9.5px; }
+        .pdf-tx-table th { background: #E2E8F0; color: #1E293B; padding: 4px 6px; font-size: 8.5px; font-weight: 800; text-transform: uppercase; position: sticky; top: 0; }
+        .pdf-tx-table td { padding: 3.5px 6px; border-bottom: 1px solid #E2E8F0; font-size: 9.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 155px; }
+        body.lang-ar .pdf-tx-table th, body.lang-ar .pdf-tx-table td { text-align: right; }
+        body.lang-en .pdf-tx-table th, body.lang-en .pdf-tx-table td { text-align: left; }
+
+        .pdf-footer-bar { display: flex; justify-content: center; align-items: center; border-top: 1px solid #E2E8F0; padding-top: 3px; font-size: 9px; font-weight: 600; color: #6B7280; flex-shrink: 0; }
 
         footer { background: var(--brand-dark); color: white; padding: 25px 20px 15px; margin-top: auto; width: 100%; box-sizing: border-box; }
         .footer-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 15px; flex-wrap: wrap; gap: 15px; }
@@ -909,6 +923,7 @@
             monthlyTarget: "Monthly Savings Target",
             remDebts: "Remaining Debts",
             transactionsTitle: "Transactions",
+            noTransactionsMsg: "No transactions recorded for this month.",
             editDataBtn: "Edit Data",
             thCat: "Category",
             thPlanned: "Planned",
@@ -1027,6 +1042,7 @@
             monthlyTarget: "هدف الادخار الشهري",
             remDebts: "الديون المتبقية",
             transactionsTitle: "معاملات الشهر",
+            noTransactionsMsg: "لا توجد معاملات مسجلة لهذا الشهر.",
             editDataBtn: "تعديل البيانات",
             thCat: "الفئة",
             thPlanned: "المخطط له",
@@ -2011,17 +2027,48 @@
         loadHistory();
     }
 
+    function computeInsightsData(expensesList, cardsList, totalActual) {
+        let activeItems = (expensesList || []).filter(ex => ex.cat || (parseFloat(ex.p)||0) > 0 || (parseFloat(ex.a)||0) > 0);
+        let highestItem = { name: '-', val: 0 };
+        let onTrackCount = 0;
+        let overBudgetCount = 0;
+        let unassignedSpend = 0;
+
+        activeItems.forEach((ex, idx) => {
+            let p = parseFloat(ex.p) || 0;
+            let a = parseFloat(ex.a) || 0;
+            let name = ex.cat || `Item ${idx + 1}`;
+            if (a > highestItem.val) highestItem = { name, val: a };
+            if (p > 0 && a > p) overBudgetCount++;
+            else onTrackCount++;
+
+            let hasValidCard = (cardsList || []).some(c => c.id === ex.cardId);
+            if (!hasValidCard) unassignedSpend += a;
+        });
+
+        let avgSpend = activeItems.length > 0 ? Math.round(totalActual / activeItems.length) : 0;
+        return { highestItem, avgSpend, onTrackCount, overBudgetCount, unassignedSpend };
+    }
+
     function getMonthSummaryData(monthId) {
         let m = monthsDB[monthId] || { expenses: [], cards: [] };
-        let tp = 0, ta = 0, cats = [], pData = [], aData = [];
+        let tp = 0, ta = 0, cats = [], pData = [], aData = [], txRows = [];
         (m.expenses || []).forEach((ex, idx) => {
+            let hasContent = Boolean(ex.cat || (ex.p !== '' && ex.p !== undefined) || (ex.a !== '' && ex.a !== undefined));
             let p = parseFloat(ex.p) || 0;
             let a = parseFloat(ex.a) || 0;
             tp += p;
             ta += a;
-            cats.push(ex.cat || `Item ${idx + 1}`);
+            let catName = ex.cat || `Item ${idx + 1}`;
+            cats.push(catName);
             pData.push(p);
             aData.push(a);
+            if (hasContent) {
+                txRows.push({
+                    cat: ex.cat || '-',
+                    diff: p - a
+                });
+            }
         });
         if (cats.length === 0) {
             cats = ['General'];
@@ -2063,11 +2110,13 @@
             ? (minForGoal >= 0 ? 100 : 0)
             : (minForGoal >= targetSavings ? 100 : Math.min(100, Math.max(0, Math.round((minForGoal / targetSavings) * 100))));
 
+        let insights = computeInsightsData(m.expenses || [], cards, ta);
+
         return {
             m, tp, ta, totalInc, net, remPlanned, savingsRate, cumulativeVal,
-            cats, pData, aData, cards, cardsTotal,
+            cats, pData, aData, txRows, cards, cardsTotal,
             cardSpendLabels, cardSpendValues, cardSpendColors,
-            targetSavings, minForGoal, goalPct
+            targetSavings, minForGoal, goalPct, insights
         };
     }
 
@@ -2118,10 +2167,19 @@
             ? `المعتمد (${minSourceName}): ${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)`
             : `Counted (${minSourceName}): ${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)`;
 
+        let txRowsHtml = data.txRows.length > 0
+            ? data.txRows.map(row => `
+                <tr>
+                    <td>${row.cat}</td>
+                    <td class="${row.diff < 0 ? 'text-red' : 'text-green'}">${Math.abs(row.diff).toLocaleString()} SAR</td>
+                </tr>
+            `).join('')
+            : `<tr><td colspan="2" style="text-align:center; color:#6B7280;">${translations[currentLang].noTransactionsMsg}</td></tr>`;
+
         sheet.innerHTML = `
             <div class="pdf-top-header">
                 <div class="pdf-logo-3-left">
-                    <svg viewBox="0 0 100 100" style="width: 36px; height: 36px;">
+                    <svg viewBox="0 0 100 100" style="width: 32px; height: 32px;">
                         <g transform="translate(50,50) rotate(-45) translate(-50,-50)" fill="none" stroke="#000000" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="44" y="10" width="12" height="78"/>
                             <path d="M 44 10 L 16 10 L 22 19 L 44 19 Z"/>
@@ -2138,7 +2196,7 @@
                     </svg>
                 </div>
                 <div class="pdf-center-title">
-                    <h2 style="font-family: 'Inter', sans-serif; font-weight: 500; letter-spacing: -0.4px;">Oikonomia <span style="font-size:15px; font-weight:700; color:#4B5563;">— ${monthTitle}</span></h2>
+                    <h2 style="font-family: 'Inter', sans-serif; font-weight: 500; letter-spacing: -0.4px;">Oikonomia <span style="font-size:14px; font-weight:700; color:#4B5563;">— ${monthTitle}</span></h2>
                     <p>${translations[currentLang].aboutSub}</p>
                 </div>
                 <div class="pdf-user-name-only">${fullName}</div>
@@ -2166,15 +2224,35 @@
 
                 <div class="pdf-goals-card">
                     <h4>${translations[currentLang].finGoals}</h4>
-                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:10.5px; font-weight:700;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:10px; font-weight:700;">
                         <span>${translations[currentLang].monthlyTarget}</span>
                         <span>${data.targetSavings.toLocaleString()} SAR</span>
                     </div>
                     <div style="background:#E2E8F0; height:6px; border-radius:999px; overflow:hidden;">
                         <div style="background:${data.goalPct >= 100 ? '#10B981' : '#008CFF'}; width:${data.goalPct}%; height:100%;"></div>
                     </div>
-                    <div style="font-size:9.5px; font-weight:700; color:${data.goalPct >= 100 ? '#10B981' : '#4B5563'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${goalStatusLine}</div>
-                    <div style="font-size:9.5px; font-weight:700; color:#6B7280;">${translations[currentLang].remDebts}: <strong class="text-red">0 SAR</strong></div>
+                    <div style="font-size:9px; font-weight:700; color:${data.goalPct >= 100 ? '#10B981' : '#4B5563'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${goalStatusLine}</div>
+                    <div style="font-size:9px; font-weight:700; color:#6B7280;">${translations[currentLang].remDebts}: <strong class="text-red">0 SAR</strong></div>
+                </div>
+
+                <div class="pdf-insights-card">
+                    <h4>${translations[currentLang].topInsightsTitle}</h4>
+                    <div class="pdf-insight-row">
+                        <span>${translations[currentLang].highestCatLabel}</span>
+                        <span>${data.insights.highestItem.name} (${data.insights.highestItem.val.toLocaleString()} SAR)</span>
+                    </div>
+                    <div class="pdf-insight-row">
+                        <span>${translations[currentLang].avgItemLabel}</span>
+                        <span>${data.insights.avgSpend.toLocaleString()} SAR</span>
+                    </div>
+                    <div class="pdf-insight-row">
+                        <span>${translations[currentLang].onTrackCatsLabel} / ${translations[currentLang].overBudgetCatsLabel}</span>
+                        <span><strong class="text-green">${data.insights.onTrackCount}</strong> / <strong class="text-red">${data.insights.overBudgetCount}</strong></span>
+                    </div>
+                    <div class="pdf-insight-row">
+                        <span>${translations[currentLang].unassignedSpendLabel}</span>
+                        <span>${data.insights.unassignedSpend.toLocaleString()} SAR</span>
+                    </div>
                 </div>
             </div>
 
@@ -2184,8 +2262,12 @@
                     <div class="pdf-canvas-mid"><canvas id="pdfDonutCanvas"></canvas></div>
                 </div>
                 <div class="pdf-panel">
-                    <h5>${translations[currentLang].chartConsumptionRate}</h5>
-                    <div class="pdf-canvas-mid"><canvas id="pdfRadarCanvas"></canvas></div>
+                    <h5>${translations[currentLang].chartGauge}</h5>
+                    <div class="pdf-canvas-mid"><canvas id="pdfGaugeCanvas"></canvas></div>
+                </div>
+                <div class="pdf-panel">
+                    <h5>${translations[currentLang].chartByCard}</h5>
+                    <div class="pdf-canvas-mid"><canvas id="pdfCardSpendCanvas"></canvas></div>
                 </div>
                 <div class="pdf-panel">
                     <h5>${translations[currentLang].chartBar}</h5>
@@ -2202,6 +2284,20 @@
                     <h5>${translations[currentLang].chartHistory}</h5>
                     <div class="pdf-canvas-bot"><canvas id="pdfHistoryCanvas"></canvas></div>
                 </div>
+                <div class="pdf-panel">
+                    <h5>${translations[currentLang].transactionsTitle}</h5>
+                    <div class="pdf-tx-table-wrap">
+                        <table class="pdf-tx-table">
+                            <thead>
+                                <tr>
+                                    <th>${translations[currentLang].thCat}</th>
+                                    <th>${translations[currentLang].thDiff}</th>
+                                </tr>
+                            </thead>
+                            <tbody>${txRowsHtml}</tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
             <div class="pdf-footer-bar">
@@ -2210,12 +2306,11 @@
         `;
 
         let comp = getMonthlyComparisonSeries(monthId, data.remPlanned);
-        let effData = data.pData.map((p, idx) => p > 0 ? Math.min(100, Math.max(0, Math.round((data.aData[idx] / p) * 100))) : 0);
         let baseLegendOpts = {
             responsive: true,
             maintainAspectRatio: false,
             animation: false,
-            plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 9, padding: 6, font: { size: 9, weight: 'bold' } } } }
+            plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 8, padding: 5, font: { size: 8.5, weight: 'bold' } } } }
         };
 
         let donutLabels = (data.tp === 0 && data.ta === 0) ? ['No Data'] : data.cats;
@@ -2224,31 +2319,52 @@
         pdfChartsInstances.push(new Chart(document.getElementById('pdfDonutCanvas').getContext('2d'), {
             type: 'doughnut',
             data: { labels: donutLabels, datasets: [{ data: donutValues, backgroundColor: getDistinctPalette(donutValues.length, 0) }] },
-            options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { display: true, position: 'right', labels: { boxWidth: 8, padding: 5, font: { size: 8.5, weight: 'bold' } } } } }
+            options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { display: true, position: 'right', labels: { boxWidth: 8, padding: 4, font: { size: 8, weight: 'bold' } } } } }
         }));
 
-        pdfChartsInstances.push(new Chart(document.getElementById('pdfRadarCanvas').getContext('2d'), {
-            type: 'radar',
-            data: { labels: data.cats, datasets: [{ label: translations[currentLang].chartConsumptionRate, data: effData, backgroundColor: 'rgba(139, 92, 246, 0.2)', borderColor: '#8B5CF6', pointBackgroundColor: getDistinctPalette(effData.length, 4), pointBorderColor: '#fff', pointRadius: 2.5 }] },
-            options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { display: false } }, scales: { r: { beginAtZero: true, max: 100, ticks: { stepSize: 25, font: { size: 7.5 }, backdropPadding: 1 }, pointLabels: { font: { size: 8, weight: 'bold' } } } } }
+        pdfChartsInstances.push(new Chart(document.getElementById('pdfGaugeCanvas').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: [translations[currentLang].actualSpending, translations[currentLang].remainingFromPlanned],
+                datasets: [{
+                    data: (data.tp === 0 && data.ta === 0) ? [0, 1] : [data.ta, Math.max(0, data.tp - data.ta)],
+                    backgroundColor: ['#EF4444', '#06B6D4']
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, animation: false, rotation: -90, circumference: 180, cutout: '78%', plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth: 8, padding: 4, font: { size: 8, weight: 'bold' } } } } }
+        }));
+
+        let hasCardValues = data.cardSpendLabels.length > 0;
+        pdfChartsInstances.push(new Chart(document.getElementById('pdfCardSpendCanvas').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: hasCardValues ? data.cardSpendLabels : [translations[currentLang].thCard],
+                datasets: [{
+                    label: translations[currentLang].actualSpending,
+                    data: hasCardValues ? data.cardSpendValues : [0],
+                    backgroundColor: hasCardValues ? data.cardSpendColors : ['#6366F1'],
+                    borderRadius: 4
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { font: { size: 8 } } }, y: { beginAtZero: true, ticks: { font: { size: 8 } } } } }
         }));
 
         pdfChartsInstances.push(new Chart(document.getElementById('pdfBarCanvas').getContext('2d'), {
             type: 'bar',
             data: { labels: data.cats, datasets: [{ label: translations[currentLang].thPlanned, data: data.pData, backgroundColor: '#0EA5E9', borderRadius: 3 }, { label: translations[currentLang].thActual, data: data.aData, backgroundColor: '#F97316', borderRadius: 3 }] },
-            options: { ...baseLegendOpts, scales: { x: { ticks: { font: { size: 8 }, maxRotation: 35, minRotation: 0 } }, y: { beginAtZero: true, ticks: { font: { size: 8.5 } } } } }
+            options: { ...baseLegendOpts, scales: { x: { ticks: { font: { size: 7.5 }, maxRotation: 35, minRotation: 0 } }, y: { beginAtZero: true, ticks: { font: { size: 8 } } } } }
         }));
 
         pdfChartsInstances.push(new Chart(document.getElementById('pdfDailyCanvas').getContext('2d'), {
             type: 'line',
             data: { labels: ['W1', 'W2', 'W3', 'W4'], datasets: [{ label: translations[currentLang].kpiExpenses, data: [data.ta * 0.2, data.ta * 0.4, data.ta * 0.7, data.ta], borderColor: '#14B8A6', backgroundColor: 'rgba(20, 184, 166, 0.14)', fill: true, tension: 0.3, pointRadius: 3, pointBackgroundColor: getDistinctPalette(4, 7) }] },
-            options: { ...baseLegendOpts, scales: { x: { ticks: { font: { size: 9 } } }, y: { beginAtZero: true, ticks: { font: { size: 9 } } } } }
+            options: { ...baseLegendOpts, scales: { x: { ticks: { font: { size: 8.5 } } }, y: { beginAtZero: true, ticks: { font: { size: 8.5 } } } } }
         }));
 
         pdfChartsInstances.push(new Chart(document.getElementById('pdfHistoryCanvas').getContext('2d'), {
             type: 'line',
             data: { labels: comp.labels, datasets: [{ label: translations[currentLang].remainingFromPlanned, data: comp.values, borderColor: '#D946EF', backgroundColor: 'rgba(217, 70, 239, 0.14)', fill: true, tension: 0.3, pointRadius: 3, pointBackgroundColor: getDistinctPalette(comp.values.length, 11) }] },
-            options: { ...baseLegendOpts, scales: { x: { ticks: { font: { size: 9 } } }, y: { beginAtZero: true, ticks: { font: { size: 9 } } } } }
+            options: { ...baseLegendOpts, scales: { x: { ticks: { font: { size: 8.5 } } }, y: { beginAtZero: true, ticks: { font: { size: 8.5 } } } } }
         }));
 
         return { sheet, monthTitle };
@@ -2505,43 +2621,24 @@
         let container = document.getElementById('spending-insights-container');
         if (!container) return;
         let cards = getMonthCards();
-        let activeItems = m.expenses.filter(ex => ex.cat || (parseFloat(ex.p)||0) > 0 || (parseFloat(ex.a)||0) > 0);
-
-        let highestItem = { name: '-', val: 0 };
-        let onTrackCount = 0;
-        let overBudgetCount = 0;
-        let unassignedSpend = 0;
-
-        activeItems.forEach((ex, idx) => {
-            let p = parseFloat(ex.p) || 0;
-            let a = parseFloat(ex.a) || 0;
-            let name = ex.cat || `Item ${idx + 1}`;
-            if (a > highestItem.val) highestItem = { name, val: a };
-            if (p > 0 && a > p) overBudgetCount++;
-            else onTrackCount++;
-
-            let hasValidCard = cards.some(c => c.id === ex.cardId);
-            if (!hasValidCard) unassignedSpend += a;
-        });
-
-        let avgSpend = activeItems.length > 0 ? Math.round(ta / activeItems.length) : 0;
+        let insights = computeInsightsData(m.expenses, cards, ta);
 
         container.innerHTML = `
             <div class="stat-mini-box">
                 <span style="color:var(--text-muted);">${translations[currentLang].highestCatLabel}</span>
-                <span>${highestItem.name} (${highestItem.val.toLocaleString()} SAR)</span>
+                <span>${insights.highestItem.name} (${insights.highestItem.val.toLocaleString()} SAR)</span>
             </div>
             <div class="stat-mini-box">
                 <span style="color:var(--text-muted);">${translations[currentLang].avgItemLabel}</span>
-                <span>${avgSpend.toLocaleString()} SAR</span>
+                <span>${insights.avgSpend.toLocaleString()} SAR</span>
             </div>
             <div class="stat-mini-box">
                 <span style="color:var(--text-muted);">${translations[currentLang].onTrackCatsLabel} / ${translations[currentLang].overBudgetCatsLabel}</span>
-                <span><strong class="text-green">${onTrackCount}</strong> / <strong class="text-red">${overBudgetCount}</strong></span>
+                <span><strong class="text-green">${insights.onTrackCount}</strong> / <strong class="text-red">${insights.overBudgetCount}</strong></span>
             </div>
             <div class="stat-mini-box" style="margin-bottom:0;">
                 <span style="color:var(--text-muted);">${translations[currentLang].unassignedSpendLabel}</span>
-                <span>${unassignedSpend.toLocaleString()} SAR</span>
+                <span>${insights.unassignedSpend.toLocaleString()} SAR</span>
             </div>
         `;
     }
