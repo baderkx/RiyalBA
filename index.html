@@ -382,39 +382,6 @@
             align-items: center;
             gap: 8px;
         }
-        .pdf-kpi-left {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .pdf-widget-num {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 18px;
-            height: 18px;
-            padding: 0 5px;
-            border-radius: 999px;
-            background: #0F172A;
-            color: #FFFFFF;
-            font-size: 9px;
-            font-weight: 800;
-            line-height: 1;
-            flex-shrink: 0;
-        }
-        .pdf-count-chip {
-            display: inline-flex;
-            align-items: center;
-            padding: 2px 7px;
-            border-radius: 999px;
-            background: #E2E8F0;
-            color: #0F172A;
-            font-size: 9px;
-            font-weight: 800;
-            line-height: 1.2;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
         .pdf-kpi-card small { font-size: 9px; font-weight: 800; color: #334155; text-transform: uppercase; letter-spacing: 0.3px; }
         .pdf-kpi-card strong { font-size: 13px; font-weight: 800; color: #0F172A; }
 
@@ -427,12 +394,6 @@
             flex-direction: column;
             justify-content: space-between;
             gap: 5px;
-        }
-        .pdf-side-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 6px;
         }
         .pdf-side-card h4 {
             margin: 0;
@@ -478,22 +439,13 @@
             box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
             min-height: 0;
         }
-        .pdf-panel-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 6px;
-            flex-shrink: 0;
-        }
         .pdf-panel h5 {
             margin: 0;
             font-size: 11.5px;
             font-weight: 800;
             color: #0F172A;
             letter-spacing: -0.1px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+            flex-shrink: 0;
         }
         .pdf-canvas-box { position: relative; flex: 1; min-height: 145px; max-height: 175px; width: 100%; }
 
@@ -850,7 +802,7 @@
                     </div>
 
                     <div id="profile-lock-banner" class="profile-lock-banner">
-                        <span data-i18n="profileLockedNotice">🔒 Profile fields are locked. Click Edit Profile to modify.</span>
+                        <span data-i18n="profileLockedNotice"> Profile fields are locked. Click Edit Profile to modify.</span>
                     </div>
 
                     <div style="display: flex; flex-direction: column; gap: 15px; background: var(--bg-light); padding: 20px; border-radius: 12px; margin-bottom: 25px;">
@@ -2187,7 +2139,7 @@
         });
 
         let avgSpend = activeItems.length > 0 ? Math.round(totalActual / activeItems.length) : 0;
-        return { highestItem, avgSpend, onTrackCount, overBudgetCount, unassignedSpend, activeItemsCount: activeItems.length };
+        return { highestItem, avgSpend, onTrackCount, overBudgetCount, unassignedSpend };
     }
 
     function getMonthSummaryData(monthId) {
@@ -2229,11 +2181,9 @@
         });
 
         let cumulativeVal = 0;
-        let savedMonthsCount = 0;
         for (let id in monthsDB) {
             let itemM = monthsDB[id];
             if (itemM.userId === currentUser && !itemM.isDeleted) {
-                savedMonthsCount++;
                 (itemM.expenses || []).forEach(ex => {
                     cumulativeVal += ((parseFloat(ex.p) || 0) - (parseFloat(ex.a) || 0));
                 });
@@ -2248,7 +2198,7 @@
         let insights = computeInsightsData(m.expenses || [], cards, ta);
 
         return {
-            m, tp, ta, totalInc, net, remPlanned, savingsRate, cumulativeVal, savedMonthsCount,
+            m, tp, ta, totalInc, net, remPlanned, savingsRate, cumulativeVal,
             cats, pData, aData, cards, cardsTotal,
             cardSpendLabels, cardSpendValues, cardSpendColors,
             targetSavings, minForGoal, goalPct, insights
@@ -2302,16 +2252,9 @@
             ? `المعتمد (${minSourceName}): ${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)`
             : `Counted (${minSourceName}): ${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)`;
 
-        let comp = getMonthlyComparisonSeries(monthId, data.remPlanned);
-        let itemUnit = currentLang === 'ar' ? 'بنود' : 'items';
-        let cardUnit = currentLang === 'ar' ? 'بطاقات' : 'cards';
-        let monthUnit = currentLang === 'ar' ? 'أشهر' : 'months';
-        let weekUnit = currentLang === 'ar' ? 'أسابيع' : 'weeks';
-
-        let itemsCountNum = data.insights.activeItemsCount;
-        let cardsCountNum = data.cardSpendLabels.length;
-        let historyCountNum = comp.labels.length;
-
+        // الترتيب المطلوب في شبكة الـ 6 مخططات:
+        // الصف 1: Category Distribution | Spending Efficiency Index | Daily Expenses Trend
+        // الصف 2: Monthly Comparison | Spending by Card | Planned vs Actual
         sheet.innerHTML = `
             <div class="pdf-top-header">
                 <div class="pdf-logo-3-left">
@@ -2341,28 +2284,25 @@
             <div class="pdf-hero-grid">
                 <div class="pdf-kpi-col">
                     <div class="pdf-kpi-card">
-                        <span class="pdf-kpi-left"><span class="pdf-widget-num">1</span><small>${translations[currentLang].kpiIncome}</small></span>
+                        <small>${translations[currentLang].kpiIncome}</small>
                         <strong class="text-green">${data.totalInc.toLocaleString()} SAR</strong>
                     </div>
                     <div class="pdf-kpi-card">
-                        <span class="pdf-kpi-left"><span class="pdf-widget-num">2</span><small>${translations[currentLang].kpiExpenses}</small> <span class="pdf-count-chip">${itemsCountNum} ${itemUnit}</span></span>
+                        <small>${translations[currentLang].kpiExpenses}</small>
                         <strong class="text-red">${data.ta.toLocaleString()} SAR</strong>
                     </div>
                     <div class="pdf-kpi-card">
-                        <span class="pdf-kpi-left"><span class="pdf-widget-num">3</span><small>${translations[currentLang].kpiNet}</small></span>
+                        <small>${translations[currentLang].kpiNet}</small>
                         <strong class="${data.net < 0 ? 'text-red' : 'text-green'}">${data.net.toLocaleString()} SAR</strong>
                     </div>
                     <div class="pdf-kpi-card">
-                        <span class="pdf-kpi-left"><span class="pdf-widget-num">4</span><small>${translations[currentLang].kpiSavings}</small></span>
+                        <small>${translations[currentLang].kpiSavings}</small>
                         <strong>${data.savingsRate}%</strong>
                     </div>
                 </div>
 
                 <div class="pdf-side-card">
-                    <div class="pdf-side-header">
-                        <h4><span class="pdf-widget-num">5</span> 🎯 ${translations[currentLang].finGoals}</h4>
-                        <span class="pdf-count-chip">${data.goalPct}% | ${data.savedMonthsCount} ${monthUnit}</span>
-                    </div>
+                    <h4> ${translations[currentLang].finGoals}</h4>
                     <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; font-weight:700;">
                         <span>${translations[currentLang].monthlyTarget}</span>
                         <span>${data.targetSavings.toLocaleString()} SAR</span>
@@ -2375,10 +2315,7 @@
                 </div>
 
                 <div class="pdf-side-card">
-                    <div class="pdf-side-header">
-                        <h4><span class="pdf-widget-num">6</span> ⚡ ${translations[currentLang].topInsightsTitle}</h4>
-                        <span class="pdf-count-chip">${itemsCountNum} ${itemUnit}</span>
-                    </div>
+                    <h4> ${translations[currentLang].topInsightsTitle}</h4>
                     <div class="pdf-insight-row">
                         <span>${translations[currentLang].highestCatLabel}</span>
                         <span>${data.insights.highestItem.name} (${data.insights.highestItem.val.toLocaleString()} SAR)</span>
@@ -2400,45 +2337,27 @@
 
             <div class="pdf-charts-grid">
                 <div class="pdf-panel">
-                    <div class="pdf-panel-head">
-                        <h5><span class="pdf-widget-num">7</span> ${translations[currentLang].chartDist}</h5>
-                        <span class="pdf-count-chip">${itemsCountNum} ${itemUnit}</span>
-                    </div>
+                    <h5>${translations[currentLang].chartDist}</h5>
                     <div class="pdf-canvas-box"><canvas id="pdfDonutCanvas"></canvas></div>
                 </div>
                 <div class="pdf-panel">
-                    <div class="pdf-panel-head">
-                        <h5><span class="pdf-widget-num">8</span> ${translations[currentLang].chartEfficiency}</h5>
-                        <span class="pdf-count-chip">${itemsCountNum} ${itemUnit}</span>
-                    </div>
+                    <h5>${translations[currentLang].chartEfficiency}</h5>
                     <div class="pdf-canvas-box"><canvas id="pdfEfficiencyCanvas"></canvas></div>
                 </div>
                 <div class="pdf-panel">
-                    <div class="pdf-panel-head">
-                        <h5><span class="pdf-widget-num">9</span> ${translations[currentLang].chartDaily}</h5>
-                        <span class="pdf-count-chip">4 ${weekUnit}</span>
-                    </div>
+                    <h5>${translations[currentLang].chartDaily}</h5>
                     <div class="pdf-canvas-box"><canvas id="pdfDailyCanvas"></canvas></div>
                 </div>
                 <div class="pdf-panel">
-                    <div class="pdf-panel-head">
-                        <h5><span class="pdf-widget-num">10</span> ${translations[currentLang].chartHistory}</h5>
-                        <span class="pdf-count-chip">${historyCountNum} ${monthUnit}</span>
-                    </div>
+                    <h5>${translations[currentLang].chartHistory}</h5>
                     <div class="pdf-canvas-box"><canvas id="pdfHistoryCanvas"></canvas></div>
                 </div>
                 <div class="pdf-panel">
-                    <div class="pdf-panel-head">
-                        <h5><span class="pdf-widget-num">11</span> ${translations[currentLang].chartByCard}</h5>
-                        <span class="pdf-count-chip">${cardsCountNum} ${cardUnit}</span>
-                    </div>
+                    <h5>${translations[currentLang].chartByCard}</h5>
                     <div class="pdf-canvas-box"><canvas id="pdfCardSpendCanvas"></canvas></div>
                 </div>
                 <div class="pdf-panel">
-                    <div class="pdf-panel-head">
-                        <h5><span class="pdf-widget-num">12</span> ${translations[currentLang].chartBar}</h5>
-                        <span class="pdf-count-chip">${itemsCountNum} ${itemUnit}</span>
-                    </div>
+                    <h5>${translations[currentLang].chartBar}</h5>
                     <div class="pdf-canvas-box"><canvas id="pdfBarCanvas"></canvas></div>
                 </div>
             </div>
@@ -2448,6 +2367,7 @@
             </div>
         `;
 
+        let comp = getMonthlyComparisonSeries(monthId, data.remPlanned);
         let highDpr = 4;
         let baseLegendOpts = {
             responsive: true,
