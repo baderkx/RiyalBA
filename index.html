@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oikonomia - Monthly Financial Control</title>
+    <title>Oikonomia</title>
     <!-- 1. شعار 3 في التبويب العلوي -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg transform='translate(50,50) rotate(-45) translate(-50,-50)' fill='none' stroke='%23000000' stroke-width='4.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M 44 12 L 56 12 L 56 88 L 44 88 Z' fill='%23FFFFFF'/%3E%3Cpath d='M 44 12 L 16 12 L 22 21 L 44 21 Z' fill='%23FFFFFF'/%3E%3Cpath d='M 56 12 L 72 12 L 66 19 L 56 19 Z' fill='%23FFFFFF'/%3E%3Crect x='40' y='28' width='20' height='22' rx='2' fill='%23FFFFFF'/%3E%3Crect x='45' y='32' width='10' height='14' rx='1' fill='%23FFFFFF'/%3E%3Cpath d='M 40 31 L 16 31 L 22 24 L 40 24 Z' fill='%23FFFFFF'/%3E%3Cpath d='M 60 31 L 72 31 L 66 25 L 60 25 Z' fill='%23FFFFFF'/%3E%3Cline x1='48' y1='88' x2='48' y2='96'/%3E%3C/g%3E%3C/svg%3E">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -292,31 +292,33 @@
             margin-bottom: 16px;
         }
 
-        /* لوحة تصدير PDF عالية الوضوح والرسومات */
+        /* لوحة تصدير PDF في صفحة واحدة فقط وعالية الوضوح */
         .pdf-export-stage {
             position: fixed;
             left: -5000px;
             top: 0;
             width: 1122px;
+            height: 793px;
             opacity: 0.01;
             background: #FFFFFF;
             z-index: -50;
             pointer-events: none;
-            overflow: visible;
+            overflow: hidden;
         }
         .pdf-landscape-sheet {
             background: #FFFFFF;
             width: 1122px;
-            min-height: 793px;
-            padding: 18px 22px;
+            height: 793px;
+            padding: 12px 18px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 16px;
+            gap: 10px;
             font-family: 'Inter', 'Cairo', sans-serif;
             -webkit-font-smoothing: antialiased;
             text-rendering: geometricPrecision;
+            overflow: hidden;
         }
         .pdf-top-header {
             display: grid;
@@ -325,12 +327,13 @@
             background: transparent;
             border: none;
             box-shadow: none;
-            padding: 4px 2px 8px;
-            gap: 16px;
+            padding: 0 2px;
+            gap: 14px;
+            flex-shrink: 0;
         }
         .pdf-logo-3-left {
-            width: 40px;
-            height: 40px;
+            width: 34px;
+            height: 34px;
             background: transparent !important;
             border: none;
             box-shadow: none;
@@ -341,7 +344,7 @@
         }
         .pdf-user-name-only {
             justify-self: end;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 800;
             color: #0F172A;
             background: transparent;
@@ -351,104 +354,109 @@
             white-space: nowrap;
         }
         .pdf-center-title { text-align: center; }
-        .pdf-center-title h2 { margin: 0; font-size: 20px; font-weight: 600; color: #0F172A; line-height: 1.25; }
-        .pdf-center-title p { margin: 3px 0 0; font-size: 11.5px; font-weight: 600; color: #475569; line-height: 1.25; }
+        .pdf-center-title h2 { margin: 0; font-size: 18px; font-weight: 600; color: #0F172A; line-height: 1.2; }
+        .pdf-center-title p { margin: 2px 0 0; font-size: 10.5px; font-weight: 600; color: #475569; line-height: 1.2; }
 
         /* القسم العلوي: 4 مؤشرات تحت بعض + أهداف الادخار + الرؤى السريعة */
         .pdf-hero-grid {
             display: grid;
-            grid-template-columns: 0.95fr 1.08fr 1.08fr;
-            gap: 14px;
+            grid-template-columns: 0.92fr 1.08fr 1.12fr;
+            gap: 10px;
             align-items: stretch;
+            flex-shrink: 0;
         }
         .pdf-kpi-col {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 8px;
+            gap: 5px;
         }
         .pdf-kpi-card {
             border: 1.25px solid #CBD5E1;
             background: #F8FAFC;
-            border-radius: 11px;
-            padding: 9px 13px;
+            border-radius: 9px;
+            padding: 6px 11px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
-        .pdf-kpi-card small { font-size: 9.5px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.35px; }
-        .pdf-kpi-card strong { font-size: 14.5px; font-weight: 800; color: #0F172A; }
+        .pdf-kpi-card small { font-size: 9px; font-weight: 800; color: #475569; text-transform: uppercase; letter-spacing: 0.3px; }
+        .pdf-kpi-card strong { font-size: 13px; font-weight: 800; color: #0F172A; }
 
         .pdf-side-card {
             border: 1.25px solid #CBD5E1;
             background: #F8FAFC;
-            border-radius: 13px;
-            padding: 13px 15px;
+            border-radius: 11px;
+            padding: 9px 12px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 8px;
+            gap: 5px;
         }
         .pdf-side-card h4 {
             margin: 0;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 800;
             color: #0F172A;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }
         .pdf-insight-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             background: #FFFFFF;
             border: 1px solid #E2E8F0;
-            border-radius: 9px;
-            padding: 7px 10px;
-            font-size: 11px;
+            border-radius: 7px;
+            padding: 4px 8px;
+            font-size: 10px;
             font-weight: 700;
         }
-        .pdf-insight-row span:first-child { color: #475569; }
+        .pdf-insight-row span:first-child { color: #475569; white-space: nowrap; }
         .pdf-insight-row span:last-child { color: #0F172A; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-        /* شبكة الرسوم البيانية عالية الوضوح */
+        /* شبكة الرسوم البيانية داخل نفس الصفحة */
         .pdf-charts-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
+            gap: 10px;
             flex: 1;
+            min-height: 0;
         }
         .pdf-panel {
             border: 1.25px solid #CBD5E1;
-            border-radius: 14px;
-            padding: 13px 15px;
+            border-radius: 11px;
+            padding: 9px 11px;
             background: #FFFFFF;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 8px;
-            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+            gap: 4px;
+            box-shadow: 0 2px 5px rgba(15, 23, 42, 0.03);
+            min-height: 0;
         }
         .pdf-panel h5 {
             margin: 0;
-            font-size: 12.5px;
+            font-size: 11.5px;
             font-weight: 800;
             color: #0F172A;
             letter-spacing: -0.1px;
+            flex-shrink: 0;
         }
-        .pdf-canvas-box { position: relative; height: 220px; width: 100%; }
+        .pdf-canvas-box { position: relative; flex: 1; min-height: 145px; max-height: 175px; width: 100%; }
 
         .pdf-footer-bar {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding-top: 4px;
-            font-size: 10.5px;
+            padding-top: 2px;
+            font-size: 10px;
             font-weight: 600;
             color: #64748B;
+            flex-shrink: 0;
         }
 
         footer { background: var(--brand-dark); color: white; padding: 25px 20px 15px; margin-top: auto; width: 100%; box-sizing: border-box; }
@@ -485,7 +493,7 @@
                 left: 0 !important;
                 top: 0 !important;
                 width: 100% !important;
-                height: auto !important;
+                height: 100% !important;
                 opacity: 1 !important;
                 z-index: 999999 !important;
                 background: #FFFFFF !important;
@@ -1575,6 +1583,7 @@
     }
 
     window.onload = function() {
+        document.title = 'Oikonomia';
         applyLanguage(currentLang);
         populateAgeDropdowns();
         updateDashboardDate();
@@ -1598,6 +1607,7 @@
     }
 
     function applyLanguage(lang) {
+        document.title = 'Oikonomia';
         let body = document.getElementById('body');
         body.className = lang === 'ar' ? 'lang-ar' : 'lang-en';
         document.getElementById('html-root').setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
@@ -2244,7 +2254,7 @@
         sheet.innerHTML = `
             <div class="pdf-top-header">
                 <div class="pdf-logo-3-left">
-                    <svg viewBox="0 0 100 100" style="width: 34px; height: 34px;">
+                    <svg viewBox="0 0 100 100" style="width: 30px; height: 30px;">
                         <g transform="translate(50,50) rotate(-45) translate(-50,-50)" fill="none" stroke="#000000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="44" y="10" width="12" height="78"/>
                             <path d="M 44 10 L 16 10 L 22 19 L 44 19 Z"/>
@@ -2261,7 +2271,7 @@
                     </svg>
                 </div>
                 <div class="pdf-center-title">
-                    <h2 style="font-family: 'Inter', sans-serif; font-weight: 500; letter-spacing: -0.4px;">Oikonomia <span style="font-size:15px; font-weight:700; color:#475569;">— ${monthTitle}</span></h2>
+                    <h2 style="font-family: 'Inter', sans-serif; font-weight: 500; letter-spacing: -0.4px;">Oikonomia <span style="font-size:14px; font-weight:700; color:#475569;">— ${monthTitle}</span></h2>
                     <p>${translations[currentLang].aboutSub}</p>
                 </div>
                 <div class="pdf-user-name-only">${fullName}</div>
@@ -2289,15 +2299,15 @@
 
                 <div class="pdf-side-card">
                     <h4>🎯 ${translations[currentLang].finGoals}</h4>
-                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:11.5px; font-weight:700;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; font-weight:700;">
                         <span>${translations[currentLang].monthlyTarget}</span>
                         <span>${data.targetSavings.toLocaleString()} SAR</span>
                     </div>
-                    <div style="background:#E2E8F0; height:9px; border-radius:999px; overflow:hidden;">
+                    <div style="background:#E2E8F0; height:8px; border-radius:999px; overflow:hidden;">
                         <div style="background:${data.goalPct >= 100 ? '#10B981' : '#008CFF'}; width:${data.goalPct}%; height:100%;"></div>
                     </div>
-                    <div style="font-size:10.5px; font-weight:700; color:${data.goalPct >= 100 ? '#10B981' : '#475569'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${goalStatusLine}</div>
-                    <div style="font-size:10.5px; font-weight:700; color:#475569;">${translations[currentLang].remDebts}: <strong class="text-red">0 SAR</strong></div>
+                    <div style="font-size:10px; font-weight:700; color:${data.goalPct >= 100 ? '#10B981' : '#475569'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${goalStatusLine}</div>
+                    <div style="font-size:10px; font-weight:700; color:#475569;">${translations[currentLang].remDebts}: <strong class="text-red">0 SAR</strong></div>
                 </div>
 
                 <div class="pdf-side-card">
@@ -2360,7 +2370,7 @@
             maintainAspectRatio: false,
             devicePixelRatio: highDpr,
             animation: false,
-            plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 10, padding: 8, color: '#0F172A', font: { size: 10.5, weight: 'bold' } } } }
+            plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 9, padding: 6, color: '#0F172A', font: { size: 9.5, weight: 'bold' } } } }
         };
 
         let donutLabels = (data.tp === 0 && data.ta === 0) ? ['No Data'] : data.cats;
@@ -2369,7 +2379,7 @@
         pdfChartsInstances.push(new Chart(document.getElementById('pdfDonutCanvas').getContext('2d'), {
             type: 'doughnut',
             data: { labels: donutLabels, datasets: [{ data: donutValues, backgroundColor: getDistinctPalette(donutValues.length, 0), borderColor: '#FFFFFF', borderWidth: 2 }] },
-            options: { responsive: true, maintainAspectRatio: false, devicePixelRatio: highDpr, animation: false, plugins: { legend: { display: true, position: 'right', labels: { boxWidth: 10, padding: 7, color: '#0F172A', font: { size: 10, weight: 'bold' } } } } }
+            options: { responsive: true, maintainAspectRatio: false, devicePixelRatio: highDpr, animation: false, plugins: { legend: { display: true, position: 'right', labels: { boxWidth: 9, padding: 5, color: '#0F172A', font: { size: 9, weight: 'bold' } } } } }
         }));
 
         pdfChartsInstances.push(new Chart(document.getElementById('pdfGaugeCanvas').getContext('2d'), {
@@ -2383,7 +2393,7 @@
                     borderWidth: 2
                 }]
             },
-            options: { responsive: true, maintainAspectRatio: false, devicePixelRatio: highDpr, animation: false, rotation: -90, circumference: 180, cutout: '76%', plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth: 10, padding: 7, color: '#0F172A', font: { size: 10, weight: 'bold' } } } } }
+            options: { responsive: true, maintainAspectRatio: false, devicePixelRatio: highDpr, animation: false, rotation: -90, circumference: 180, cutout: '76%', plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth: 9, padding: 5, color: '#0F172A', font: { size: 9, weight: 'bold' } } } } }
         }));
 
         let hasCardValues = data.cardSpendLabels.length > 0;
@@ -2396,28 +2406,28 @@
                     data: hasCardValues ? data.cardSpendValues : [0],
                     backgroundColor: hasCardValues ? data.cardSpendColors : ['#6366F1'],
                     borderRadius: 6,
-                    maxBarThickness: 44
+                    maxBarThickness: 40
                 }]
             },
-            options: { responsive: true, maintainAspectRatio: false, devicePixelRatio: highDpr, animation: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { color: '#0F172A', font: { size: 10, weight: 'bold' } } }, y: { beginAtZero: true, grid: { color: '#E2E8F0' }, ticks: { color: '#334155', font: { size: 10, weight: 'bold' } } } } }
+            options: { responsive: true, maintainAspectRatio: false, devicePixelRatio: highDpr, animation: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { color: '#0F172A', font: { size: 9, weight: 'bold' } } }, y: { beginAtZero: true, grid: { color: '#E2E8F0' }, ticks: { color: '#334155', font: { size: 9, weight: 'bold' } } } } }
         }));
 
         pdfChartsInstances.push(new Chart(document.getElementById('pdfBarCanvas').getContext('2d'), {
             type: 'bar',
             data: { labels: data.cats, datasets: [{ label: translations[currentLang].thPlanned, data: data.pData, backgroundColor: '#0EA5E9', borderRadius: 4 }, { label: translations[currentLang].thActual, data: data.aData, backgroundColor: '#F97316', borderRadius: 4 }] },
-            options: { ...baseLegendOpts, scales: { x: { grid: { display: false }, ticks: { color: '#0F172A', font: { size: 9.5, weight: 'bold' }, maxRotation: 30, minRotation: 0 } }, y: { beginAtZero: true, grid: { color: '#E2E8F0' }, ticks: { color: '#334155', font: { size: 10, weight: 'bold' } } } } }
+            options: { ...baseLegendOpts, scales: { x: { grid: { display: false }, ticks: { color: '#0F172A', font: { size: 8.5, weight: 'bold' }, maxRotation: 25, minRotation: 0 } }, y: { beginAtZero: true, grid: { color: '#E2E8F0' }, ticks: { color: '#334155', font: { size: 9, weight: 'bold' } } } } }
         }));
 
         pdfChartsInstances.push(new Chart(document.getElementById('pdfDailyCanvas').getContext('2d'), {
             type: 'line',
-            data: { labels: ['W1', 'W2', 'W3', 'W4'], datasets: [{ label: translations[currentLang].kpiExpenses, data: [data.ta * 0.2, data.ta * 0.4, data.ta * 0.7, data.ta], borderColor: '#14B8A6', borderWidth: 3, backgroundColor: 'rgba(20, 184, 166, 0.16)', fill: true, tension: 0.35, pointRadius: 4.5, pointBorderColor: '#FFFFFF', pointBorderWidth: 1.5, pointBackgroundColor: getDistinctPalette(4, 7) }] },
-            options: { ...baseLegendOpts, scales: { x: { grid: { display: false }, ticks: { color: '#0F172A', font: { size: 10, weight: 'bold' } } }, y: { beginAtZero: true, grid: { color: '#E2E8F0' }, ticks: { color: '#334155', font: { size: 10, weight: 'bold' } } } } }
+            data: { labels: ['W1', 'W2', 'W3', 'W4'], datasets: [{ label: translations[currentLang].kpiExpenses, data: [data.ta * 0.2, data.ta * 0.4, data.ta * 0.7, data.ta], borderColor: '#14B8A6', borderWidth: 3, backgroundColor: 'rgba(20, 184, 166, 0.16)', fill: true, tension: 0.35, pointRadius: 4, pointBorderColor: '#FFFFFF', pointBorderWidth: 1.5, pointBackgroundColor: getDistinctPalette(4, 7) }] },
+            options: { ...baseLegendOpts, scales: { x: { grid: { display: false }, ticks: { color: '#0F172A', font: { size: 9, weight: 'bold' } } }, y: { beginAtZero: true, grid: { color: '#E2E8F0' }, ticks: { color: '#334155', font: { size: 9, weight: 'bold' } } } } }
         }));
 
         pdfChartsInstances.push(new Chart(document.getElementById('pdfHistoryCanvas').getContext('2d'), {
             type: 'line',
-            data: { labels: comp.labels, datasets: [{ label: translations[currentLang].remainingFromPlanned, data: comp.values, borderColor: '#D946EF', borderWidth: 3, backgroundColor: 'rgba(217, 70, 239, 0.16)', fill: true, tension: 0.35, pointRadius: 4.5, pointBorderColor: '#FFFFFF', pointBorderWidth: 1.5, pointBackgroundColor: getDistinctPalette(comp.values.length, 11) }] },
-            options: { ...baseLegendOpts, scales: { x: { grid: { display: false }, ticks: { color: '#0F172A', font: { size: 10, weight: 'bold' } } }, y: { beginAtZero: true, grid: { color: '#E2E8F0' }, ticks: { color: '#334155', font: { size: 10, weight: 'bold' } } } } }
+            data: { labels: comp.labels, datasets: [{ label: translations[currentLang].remainingFromPlanned, data: comp.values, borderColor: '#D946EF', borderWidth: 3, backgroundColor: 'rgba(217, 70, 239, 0.16)', fill: true, tension: 0.35, pointRadius: 4, pointBorderColor: '#FFFFFF', pointBorderWidth: 1.5, pointBackgroundColor: getDistinctPalette(comp.values.length, 11) }] },
+            options: { ...baseLegendOpts, scales: { x: { grid: { display: false }, ticks: { color: '#0F172A', font: { size: 9, weight: 'bold' } } }, y: { beginAtZero: true, grid: { color: '#E2E8F0' }, ticks: { color: '#334155', font: { size: 9, weight: 'bold' } } } } }
         }));
 
         return { sheet, monthTitle };
@@ -2432,7 +2442,7 @@
         await new Promise(resolve => setTimeout(resolve, 220));
 
         const sheetWidth = 1122;
-        const sheetHeight = Math.max(793, rendered.sheet.scrollHeight);
+        const sheetHeight = 793;
 
         const canvas = await html2canvas(rendered.sheet, {
             scale: 2.5,
@@ -2451,22 +2461,8 @@
         const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
         const pageW = pdf.internal.pageSize.getWidth();
         const pageH = pdf.internal.pageSize.getHeight();
-        const renderedH = (sheetHeight * pageW) / sheetWidth;
 
-        if (renderedH <= pageH + 1) {
-            pdf.addImage(imgData, 'PNG', 0, 0, pageW, pageH, undefined, 'SLOW');
-        } else {
-            let heightLeft = renderedH;
-            let positionY = 0;
-            pdf.addImage(imgData, 'PNG', 0, positionY, pageW, renderedH, undefined, 'SLOW');
-            heightLeft -= pageH;
-            while (heightLeft > 1) {
-                positionY -= pageH;
-                pdf.addPage('a4', 'landscape');
-                pdf.addImage(imgData, 'PNG', 0, positionY, pageW, renderedH, undefined, 'SLOW');
-                heightLeft -= pageH;
-            }
-        }
+        pdf.addImage(imgData, 'PNG', 0, 0, pageW, pageH, undefined, 'SLOW');
 
         let safeFileName = `Oikonomia-${rendered.monthTitle.replace(/[^\w\u0600-\u06FF-]+/g, '_')}.pdf`;
         return { pdf, safeFileName, monthTitle: rendered.monthTitle };
