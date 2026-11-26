@@ -292,83 +292,223 @@
             margin-bottom: 16px;
         }
 
+        /* لوحة تصدير PDF المنسقة بمرونة وأناقة */
         .pdf-export-stage {
             position: fixed;
-            left: 0;
+            left: -5000px;
             top: 0;
             width: 1122px;
-            height: 793px;
             opacity: 0.01;
             background: #FFFFFF;
             z-index: -50;
             pointer-events: none;
-            overflow: hidden;
+            overflow: visible;
         }
         .pdf-landscape-sheet {
-            background: #FFFFFF;
+            background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
             width: 1122px;
-            height: 793px;
-            padding: 9px 14px;
+            min-height: 793px;
+            padding: 16px 20px;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            gap: 5px;
-            overflow: hidden;
+            gap: 12px;
             font-family: 'Inter', 'Cairo', sans-serif;
         }
         .pdf-top-header {
             display: grid;
             grid-template-columns: auto 1fr auto;
             align-items: center;
-            margin-top: 2px;
-            padding-bottom: 4px;
-            gap: 12px;
-            flex-shrink: 0;
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 14px;
+            padding: 10px 16px;
+            gap: 14px;
         }
         .pdf-logo-3-left {
-            width: 34px;
-            height: 34px;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #F1F5F9;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
         }
-        .pdf-user-name-only { justify-self: end; font-size: 13.5px; font-weight: 800; color: #111827; white-space: nowrap; }
+        .pdf-user-name-only {
+            justify-self: end;
+            font-size: 13.5px;
+            font-weight: 800;
+            color: #0F172A;
+            background: #F1F5F9;
+            padding: 6px 12px;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
         .pdf-center-title { text-align: center; }
-        .pdf-center-title h2 { margin: 0; font-size: 17.5px; font-weight: 600; color: #111827; line-height: 1.2; }
-        .pdf-center-title p { margin: 2px 0 0; font-size: 10.5px; font-weight: 600; color: #4B5563; line-height: 1.15; }
+        .pdf-center-title h2 { margin: 0; font-size: 18px; font-weight: 700; color: #0F172A; line-height: 1.25; }
+        .pdf-center-title p { margin: 2px 0 0; font-size: 11px; font-weight: 600; color: #64748B; line-height: 1.2; }
 
-        .pdf-row-1 { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 6px; flex-shrink: 0; }
-        .pdf-kpi-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; }
-        .pdf-kpi-card { border: 1px solid #CBD5E1; background: #F8FAFC; border-radius: 7px; padding: 4px 8px; display: flex; flex-direction: column; justify-content: center; gap: 1px; }
-        .pdf-kpi-card small { font-size: 8px; font-weight: 700; color: #6B7280; text-transform: uppercase; line-height: 1.1; }
-        .pdf-kpi-card strong { font-size: 13px; font-weight: 800; color: #111827; line-height: 1.15; }
+        /* القسم العلوي: أرقام رئيسية + أهداف الادخار + الرؤى السريعة */
+        .pdf-hero-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr 1fr;
+            gap: 12px;
+        }
+        .pdf-kpi-2x2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        .pdf-kpi-card {
+            border: 1px solid #E2E8F0;
+            background: #FFFFFF;
+            border-radius: 12px;
+            padding: 9px 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 3px;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+        }
+        .pdf-kpi-card small { font-size: 9px; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.4px; }
+        .pdf-kpi-card strong { font-size: 14.5px; font-weight: 800; color: #0F172A; }
 
-        .pdf-goals-card { border: 1px solid #CBD5E1; background: #F8FAFC; border-radius: 7px; padding: 6px 9px; display: flex; flex-direction: column; justify-content: space-between; gap: 3px; min-width: 0; }
-        .pdf-goals-card h4 { margin: 0; font-size: 11px; font-weight: 800; color: #111827; line-height: 1.15; }
+        .pdf-side-card {
+            border: 1px solid #E2E8F0;
+            background: #FFFFFF;
+            border-radius: 12px;
+            padding: 11px 13px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 6px;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+        }
+        .pdf-side-card h4 {
+            margin: 0;
+            font-size: 12px;
+            font-weight: 800;
+            color: #0F172A;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .pdf-insight-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            background: #F8FAFC;
+            border: 1px solid #EDF2F7;
+            border-radius: 8px;
+            padding: 4.5px 8px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+        .pdf-insight-row span:first-child { color: #64748B; }
+        .pdf-insight-row span:last-child { color: #0F172A; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-        .pdf-insights-card { border: 1px solid #CBD5E1; background: #F8FAFC; border-radius: 7px; padding: 6px 9px; display: flex; flex-direction: column; justify-content: space-between; gap: 3px; min-width: 0; }
-        .pdf-insights-card h4 { margin: 0; font-size: 11px; font-weight: 800; color: #111827; line-height: 1.15; }
-        .pdf-insight-row { display: flex; justify-content: space-between; align-items: center; gap: 6px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 5px; padding: 2.5px 6px; font-size: 9px; font-weight: 700; }
-        .pdf-insight-row span:first-child { color: #6B7280; white-space: nowrap; }
-        .pdf-insight-row span:last-child { color: #111827; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        /* شبكة الرسوم البيانية المنسقة */
+        .pdf-charts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        .pdf-panel {
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 10px 12px;
+            background: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+        }
+        .pdf-panel h5 {
+            margin: 0;
+            font-size: 11.5px;
+            font-weight: 800;
+            color: #0F172A;
+        }
+        .pdf-canvas-box { position: relative; height: 168px; width: 100%; }
 
-        .pdf-row-2 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; flex-shrink: 0; }
-        .pdf-row-3 { display: grid; grid-template-columns: 1fr 1fr 1.15fr; gap: 6px; flex-shrink: 0; }
-        .pdf-panel { border: 1px solid #CBD5E1; border-radius: 8px; padding: 5px 8px; background: #FFFFFF; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-        .pdf-panel h5 { margin: 0; font-size: 10.5px; font-weight: 800; color: #111827; line-height: 1.15; }
-        .pdf-canvas-mid { position: relative; height: 162px; width: 100%; }
-        .pdf-canvas-bot { position: relative; height: 178px; width: 100%; }
-
-        .pdf-tx-table-wrap { height: 178px; overflow: hidden; border: 1px solid #E2E8F0; border-radius: 6px; background: #F8FAFC; }
-        .pdf-tx-table { width: 100%; min-width: 0; border-collapse: collapse; font-size: 9.5px; }
-        .pdf-tx-table th { background: #E2E8F0; color: #1E293B; padding: 4px 6px; font-size: 8.5px; font-weight: 800; text-transform: uppercase; position: sticky; top: 0; }
-        .pdf-tx-table td { padding: 3.5px 6px; border-bottom: 1px solid #E2E8F0; font-size: 9.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 155px; }
+        /* قسم المعاملات الكامل (يدعم عمودين تلقائياً عند كثرة البنود) */
+        .pdf-tx-section {
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 11px 14px;
+            background: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+        }
+        .pdf-tx-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .pdf-tx-header-bar h5 {
+            margin: 0;
+            font-size: 12px;
+            font-weight: 800;
+            color: #0F172A;
+        }
+        .pdf-tx-count-badge {
+            font-size: 10px;
+            font-weight: 700;
+            color: #008CFF;
+            background: #EFF6FF;
+            padding: 3px 9px;
+            border-radius: 999px;
+        }
+        .pdf-tx-columns {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+        .pdf-tx-columns.two-cols {
+            grid-template-columns: 1fr 1fr;
+        }
+        .pdf-tx-table {
+            width: 100%;
+            min-width: 0;
+            border-collapse: collapse;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .pdf-tx-table th {
+            background: #F1F5F9;
+            color: #334155;
+            padding: 6px 10px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            border-bottom: 1px solid #CBD5E1;
+        }
+        .pdf-tx-table td {
+            padding: 5.5px 10px;
+            border-bottom: 1px solid #F1F5F9;
+            font-size: 11px;
+            font-weight: 700;
+            color: #0F172A;
+        }
+        .pdf-tx-table tr:last-child td { border-bottom: none; }
+        .pdf-tx-table tr:nth-child(even) td { background: #FAFCFF; }
         body.lang-ar .pdf-tx-table th, body.lang-ar .pdf-tx-table td { text-align: right; }
         body.lang-en .pdf-tx-table th, body.lang-en .pdf-tx-table td { text-align: left; }
 
-        .pdf-footer-bar { display: flex; justify-content: center; align-items: center; border-top: 1px solid #E2E8F0; padding-top: 3px; font-size: 9px; font-weight: 600; color: #6B7280; flex-shrink: 0; }
+        .pdf-footer-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            color: #64748B;
+        }
 
         footer { background: var(--brand-dark); color: white; padding: 25px 20px 15px; margin-top: auto; width: 100%; box-sizing: border-box; }
         .footer-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 15px; flex-wrap: wrap; gap: 15px; }
@@ -2150,6 +2290,65 @@
         pdfChartsInstances = [];
     }
 
+    function buildPdfSingleColumnTable(rows) {
+        let bodyHtml = rows.map(row => `
+            <tr>
+                <td>${row.cat}</td>
+                <td class="${row.diff < 0 ? 'text-red' : 'text-green'}">${Math.abs(row.diff).toLocaleString()} SAR</td>
+            </tr>
+        `).join('');
+
+        return `
+            <table class="pdf-tx-table">
+                <thead>
+                    <tr>
+                        <th>${translations[currentLang].thCat}</th>
+                        <th>${translations[currentLang].thDiff}</th>
+                    </tr>
+                </thead>
+                <tbody>${bodyHtml}</tbody>
+            </table>
+        `;
+    }
+
+    function renderPdfTransactionsDualColumnHtml(txRows) {
+        if (!txRows || txRows.length === 0) {
+            return `
+                <div class="pdf-tx-columns">
+                    <table class="pdf-tx-table">
+                        <thead>
+                            <tr>
+                                <th>${translations[currentLang].thCat}</th>
+                                <th>${translations[currentLang].thDiff}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="2" style="text-align:center; color:#64748B;">${translations[currentLang].noTransactionsMsg}</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        if (txRows.length > 6) {
+            let mid = Math.ceil(txRows.length / 2);
+            let leftRows = txRows.slice(0, mid);
+            let rightRows = txRows.slice(mid);
+            return `
+                <div class="pdf-tx-columns two-cols">
+                    ${buildPdfSingleColumnTable(leftRows)}
+                    ${buildPdfSingleColumnTable(rightRows)}
+                </div>
+            `;
+        }
+
+        return `
+            <div class="pdf-tx-columns">
+                ${buildPdfSingleColumnTable(txRows)}
+            </div>
+        `;
+    }
+
     function renderPdfSheetContent(monthId) {
         let data = getMonthSummaryData(monthId);
         let sheet = document.getElementById('pdf-report-sheet');
@@ -2167,19 +2366,12 @@
             ? `المعتمد (${minSourceName}): ${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)`
             : `Counted (${minSourceName}): ${data.minForGoal.toLocaleString()} SAR (${data.goalPct}%)`;
 
-        let txRowsHtml = data.txRows.length > 0
-            ? data.txRows.map(row => `
-                <tr>
-                    <td>${row.cat}</td>
-                    <td class="${row.diff < 0 ? 'text-red' : 'text-green'}">${Math.abs(row.diff).toLocaleString()} SAR</td>
-                </tr>
-            `).join('')
-            : `<tr><td colspan="2" style="text-align:center; color:#6B7280;">${translations[currentLang].noTransactionsMsg}</td></tr>`;
+        let txSectionHtml = renderPdfTransactionsDualColumnHtml(data.txRows);
 
         sheet.innerHTML = `
             <div class="pdf-top-header">
                 <div class="pdf-logo-3-left">
-                    <svg viewBox="0 0 100 100" style="width: 32px; height: 32px;">
+                    <svg viewBox="0 0 100 100" style="width: 30px; height: 30px;">
                         <g transform="translate(50,50) rotate(-45) translate(-50,-50)" fill="none" stroke="#000000" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="44" y="10" width="12" height="78"/>
                             <path d="M 44 10 L 16 10 L 22 19 L 44 19 Z"/>
@@ -2196,13 +2388,13 @@
                     </svg>
                 </div>
                 <div class="pdf-center-title">
-                    <h2 style="font-family: 'Inter', sans-serif; font-weight: 500; letter-spacing: -0.4px;">Oikonomia <span style="font-size:14px; font-weight:700; color:#4B5563;">— ${monthTitle}</span></h2>
+                    <h2 style="font-family: 'Inter', sans-serif; font-weight: 500; letter-spacing: -0.4px;">Oikonomia <span style="font-size:14px; font-weight:700; color:#475569;">— ${monthTitle}</span></h2>
                     <p>${translations[currentLang].aboutSub}</p>
                 </div>
                 <div class="pdf-user-name-only">${fullName}</div>
             </div>
 
-            <div class="pdf-row-1">
+            <div class="pdf-hero-grid">
                 <div class="pdf-kpi-2x2">
                     <div class="pdf-kpi-card">
                         <small>${translations[currentLang].kpiIncome}</small>
@@ -2222,21 +2414,21 @@
                     </div>
                 </div>
 
-                <div class="pdf-goals-card">
-                    <h4>${translations[currentLang].finGoals}</h4>
-                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:10px; font-weight:700;">
+                <div class="pdf-side-card">
+                    <h4>🎯 ${translations[currentLang].finGoals}</h4>
+                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:10.5px; font-weight:700;">
                         <span>${translations[currentLang].monthlyTarget}</span>
                         <span>${data.targetSavings.toLocaleString()} SAR</span>
                     </div>
-                    <div style="background:#E2E8F0; height:6px; border-radius:999px; overflow:hidden;">
+                    <div style="background:#E2E8F0; height:7px; border-radius:999px; overflow:hidden;">
                         <div style="background:${data.goalPct >= 100 ? '#10B981' : '#008CFF'}; width:${data.goalPct}%; height:100%;"></div>
                     </div>
-                    <div style="font-size:9px; font-weight:700; color:${data.goalPct >= 100 ? '#10B981' : '#4B5563'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${goalStatusLine}</div>
-                    <div style="font-size:9px; font-weight:700; color:#6B7280;">${translations[currentLang].remDebts}: <strong class="text-red">0 SAR</strong></div>
+                    <div style="font-size:9.5px; font-weight:700; color:${data.goalPct >= 100 ? '#10B981' : '#475569'}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${goalStatusLine}</div>
+                    <div style="font-size:9.5px; font-weight:700; color:#64748B;">${translations[currentLang].remDebts}: <strong class="text-red">0 SAR</strong></div>
                 </div>
 
-                <div class="pdf-insights-card">
-                    <h4>${translations[currentLang].topInsightsTitle}</h4>
+                <div class="pdf-side-card">
+                    <h4>⚡ ${translations[currentLang].topInsightsTitle}</h4>
                     <div class="pdf-insight-row">
                         <span>${translations[currentLang].highestCatLabel}</span>
                         <span>${data.insights.highestItem.name} (${data.insights.highestItem.val.toLocaleString()} SAR)</span>
@@ -2256,48 +2448,39 @@
                 </div>
             </div>
 
-            <div class="pdf-row-2">
+            <div class="pdf-charts-grid">
                 <div class="pdf-panel">
                     <h5>${translations[currentLang].chartDist}</h5>
-                    <div class="pdf-canvas-mid"><canvas id="pdfDonutCanvas"></canvas></div>
+                    <div class="pdf-canvas-box"><canvas id="pdfDonutCanvas"></canvas></div>
                 </div>
                 <div class="pdf-panel">
                     <h5>${translations[currentLang].chartGauge}</h5>
-                    <div class="pdf-canvas-mid"><canvas id="pdfGaugeCanvas"></canvas></div>
+                    <div class="pdf-canvas-box"><canvas id="pdfGaugeCanvas"></canvas></div>
                 </div>
                 <div class="pdf-panel">
                     <h5>${translations[currentLang].chartByCard}</h5>
-                    <div class="pdf-canvas-mid"><canvas id="pdfCardSpendCanvas"></canvas></div>
+                    <div class="pdf-canvas-box"><canvas id="pdfCardSpendCanvas"></canvas></div>
                 </div>
                 <div class="pdf-panel">
                     <h5>${translations[currentLang].chartBar}</h5>
-                    <div class="pdf-canvas-mid"><canvas id="pdfBarCanvas"></canvas></div>
+                    <div class="pdf-canvas-box"><canvas id="pdfBarCanvas"></canvas></div>
                 </div>
-            </div>
-
-            <div class="pdf-row-3">
                 <div class="pdf-panel">
                     <h5>${translations[currentLang].chartDaily}</h5>
-                    <div class="pdf-canvas-bot"><canvas id="pdfDailyCanvas"></canvas></div>
+                    <div class="pdf-canvas-box"><canvas id="pdfDailyCanvas"></canvas></div>
                 </div>
                 <div class="pdf-panel">
                     <h5>${translations[currentLang].chartHistory}</h5>
-                    <div class="pdf-canvas-bot"><canvas id="pdfHistoryCanvas"></canvas></div>
+                    <div class="pdf-canvas-box"><canvas id="pdfHistoryCanvas"></canvas></div>
                 </div>
-                <div class="pdf-panel">
-                    <h5>${translations[currentLang].transactionsTitle}</h5>
-                    <div class="pdf-tx-table-wrap">
-                        <table class="pdf-tx-table">
-                            <thead>
-                                <tr>
-                                    <th>${translations[currentLang].thCat}</th>
-                                    <th>${translations[currentLang].thDiff}</th>
-                                </tr>
-                            </thead>
-                            <tbody>${txRowsHtml}</tbody>
-                        </table>
-                    </div>
+            </div>
+
+            <div class="pdf-tx-section">
+                <div class="pdf-tx-header-bar">
+                    <h5>${translations[currentLang].transactionsTitle} (${translations[currentLang].thCat} & ${translations[currentLang].thDiff})</h5>
+                    <span class="pdf-tx-count-badge">${data.txRows.length} ${currentLang === 'ar' ? 'بند' : 'items'}</span>
                 </div>
+                ${txSectionHtml}
             </div>
 
             <div class="pdf-footer-bar">
@@ -2310,7 +2493,7 @@
             responsive: true,
             maintainAspectRatio: false,
             animation: false,
-            plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 8, padding: 5, font: { size: 8.5, weight: 'bold' } } } }
+            plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 8, padding: 6, font: { size: 9, weight: 'bold' } } } }
         };
 
         let donutLabels = (data.tp === 0 && data.ta === 0) ? ['No Data'] : data.cats;
@@ -2319,7 +2502,7 @@
         pdfChartsInstances.push(new Chart(document.getElementById('pdfDonutCanvas').getContext('2d'), {
             type: 'doughnut',
             data: { labels: donutLabels, datasets: [{ data: donutValues, backgroundColor: getDistinctPalette(donutValues.length, 0) }] },
-            options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { display: true, position: 'right', labels: { boxWidth: 8, padding: 4, font: { size: 8, weight: 'bold' } } } } }
+            options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { display: true, position: 'right', labels: { boxWidth: 8, padding: 5, font: { size: 8.5, weight: 'bold' } } } } }
         }));
 
         pdfChartsInstances.push(new Chart(document.getElementById('pdfGaugeCanvas').getContext('2d'), {
@@ -2331,7 +2514,7 @@
                     backgroundColor: ['#EF4444', '#06B6D4']
                 }]
             },
-            options: { responsive: true, maintainAspectRatio: false, animation: false, rotation: -90, circumference: 180, cutout: '78%', plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth: 8, padding: 4, font: { size: 8, weight: 'bold' } } } } }
+            options: { responsive: true, maintainAspectRatio: false, animation: false, rotation: -90, circumference: 180, cutout: '78%', plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth: 8, padding: 5, font: { size: 8.5, weight: 'bold' } } } } }
         }));
 
         let hasCardValues = data.cardSpendLabels.length > 0;
@@ -2346,13 +2529,13 @@
                     borderRadius: 4
                 }]
             },
-            options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { font: { size: 8 } } }, y: { beginAtZero: true, ticks: { font: { size: 8 } } } } }
+            options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { font: { size: 8.5 } } }, y: { beginAtZero: true, ticks: { font: { size: 8.5 } } } } }
         }));
 
         pdfChartsInstances.push(new Chart(document.getElementById('pdfBarCanvas').getContext('2d'), {
             type: 'bar',
             data: { labels: data.cats, datasets: [{ label: translations[currentLang].thPlanned, data: data.pData, backgroundColor: '#0EA5E9', borderRadius: 3 }, { label: translations[currentLang].thActual, data: data.aData, backgroundColor: '#F97316', borderRadius: 3 }] },
-            options: { ...baseLegendOpts, scales: { x: { ticks: { font: { size: 7.5 }, maxRotation: 35, minRotation: 0 } }, y: { beginAtZero: true, ticks: { font: { size: 8 } } } } }
+            options: { ...baseLegendOpts, scales: { x: { ticks: { font: { size: 8 }, maxRotation: 35, minRotation: 0 } }, y: { beginAtZero: true, ticks: { font: { size: 8.5 } } } } }
         }));
 
         pdfChartsInstances.push(new Chart(document.getElementById('pdfDailyCanvas').getContext('2d'), {
@@ -2378,15 +2561,42 @@
         await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
         await new Promise(resolve => setTimeout(resolve, 180));
 
+        const sheetWidth = 1122;
+        const sheetHeight = Math.max(793, rendered.sheet.scrollHeight);
+
         const canvas = await html2canvas(rendered.sheet, {
-            scale: 2, width: 1122, height: 793, windowWidth: 1122, windowHeight: 793,
-            useCORS: true, allowTaint: true, backgroundColor: '#FFFFFF', logging: false
+            scale: 2,
+            width: sheetWidth,
+            height: sheetHeight,
+            windowWidth: sheetWidth,
+            windowHeight: sheetHeight,
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: '#FFFFFF',
+            logging: false
         });
 
         const imgData = canvas.toDataURL('image/jpeg', 0.96);
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-        pdf.addImage(imgData, 'JPEG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), undefined, 'FAST');
+        const pageW = pdf.internal.pageSize.getWidth();
+        const pageH = pdf.internal.pageSize.getHeight();
+        const renderedH = (sheetHeight * pageW) / sheetWidth;
+
+        if (renderedH <= pageH + 1) {
+            pdf.addImage(imgData, 'JPEG', 0, 0, pageW, pageH, undefined, 'FAST');
+        } else {
+            let heightLeft = renderedH;
+            let positionY = 0;
+            pdf.addImage(imgData, 'JPEG', 0, positionY, pageW, renderedH, undefined, 'FAST');
+            heightLeft -= pageH;
+            while (heightLeft > 1) {
+                positionY -= pageH;
+                pdf.addPage('a4', 'landscape');
+                pdf.addImage(imgData, 'JPEG', 0, positionY, pageW, renderedH, undefined, 'FAST');
+                heightLeft -= pageH;
+            }
+        }
 
         let safeFileName = `Oikonomia-${rendered.monthTitle.replace(/[^\w\u0600-\u06FF-]+/g, '_')}.pdf`;
         return { pdf, safeFileName, monthTitle: rendered.monthTitle };
