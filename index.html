@@ -2651,6 +2651,93 @@
         }
     }
 
+    async function sendWhatsAppVerificationCode() {
+        if (profileLocked) return;
+        const statusEl = document.getElementById('wa-save-status');
+        const sendBtn = document.getElementById('send-wa-otp-btn');
+        const rawPhone = document.getElementById('edit-prof-phone').value.trim();
+        const phone = normalizeWhatsAppPhone(rawPhone);
+
+        if (phone.length < 10) {
+            statusEl.style.display = 'block';
+            statusEl.style.color = 'var(--danger)';
+            statusEl.innerText = translations[currentLang].waPhoneRequired;
+            return;
+        }
+
+        if (sendBtn) sendBtn.disabled = true;
+        statusEl.style.display = 'block';
+        statusEl.style.color = 'var(--text-muted)';
+        statusEl.innerText = currentLang === 'ar' ? 'جاري إرسال رمز التحقق...' : 'Sending verification code...';
+
+        try {
+            const response = await fetch(WHATSAPP_OTP_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    phone: phone,
+                    uid: firebaseUid || currentUser || 'anonymous'
+                })
+            });
+
+            const rawText = await response.text();
+            let data = null;
+            try { data = JSON.parse(rawText); } catch (_) { data = { rawText }; }
+
+            if (!response.ok || !data || data.ok !== true) {
+                console.error('OTP Server Rejected:', response.status, data);
+                throw new Error(JSON.stringify(data));
+            }
+
+            pendingWaPhone = phone;
+            const otpBox = document.getElementById('wa-otp-input-box');
+            if (otpBox) otpBox.classList.remove('hidden');
+            const codeInput = document.getElementById('wa-otp-code-input');
+            if (codeInput) { codeInput.value = ''; codeInput.focus(); }
+
+            statusEl.style.color = '#15803D';
+            statusEl.innerText = translations[currentLang].waOtpSentMsg;
+        } catch (err) {
+            console.error('Send OTP Error Detail:', err.message || err);
+            statusEl.style.color = 'var(--danger)';
+            statusEl.innerText = translations[currentLang].waOtpSendFailedMsg;
+        } finally {
+            if (sendBtn) sendBtn.disabled = false;
+        }
+    }
+
+    async function dispatchMonthPdfToWhatsApp(monthId, phone) {
+        const artifact = await buildMonthPdfArtifact(monthId);
+        if (!artifact) throw new Error('Failed to generate PDF');
+
+        const pdfBase64 = artifact.pdf.output('datauristring').split(',')[1];
+        const caption = currentLang === 'ar'
+            ? `تقريرك المالي لشهر ${artifact.monthTitle} من منصة Oikonomia`
+            : `Your Oikonomia financial report for ${artifact.monthTitle}`;
+
+        const response = await fetch(WHATSAPP_API_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                phone: phone,
+                uid: firebaseUid || currentUser || 'anonymous',
+                fileName: artifact.safeFileName,
+                caption: caption,
+                pdfBase64: pdfBase64
+            })
+        });
+
+        const rawText = await response.text();
+        let resData = null;
+        try { resData = JSON.parse(rawText); } catch (_) { resData = { rawText }; }
+
+        if (!response.ok || !resData || resData.ok !== true) {
+            console.error('WhatsApp Report Rejected:', response.status, resData);
+            throw new Error(JSON.stringify(resData));
+        }
+        return resData;
+    }
+
     async function checkAndRunScheduledWhatsAppReport() {
         if (isSendingAutoWaReport || !currentUser || !users[currentUser]) return;
         const uData = users[currentUser];
@@ -2659,7 +2746,7 @@
 
         const now = new Date();
         const year = now.getFullYear();
-        const month = now.getMonth(); // 0..11
+        const month = now.getMonth();
         const monthKey = `${year}-${String(month + 1).padStart(2, '0')}`;
         if (uData.waLastAutoSentMonth === monthKey) return;
 
